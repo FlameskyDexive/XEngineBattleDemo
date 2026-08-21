@@ -1,0 +1,56 @@
+GravityX: 0
+GravityY: -9.81
+GravityZ: 0
+SolverIterations: 8
+RelaxIterations: 4
+SubSteps: 2
+AllowSleep: true
+UseMultithreading: true
+AutoSyncTransforms: true
+DefaultMaterial:
+  AssetID: "00000000-0000-0000-0000-000000000000"
+BounceThreshold: 1
+QueriesHitTriggers: true
+EnhancedDeterminism: false
+ThreadModel: 0
+EnableAuxiliaryContactPoints: true
+PersistentContactManifold: true
+SpeculativeRelaxationFactor: 0.9
+SweepVelocityThreshold: 10
+CollisionMatrixRows:
+  array:
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+    - 4294967295
+  $id: 2
+$id: 1
+$type: "XEngine.Editor.Projects.Settings.PhysicsSettings, XEngine.Editor"

@@ -1,0 +1,2206 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.GameObject, XEngine.Runtime",
+  "Name": "Claymore",
+  "AssetPath": "",
+  "Identifier": "a81d689c-3179-4b1f-875c-8634aa857cb9",
+  "Static": 0B,
+  "Enabled": 1B,
+  "EnabledInHierarchy": 1B,
+  "TagIndex": 0,
+  "LayerIndex": 0,
+  "HideFlags": 0,
+  "Transform": {
+    "$id": 2,
+    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+    "_localPosition": {
+      "X": 0F,
+      "Y": 0F,
+      "Z": 0F
+    },
+    "_localScale": {
+      "X": 1F,
+      "Y": 1F,
+      "Z": 1F
+    },
+    "_localRotation": {
+      "X": 0F,
+      "Y": 0F,
+      "Z": 0F,
+      "W": 1F
+    }
+  },
+  "Components": [
+
+  ],
+  "Children": [
+    {
+      "$id": 3,
+      "Name": "Monster_Claymore",
+      "AssetPath": "",
+      "Identifier": "158d4217-2161-4833-b846-f4058bdc0698",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 4,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F
+        },
+        "_localScale": {
+          "X": 100F,
+          "Y": 100F,
+          "Z": 100F
+        },
+        "_localRotation": {
+          "X": -8.146034E-08F,
+          "Y": -0F,
+          "Z": 0F,
+          "W": 1F
+        }
+      },
+      "Components": [
+
+      ],
+      "Children": [
+        {
+          "$id": 5,
+          "Name": "Root",
+          "AssetPath": "",
+          "Identifier": "576565eb-d1ec-4729-bfa8-cf370738e742",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 6,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 1.5695824E-07F,
+              "Y": -0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 7,
+          "Name": "HitCollider",
+          "AssetPath": "",
+          "Identifier": "e85f716e-88b0-422c-81e3-88c70f92189d",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 8,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 9,
+          "Name": "WallCollider",
+          "AssetPath": "",
+          "Identifier": "f04551d2-f6c2-4ec3-819f-f589ab75a4ef",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 10,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 11,
+          "Name": "Grounder",
+          "AssetPath": "",
+          "Identifier": "080e6b62-3eb4-4326-adf2-d0693df1afcc",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 12,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+
+          ],
+          "Children": [
+            {
+              "$id": 13,
+              "Name": "LegL",
+              "AssetPath": "",
+              "Identifier": "9ac860b1-36bf-4c9b-8b8b-899dfd13ed9e",
+              "Static": 0B,
+              "Enabled": 1B,
+              "EnabledInHierarchy": 1B,
+              "TagIndex": 0,
+              "LayerIndex": 0,
+              "HideFlags": 0,
+              "Transform": {
+                "$id": 14,
+                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                "_localPosition": {
+                  "X": 0F,
+                  "Y": 0F,
+                  "Z": 0F
+                },
+                "_localScale": {
+                  "X": 1F,
+                  "Y": 1F,
+                  "Z": 1F
+                },
+                "_localRotation": {
+                  "X": 0F,
+                  "Y": 0F,
+                  "Z": 0F,
+                  "W": 1F
+                }
+              },
+              "Components": [
+
+              ],
+              "Children": [
+
+              ]
+            },
+            {
+              "$id": 15,
+              "Name": "LegR",
+              "AssetPath": "",
+              "Identifier": "afdeed00-aeb0-41b7-8d0e-fdce252d6e74",
+              "Static": 0B,
+              "Enabled": 1B,
+              "EnabledInHierarchy": 1B,
+              "TagIndex": 0,
+              "LayerIndex": 0,
+              "HideFlags": 0,
+              "Transform": {
+                "$id": 16,
+                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                "_localPosition": {
+                  "X": 0F,
+                  "Y": 0F,
+                  "Z": 0F
+                },
+                "_localScale": {
+                  "X": 1F,
+                  "Y": 1F,
+                  "Z": 1F
+                },
+                "_localRotation": {
+                  "X": 0F,
+                  "Y": 0F,
+                  "Z": 0F,
+                  "W": 1F
+                }
+              },
+              "Components": [
+
+              ],
+              "Children": [
+
+              ]
+            }
+          ]
+        },
+        {
+          "$id": 17,
+          "Name": "Bip001",
+          "AssetPath": "",
+          "Identifier": "83cec9e7-6755-49e0-bbb6-4a0e0a790e68",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 18,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": -9.501627E-12F,
+              "Y": 0.01013372F,
+              "Z": 0.0008219232F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 1.5454313E-08F,
+              "Y": 0.70710623F,
+              "Z": -1.5454336E-08F,
+              "W": 0.7071073F
+            }
+          },
+          "Components": [
+
+          ],
+          "Children": [
+            {
+              "$id": 19,
+              "Name": "Bip001 Pelvis",
+              "AssetPath": "",
+              "Identifier": "62a0c06f-c6de-453c-b3e8-51f0e93efd59",
+              "Static": 0B,
+              "Enabled": 1B,
+              "EnabledInHierarchy": 1B,
+              "TagIndex": 0,
+              "LayerIndex": 0,
+              "HideFlags": 0,
+              "Transform": {
+                "$id": 20,
+                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                "_localPosition": {
+                  "X": 7.4505804E-11F,
+                  "Y": 1.1920929E-09F,
+                  "Z": 1.4210854E-16F
+                },
+                "_localScale": {
+                  "X": 1F,
+                  "Y": 0.99999994F,
+                  "Z": 1F
+                },
+                "_localRotation": {
+                  "X": 1.369238E-06F,
+                  "Y": -5.520423E-07F,
+                  "Z": 0.41282707F,
+                  "W": 0.9108094F
+                }
+              },
+              "Components": [
+
+              ],
+              "Children": [
+                {
+                  "$id": 21,
+                  "Name": "Bip001 L Thigh",
+                  "AssetPath": "",
+                  "Identifier": "8faf03bc-c1f8-48f7-abf7-ba61a4959663",
+                  "Static": 0B,
+                  "Enabled": 1B,
+                  "EnabledInHierarchy": 1B,
+                  "TagIndex": 0,
+                  "LayerIndex": 0,
+                  "HideFlags": 0,
+                  "Transform": {
+                    "$id": 22,
+                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                    "_localPosition": {
+                      "X": -1.7881393E-09F,
+                      "Y": -1.1920929E-09F,
+                      "Z": 0.00090475805F
+                    },
+                    "_localScale": {
+                      "X": 1F,
+                      "Y": 1F,
+                      "Z": 0.99999994F
+                    },
+                    "_localRotation": {
+                      "X": -0.9432622F,
+                      "Y": 0.30672884F,
+                      "Z": -0.06851791F,
+                      "W": -0.10714062F
+                    }
+                  },
+                  "Components": [
+
+                  ],
+                  "Children": [
+                    {
+                      "$id": 23,
+                      "Name": "Bip001 L Calf",
+                      "AssetPath": "",
+                      "Identifier": "b1df13eb-8718-4885-9fdd-9268b2ed47cb",
+                      "Static": 0B,
+                      "Enabled": 1B,
+                      "EnabledInHierarchy": 1B,
+                      "TagIndex": 0,
+                      "LayerIndex": 0,
+                      "HideFlags": 0,
+                      "Transform": {
+                        "$id": 24,
+                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                        "_localPosition": {
+                          "X": 1.1920929E-09F,
+                          "Y": 0.0046956996F,
+                          "Z": -0F
+                        },
+                        "_localScale": {
+                          "X": 1.0000001F,
+                          "Y": 1F,
+                          "Z": 0.99999994F
+                        },
+                        "_localRotation": {
+                          "X": -2.8104148E-07F,
+                          "Y": 1.0558043E-06F,
+                          "Z": 0.19454971F,
+                          "W": 0.98089266F
+                        }
+                      },
+                      "Components": [
+
+                      ],
+                      "Children": [
+                        {
+                          "$id": 25,
+                          "Name": "Bip001 L Foot",
+                          "AssetPath": "",
+                          "Identifier": "bd7feb1e-291e-4a9b-8981-92a658229d56",
+                          "Static": 0B,
+                          "Enabled": 1B,
+                          "EnabledInHierarchy": 1B,
+                          "TagIndex": 0,
+                          "LayerIndex": 0,
+                          "HideFlags": 0,
+                          "Transform": {
+                            "$id": 26,
+                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                            "_localPosition": {
+                              "X": -2.9802322E-10F,
+                              "Y": 0.004523791F,
+                              "Z": 1.4901161E-10F
+                            },
+                            "_localScale": {
+                              "X": 1.0000004F,
+                              "Y": 1.0000002F,
+                              "Z": 1.0000002F
+                            },
+                            "_localRotation": {
+                              "X": -0.47003844F,
+                              "Y": -0.8803122F,
+                              "Z": -0.06336426F,
+                              "W": -0.009961842F
+                            }
+                          },
+                          "Components": [
+
+                          ],
+                          "Children": [
+                            {
+                              "$id": 27,
+                              "Name": "Bip001 L Toe0",
+                              "AssetPath": "",
+                              "Identifier": "608ad64c-3143-4cad-ba31-3b649688c242",
+                              "Static": 0B,
+                              "Enabled": 1B,
+                              "EnabledInHierarchy": 1B,
+                              "TagIndex": 0,
+                              "LayerIndex": 0,
+                              "HideFlags": 0,
+                              "Transform": {
+                                "$id": 28,
+                                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                "_localPosition": {
+                                  "X": 1.862645E-10F,
+                                  "Y": 0.001667172F,
+                                  "Z": -1.4901161E-10F
+                                },
+                                "_localScale": {
+                                  "X": 1F,
+                                  "Y": 1.0000001F,
+                                  "Z": 0.99999994F
+                                },
+                                "_localRotation": {
+                                  "X": 1.2026545E-06F,
+                                  "Y": 2.5716776E-07F,
+                                  "Z": 0.91687673F,
+                                  "W": 0.3991704F
+                                }
+                              },
+                              "Components": [
+
+                              ],
+                              "Children": [
+                                {
+                                  "$id": 29,
+                                  "Name": "Bip001 L Toe0Nub",
+                                  "AssetPath": "",
+                                  "Identifier": "2ff0e6ba-a1e2-4de6-8bc9-5098969b6215",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 30,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": 0.0010730294F,
+                                      "Y": -1.4901161E-10F,
+                                      "Z": -1.4901161E-10F
+                                    },
+                                    "_localScale": {
+                                      "X": -0.9999999F,
+                                      "Y": 0.9999999F,
+                                      "Z": 0.9999999F
+                                    },
+                                    "_localRotation": {
+                                      "X": -7.54979E-08F,
+                                      "Y": -1F,
+                                      "Z": 7.940934E-23F,
+                                      "W": -3.7252237E-09F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+
+                                  ]
+                                },
+                                {
+                                  "$id": 31,
+                                  "Name": "Bip001 L Toe0_end",
+                                  "AssetPath": "",
+                                  "Identifier": "35440b85-5c30-466b-8969-2fd793d108d2",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 32,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": 0F,
+                                      "Y": 0.0016671725F,
+                                      "Z": -0F
+                                    },
+                                    "_localScale": {
+                                      "X": 1F,
+                                      "Y": 1F,
+                                      "Z": 1F
+                                    },
+                                    "_localRotation": {
+                                      "X": 0F,
+                                      "Y": 0F,
+                                      "Z": 0F,
+                                      "W": 1F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$id": 33,
+                  "Name": "Bip001 R Thigh",
+                  "AssetPath": "",
+                  "Identifier": "28841d6e-07de-40a0-86e6-78069202e36e",
+                  "Static": 0B,
+                  "Enabled": 1B,
+                  "EnabledInHierarchy": 1B,
+                  "TagIndex": 0,
+                  "LayerIndex": 0,
+                  "HideFlags": 0,
+                  "Transform": {
+                    "$id": 34,
+                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                    "_localPosition": {
+                      "X": -4.172325E-09F,
+                      "Y": -2.3841857E-09F,
+                      "Z": -0.0009047581F
+                    },
+                    "_localScale": {
+                      "X": 0.99999994F,
+                      "Y": 1F,
+                      "Z": 1.0000001F
+                    },
+                    "_localRotation": {
+                      "X": -0.9432623F,
+                      "Y": 0.306729F,
+                      "Z": 0.0685186F,
+                      "W": 0.10713929F
+                    }
+                  },
+                  "Components": [
+
+                  ],
+                  "Children": [
+                    {
+                      "$id": 35,
+                      "Name": "Bip001 R Calf",
+                      "AssetPath": "",
+                      "Identifier": "f4b1fb61-d2a1-4067-b51a-00852e1bac56",
+                      "Static": 0B,
+                      "Enabled": 1B,
+                      "EnabledInHierarchy": 1B,
+                      "TagIndex": 0,
+                      "LayerIndex": 0,
+                      "HideFlags": 0,
+                      "Transform": {
+                        "$id": 36,
+                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                        "_localPosition": {
+                          "X": 1.4901161E-10F,
+                          "Y": 0.004695695F,
+                          "Z": -0F
+                        },
+                        "_localScale": {
+                          "X": 1.0000001F,
+                          "Y": 1.0000001F,
+                          "Z": 1.0000001F
+                        },
+                        "_localRotation": {
+                          "X": 9.874427E-08F,
+                          "Y": -5.165085E-07F,
+                          "Z": 0.19454968F,
+                          "W": 0.98089266F
+                        }
+                      },
+                      "Components": [
+
+                      ],
+                      "Children": [
+                        {
+                          "$id": 37,
+                          "Name": "Bip001 R Foot",
+                          "AssetPath": "",
+                          "Identifier": "7314df92-8227-4bcd-b967-33608f7f0c81",
+                          "Static": 0B,
+                          "Enabled": 1B,
+                          "EnabledInHierarchy": 1B,
+                          "TagIndex": 0,
+                          "LayerIndex": 0,
+                          "HideFlags": 0,
+                          "Transform": {
+                            "$id": 38,
+                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                            "_localPosition": {
+                              "X": -2.9802322E-10F,
+                              "Y": 0.0045237923F,
+                              "Z": -2.9802322E-10F
+                            },
+                            "_localScale": {
+                              "X": 1.0000001F,
+                              "Y": 1.0000004F,
+                              "Z": 0.99999994F
+                            },
+                            "_localRotation": {
+                              "X": -0.4700387F,
+                              "Y": -0.8803121F,
+                              "Z": 0.06336479F,
+                              "W": 0.009959028F
+                            }
+                          },
+                          "Components": [
+
+                          ],
+                          "Children": [
+                            {
+                              "$id": 39,
+                              "Name": "Bip001 R Toe0",
+                              "AssetPath": "",
+                              "Identifier": "3c846ae0-4fcd-43d6-b820-2aef631da04a",
+                              "Static": 0B,
+                              "Enabled": 1B,
+                              "EnabledInHierarchy": 1B,
+                              "TagIndex": 0,
+                              "LayerIndex": 0,
+                              "HideFlags": 0,
+                              "Transform": {
+                                "$id": 40,
+                                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                "_localPosition": {
+                                  "X": 2.2351741E-10F,
+                                  "Y": 0.0016671725F,
+                                  "Z": -4.4703483E-10F
+                                },
+                                "_localScale": {
+                                  "X": 1F,
+                                  "Y": 0.9999999F,
+                                  "Z": 0.9999999F
+                                },
+                                "_localRotation": {
+                                  "X": 9.934091E-07F,
+                                  "Y": 4.123655E-07F,
+                                  "Z": 0.91687655F,
+                                  "W": 0.39917088F
+                                }
+                              },
+                              "Components": [
+
+                              ],
+                              "Children": [
+                                {
+                                  "$id": 41,
+                                  "Name": "Bip001 R Toe0Nub",
+                                  "AssetPath": "",
+                                  "Identifier": "0ff2a330-2bf5-4447-a858-895f0af6214e",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 42,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": 0.0010730296F,
+                                      "Y": 0F,
+                                      "Z": -1.4901161E-10F
+                                    },
+                                    "_localScale": {
+                                      "X": 1F,
+                                      "Y": 1F,
+                                      "Z": 1F
+                                    },
+                                    "_localRotation": {
+                                      "X": -0F,
+                                      "Y": 7.450383E-09F,
+                                      "Z": 2.842171E-14F,
+                                      "W": 1F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+
+                                  ]
+                                },
+                                {
+                                  "$id": 43,
+                                  "Name": "Bip001 R Toe0_end",
+                                  "AssetPath": "",
+                                  "Identifier": "34dad02e-c5c7-4f2b-9e31-97feb4f0bdf4",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 44,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": 0F,
+                                      "Y": 0.0016671723F,
+                                      "Z": -0F
+                                    },
+                                    "_localScale": {
+                                      "X": 1F,
+                                      "Y": 1F,
+                                      "Z": 1F
+                                    },
+                                    "_localRotation": {
+                                      "X": 0F,
+                                      "Y": 0F,
+                                      "Z": 0F,
+                                      "W": 1F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$id": 45,
+                  "Name": "Bip001 Spine",
+                  "AssetPath": "",
+                  "Identifier": "ebf088a5-b44e-4a3e-af5d-66ca3084dcbd",
+                  "Static": 0B,
+                  "Enabled": 1B,
+                  "EnabledInHierarchy": 1B,
+                  "TagIndex": 0,
+                  "LayerIndex": 0,
+                  "HideFlags": 0,
+                  "Transform": {
+                    "$id": 46,
+                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                    "_localPosition": {
+                      "X": 0.00064495025F,
+                      "Y": 0.0006687653F,
+                      "Z": -1.3818316E-09F
+                    },
+                    "_localScale": {
+                      "X": 0.9999999F,
+                      "Y": 0.9999999F,
+                      "Z": 1F
+                    },
+                    "_localRotation": {
+                      "X": -7.486783E-08F,
+                      "Y": 1.3888565E-06F,
+                      "Z": -0.519847F,
+                      "W": 0.85425943F
+                    }
+                  },
+                  "Components": [
+
+                  ],
+                  "Children": [
+                    {
+                      "$id": 47,
+                      "Name": "LockBone",
+                      "AssetPath": "",
+                      "Identifier": "411b9df9-571d-456c-b0cf-8c564a98f2e0",
+                      "Static": 0B,
+                      "Enabled": 1B,
+                      "EnabledInHierarchy": 1B,
+                      "TagIndex": 0,
+                      "LayerIndex": 0,
+                      "HideFlags": 0,
+                      "Transform": {
+                        "$id": 48,
+                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                        "_localPosition": {
+                          "X": -1.4901161E-10F,
+                          "Y": -2.2351741E-10F,
+                          "Z": 7.105427E-17F
+                        },
+                        "_localScale": {
+                          "X": 1F,
+                          "Y": 1F,
+                          "Z": 1F
+                        },
+                        "_localRotation": {
+                          "X": -0.70710665F,
+                          "Y": -0.7071069F,
+                          "Z": -5.3385058E-08F,
+                          "W": -5.3385094E-08F
+                        }
+                      },
+                      "Components": [
+
+                      ],
+                      "Children": [
+
+                      ]
+                    },
+                    {
+                      "$id": 49,
+                      "Name": "Bip001 Spine1",
+                      "AssetPath": "",
+                      "Identifier": "5313b92c-74cf-4aba-bc67-efc879d8cb1b",
+                      "Static": 0B,
+                      "Enabled": 1B,
+                      "EnabledInHierarchy": 1B,
+                      "TagIndex": 0,
+                      "LayerIndex": 0,
+                      "HideFlags": 0,
+                      "Transform": {
+                        "$id": 50,
+                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                        "_localPosition": {
+                          "X": 5.9604643E-10F,
+                          "Y": 0.00117038F,
+                          "Z": -4.5474734E-15F
+                        },
+                        "_localScale": {
+                          "X": 1F,
+                          "Y": 1.0000001F,
+                          "Z": 1.0000001F
+                        },
+                        "_localRotation": {
+                          "X": 5.400611E-07F,
+                          "Y": 1.9273433E-08F,
+                          "Z": -0.20363548F,
+                          "W": 0.97904676F
+                        }
+                      },
+                      "Components": [
+
+                      ],
+                      "Children": [
+                        {
+                          "$id": 51,
+                          "Name": "Bip001 Spine2",
+                          "AssetPath": "",
+                          "Identifier": "7a81d4b6-7af5-430b-a95f-8a5945e76247",
+                          "Static": 0B,
+                          "Enabled": 1B,
+                          "EnabledInHierarchy": 1B,
+                          "TagIndex": 0,
+                          "LayerIndex": 0,
+                          "HideFlags": 0,
+                          "Transform": {
+                            "$id": 52,
+                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                            "_localPosition": {
+                              "X": -1.1920929E-09F,
+                              "Y": 0.0022523121F,
+                              "Z": -6.82121E-15F
+                            },
+                            "_localScale": {
+                              "X": 0.9999999F,
+                              "Y": 1F,
+                              "Z": 1F
+                            },
+                            "_localRotation": {
+                              "X": 1.1171403E-06F,
+                              "Y": 7.273213E-08F,
+                              "Z": -0.38450506F,
+                              "W": 0.9231229F
+                            }
+                          },
+                          "Components": [
+
+                          ],
+                          "Children": [
+                            {
+                              "$id": 53,
+                              "Name": "Bip001 L Clavicle",
+                              "AssetPath": "",
+                              "Identifier": "34d875e0-c323-433d-86fe-7ec4ba9ccc48",
+                              "Static": 0B,
+                              "Enabled": 1B,
+                              "EnabledInHierarchy": 1B,
+                              "TagIndex": 0,
+                              "LayerIndex": 0,
+                              "HideFlags": 0,
+                              "Transform": {
+                                "$id": 54,
+                                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                "_localPosition": {
+                                  "X": -0.00023840308F,
+                                  "Y": 0.0029682864F,
+                                  "Z": 0.000838486F
+                                },
+                                "_localScale": {
+                                  "X": 1.0000002F,
+                                  "Y": 1.0000001F,
+                                  "Z": 1F
+                                },
+                                "_localRotation": {
+                                  "X": 0.13499337F,
+                                  "Y": 0.63422674F,
+                                  "Z": 0.75293255F,
+                                  "W": -0.112364784F
+                                }
+                              },
+                              "Components": [
+
+                              ],
+                              "Children": [
+                                {
+                                  "$id": 55,
+                                  "Name": "Bip001 L UpperArm",
+                                  "AssetPath": "",
+                                  "Identifier": "9ed49964-43fd-4912-bf46-3e507e3e6478",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 56,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": -1.1920929E-09F,
+                                      "Y": 0.0018687602F,
+                                      "Z": 5.9604643E-10F
+                                    },
+                                    "_localScale": {
+                                      "X": 0.9999998F,
+                                      "Y": 0.9999997F,
+                                      "Z": 0.9999997F
+                                    },
+                                    "_localRotation": {
+                                      "X": -0.22846279F,
+                                      "Y": 0.52749276F,
+                                      "Z": 0.35575256F,
+                                      "W": 0.7368828F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+                                    {
+                                      "$id": 57,
+                                      "Name": "Bip001 L Forearm",
+                                      "AssetPath": "",
+                                      "Identifier": "9a344e41-a44f-43b0-ac40-44ad6134d6d7",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 58,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": -2.9802322E-10F,
+                                          "Y": 0.0056107887F,
+                                          "Z": 5.9604643E-10F
+                                        },
+                                        "_localScale": {
+                                          "X": 1.0000001F,
+                                          "Y": 1F,
+                                          "Z": 0.99999994F
+                                        },
+                                        "_localRotation": {
+                                          "X": 1.6318029E-07F,
+                                          "Y": -1.5998066E-07F,
+                                          "Z": 0.48732546F,
+                                          "W": 0.8732204F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 59,
+                                          "Name": "Bip001 L Forearm_end",
+                                          "AssetPath": "",
+                                          "Identifier": "6a35f1b5-af5e-45af-b250-c1431848b07c",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 60,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.013701488F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "$id": 61,
+                              "Name": "Bip001 Neck",
+                              "AssetPath": "",
+                              "Identifier": "7ad7ae51-12cd-4dc8-8af3-f03b101e0af0",
+                              "Static": 0B,
+                              "Enabled": 1B,
+                              "EnabledInHierarchy": 1B,
+                              "TagIndex": 0,
+                              "LayerIndex": 0,
+                              "HideFlags": 0,
+                              "Transform": {
+                                "$id": 62,
+                                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                "_localPosition": {
+                                  "X": 0.0004768002F,
+                                  "Y": 0.0042510456F,
+                                  "Z": 1.7012962E-09F
+                                },
+                                "_localScale": {
+                                  "X": 1F,
+                                  "Y": 1F,
+                                  "Z": 1.0000001F
+                                },
+                                "_localRotation": {
+                                  "X": 3.8042796E-07F,
+                                  "Y": -1.0133075E-07F,
+                                  "Z": -0.15629625F,
+                                  "W": 0.98771024F
+                                }
+                              },
+                              "Components": [
+
+                              ],
+                              "Children": [
+                                {
+                                  "$id": 63,
+                                  "Name": "Bip001 Head",
+                                  "AssetPath": "",
+                                  "Identifier": "9b85c81e-8463-4328-814f-0396a2e28b58",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 64,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": -1.1920929E-09F,
+                                      "Y": 0.0010748617F,
+                                      "Z": -9.094947E-15F
+                                    },
+                                    "_localScale": {
+                                      "X": 1F,
+                                      "Y": 1F,
+                                      "Z": 1F
+                                    },
+                                    "_localRotation": {
+                                      "X": -0.054815233F,
+                                      "Y": -0.06601179F,
+                                      "Z": -0.08599469F,
+                                      "W": 0.9925939F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+                                    {
+                                      "$id": 65,
+                                      "Name": "Bip001 HeadNub",
+                                      "AssetPath": "",
+                                      "Identifier": "9f5dac2b-54ec-49aa-b24a-b87c0be6163d",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 66,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": 2.980232E-09F,
+                                          "Y": 0.0017068865F,
+                                          "Z": -2.9802322E-10F
+                                        },
+                                        "_localScale": {
+                                          "X": 1F,
+                                          "Y": 1F,
+                                          "Z": 1.0000001F
+                                        },
+                                        "_localRotation": {
+                                          "X": -0.70710665F,
+                                          "Y": -0.7071069F,
+                                          "Z": -5.07509E-08F,
+                                          "W": -5.6019246E-08F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+
+                                      ]
+                                    },
+                                    {
+                                      "$id": 67,
+                                      "Name": "FaceShadowPoint",
+                                      "AssetPath": "",
+                                      "Identifier": "09b10338-4d40-4ea8-8ef6-51bff2f6632c",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 68,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": 1.490116E-09F,
+                                          "Y": -0.00059991225F,
+                                          "Z": -2.2351741E-10F
+                                        },
+                                        "_localScale": {
+                                          "X": 1F,
+                                          "Y": 1F,
+                                          "Z": 1.0000001F
+                                        },
+                                        "_localRotation": {
+                                          "X": -0.70710665F,
+                                          "Y": -0.7071069F,
+                                          "Z": -5.07509E-08F,
+                                          "W": -5.6019246E-08F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+
+                                      ]
+                                    },
+                                    {
+                                      "$id": 69,
+                                      "Name": "Claymore_Head_Core",
+                                      "AssetPath": "",
+                                      "Identifier": "21b7ccfc-5cdf-4000-ba3d-47183072da18",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 70,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": 1.6064643E-05F,
+                                          "Y": 0.0025134175F,
+                                          "Z": 0.00024632915F
+                                        },
+                                        "_localScale": {
+                                          "X": 1F,
+                                          "Y": 0.99999994F,
+                                          "Z": 0.99999994F
+                                        },
+                                        "_localRotation": {
+                                          "X": 0.028098542F,
+                                          "Y": -0.9959159F,
+                                          "Z": -0.050881278F,
+                                          "W": 0.0690876F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 71,
+                                          "Name": "Claymore_Head_Core_end",
+                                          "AssetPath": "",
+                                          "Identifier": "eba5ba19-a54d-4114-a30a-ee3d647973cd",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 72,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.001102656F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "$id": 73,
+                                      "Name": "Claymore_Head_Shell01",
+                                      "AssetPath": "",
+                                      "Identifier": "a230dc18-786c-4707-9b20-e1ca2e231c30",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 74,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": -0.00046844123F,
+                                          "Y": -3.1938253E-05F,
+                                          "Z": -0.00060014694F
+                                        },
+                                        "_localScale": {
+                                          "X": 1.0000001F,
+                                          "Y": 1F,
+                                          "Z": 1F
+                                        },
+                                        "_localRotation": {
+                                          "X": -0.27532524F,
+                                          "Y": 0.26880363F,
+                                          "Z": 0.16641127F,
+                                          "W": 0.907881F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 75,
+                                          "Name": "Claymore_Head_Shell01_end",
+                                          "AssetPath": "",
+                                          "Identifier": "85984626-e0d6-46e6-b510-c1006a12208b",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 76,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.001102656F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "$id": 77,
+                                      "Name": "Claymore_Head_Shell02",
+                                      "AssetPath": "",
+                                      "Identifier": "5dc242b7-d4ed-4773-809d-261d35efd9b0",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 78,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": -0.00050807593F,
+                                          "Y": -0.000120319426F,
+                                          "Z": 0.0004393594F
+                                        },
+                                        "_localScale": {
+                                          "X": 0.99999994F,
+                                          "Y": 0.99999976F,
+                                          "Z": 1F
+                                        },
+                                        "_localRotation": {
+                                          "X": 0.2091092F,
+                                          "Y": -0.81996703F,
+                                          "Z": -0.35270345F,
+                                          "W": -0.3994092F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 79,
+                                          "Name": "Claymore_Head_Shell02_end",
+                                          "AssetPath": "",
+                                          "Identifier": "9a6f4d0c-f795-4e03-ac56-237cae28daca",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 80,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.0011026568F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "$id": 81,
+                                      "Name": "Claymore_Head_Shell03",
+                                      "AssetPath": "",
+                                      "Identifier": "9082a60d-9737-4477-99bc-17dfa96ca9e3",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 82,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": 0.00043561697F,
+                                          "Y": 1.6646385E-05F,
+                                          "Z": 0.00055402174F
+                                        },
+                                        "_localScale": {
+                                          "X": 1F,
+                                          "Y": 1.0000002F,
+                                          "Z": 1.0000001F
+                                        },
+                                        "_localRotation": {
+                                          "X": -0.081724845F,
+                                          "Y": -0.86540437F,
+                                          "Z": -0.43407235F,
+                                          "W": 0.23659572F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 83,
+                                          "Name": "Claymore_Head_Shell03_end",
+                                          "AssetPath": "",
+                                          "Identifier": "8f6399d3-dcbb-40a1-a52d-cfe36140171a",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 84,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.0011026564F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "$id": 85,
+                                      "Name": "Claymore_Head_Shell04",
+                                      "AssetPath": "",
+                                      "Identifier": "575b1389-6f80-48f0-9ed5-52f8484b439b",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 86,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": 0.00052482245F,
+                                          "Y": 0.00013591825F,
+                                          "Z": -0.0006395627F
+                                        },
+                                        "_localScale": {
+                                          "X": 1.0000001F,
+                                          "Y": 0.9999999F,
+                                          "Z": 1F
+                                        },
+                                        "_localRotation": {
+                                          "X": -0.30670848F,
+                                          "Y": -0.43080142F,
+                                          "Z": -0.13478398F,
+                                          "W": 0.83795786F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 87,
+                                          "Name": "Claymore_Head_Shell04_end",
+                                          "AssetPath": "",
+                                          "Identifier": "b69e6a0c-a782-42ff-8c09-e0268aa6589c",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 88,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.001102656F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "$id": 89,
+                              "Name": "Bip001 R Clavicle",
+                              "AssetPath": "",
+                              "Identifier": "b9df7df8-8b03-46c9-91c4-b65086e59468",
+                              "Static": 0B,
+                              "Enabled": 1B,
+                              "EnabledInHierarchy": 1B,
+                              "TagIndex": 0,
+                              "LayerIndex": 0,
+                              "HideFlags": 0,
+                              "Transform": {
+                                "$id": 90,
+                                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                "_localPosition": {
+                                  "X": -0.0002383995F,
+                                  "Y": 0.0029682852F,
+                                  "Z": -0.0008384876F
+                                },
+                                "_localScale": {
+                                  "X": 1.0000001F,
+                                  "Y": 1.0000001F,
+                                  "Z": 0.99999994F
+                                },
+                                "_localRotation": {
+                                  "X": -0.13499549F,
+                                  "Y": -0.6342263F,
+                                  "Z": 0.75293225F,
+                                  "W": -0.11236659F
+                                }
+                              },
+                              "Components": [
+
+                              ],
+                              "Children": [
+                                {
+                                  "$id": 91,
+                                  "Name": "Bip001 R UpperArm",
+                                  "AssetPath": "",
+                                  "Identifier": "a81adbda-a165-44a3-817e-e1c162cc02bd",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 92,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": -2.3841857E-09F,
+                                      "Y": 0.0018687587F,
+                                      "Z": -5.9604643E-10F
+                                    },
+                                    "_localScale": {
+                                      "X": 1F,
+                                      "Y": 0.9999999F,
+                                      "Z": 1F
+                                    },
+                                    "_localRotation": {
+                                      "X": 0.22846225F,
+                                      "Y": -0.5274923F,
+                                      "Z": 0.35575274F,
+                                      "W": 0.7368832F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+                                    {
+                                      "$id": 93,
+                                      "Name": "Bip001 R Forearm",
+                                      "AssetPath": "",
+                                      "Identifier": "3ff09e86-c338-4b18-a8d3-bbca9f9d3f71",
+                                      "Static": 0B,
+                                      "Enabled": 1B,
+                                      "EnabledInHierarchy": 1B,
+                                      "TagIndex": 0,
+                                      "LayerIndex": 0,
+                                      "HideFlags": 0,
+                                      "Transform": {
+                                        "$id": 94,
+                                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                        "_localPosition": {
+                                          "X": 0F,
+                                          "Y": 0.005610788F,
+                                          "Z": 1.7881393E-09F
+                                        },
+                                        "_localScale": {
+                                          "X": 0.9999998F,
+                                          "Y": 0.9999998F,
+                                          "Z": 0.99999994F
+                                        },
+                                        "_localRotation": {
+                                          "X": -2.722337E-07F,
+                                          "Y": 1.3971645E-06F,
+                                          "Z": 0.48732522F,
+                                          "W": 0.87322056F
+                                        }
+                                      },
+                                      "Components": [
+
+                                      ],
+                                      "Children": [
+                                        {
+                                          "$id": 95,
+                                          "Name": "Bip001 R Forearm_end",
+                                          "AssetPath": "",
+                                          "Identifier": "62f5e07e-9690-47ab-9baf-45af5b02ec64",
+                                          "Static": 0B,
+                                          "Enabled": 1B,
+                                          "EnabledInHierarchy": 1B,
+                                          "TagIndex": 0,
+                                          "LayerIndex": 0,
+                                          "HideFlags": 0,
+                                          "Transform": {
+                                            "$id": 96,
+                                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                            "_localPosition": {
+                                              "X": 0F,
+                                              "Y": 0.0006844045F,
+                                              "Z": -0F
+                                            },
+                                            "_localScale": {
+                                              "X": 1F,
+                                              "Y": 1F,
+                                              "Z": 1F
+                                            },
+                                            "_localRotation": {
+                                              "X": 0F,
+                                              "Y": 0F,
+                                              "Z": 0F,
+                                              "W": 1F
+                                            }
+                                          },
+                                          "Components": [
+
+                                          ],
+                                          "Children": [
+
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$id": 97,
+                  "Name": "Claymore_Tail_01",
+                  "AssetPath": "",
+                  "Identifier": "b605e802-4e59-4c91-b141-0e19dcff354f",
+                  "Static": 0B,
+                  "Enabled": 1B,
+                  "EnabledInHierarchy": 1B,
+                  "TagIndex": 0,
+                  "LayerIndex": 0,
+                  "HideFlags": 0,
+                  "Transform": {
+                    "$id": 98,
+                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                    "_localPosition": {
+                      "X": -0.00064494787F,
+                      "Y": 0.0009774155F,
+                      "Z": 1.4373108E-09F
+                    },
+                    "_localScale": {
+                      "X": 0.9999999F,
+                      "Y": 0.9999999F,
+                      "Z": 1F
+                    },
+                    "_localRotation": {
+                      "X": -0.7822402F,
+                      "Y": 0.62297696F,
+                      "Z": 7.7170864E-07F,
+                      "W": -7.154152E-07F
+                    }
+                  },
+                  "Components": [
+
+                  ],
+                  "Children": [
+                    {
+                      "$id": 99,
+                      "Name": "Claymore_Tail_02",
+                      "AssetPath": "",
+                      "Identifier": "6deeb2aa-eb1d-48c1-b288-0b848bef8db2",
+                      "Static": 0B,
+                      "Enabled": 1B,
+                      "EnabledInHierarchy": 1B,
+                      "TagIndex": 0,
+                      "LayerIndex": 0,
+                      "HideFlags": 0,
+                      "Transform": {
+                        "$id": 100,
+                        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                        "_localPosition": {
+                          "X": 5.9604643E-10F,
+                          "Y": 0.0005158466F,
+                          "Z": 2.2737367E-15F
+                        },
+                        "_localScale": {
+                          "X": 0.99999994F,
+                          "Y": 1F,
+                          "Z": 1F
+                        },
+                        "_localRotation": {
+                          "X": 1.2192088E-09F,
+                          "Y": -8.55273E-08F,
+                          "Z": -0.016667238F,
+                          "W": 0.9998611F
+                        }
+                      },
+                      "Components": [
+
+                      ],
+                      "Children": [
+                        {
+                          "$id": 101,
+                          "Name": "Claymore_Tail_03",
+                          "AssetPath": "",
+                          "Identifier": "bc040f9d-53a1-4404-b747-9eb47c639e9a",
+                          "Static": 0B,
+                          "Enabled": 1B,
+                          "EnabledInHierarchy": 1B,
+                          "TagIndex": 0,
+                          "LayerIndex": 0,
+                          "HideFlags": 0,
+                          "Transform": {
+                            "$id": 102,
+                            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                            "_localPosition": {
+                              "X": 0F,
+                              "Y": 0.002593714F,
+                              "Z": -0F
+                            },
+                            "_localScale": {
+                              "X": 1F,
+                              "Y": 1F,
+                              "Z": 1F
+                            },
+                            "_localRotation": {
+                              "X": -1.6475722E-10F,
+                              "Y": 1.5735804E-09F,
+                              "Z": -0.01613283F,
+                              "W": 0.9998699F
+                            }
+                          },
+                          "Components": [
+
+                          ],
+                          "Children": [
+                            {
+                              "$id": 103,
+                              "Name": "Claymore_Tail_04",
+                              "AssetPath": "",
+                              "Identifier": "67378a59-cb9b-4089-84bb-8903e65f72df",
+                              "Static": 0B,
+                              "Enabled": 1B,
+                              "EnabledInHierarchy": 1B,
+                              "TagIndex": 0,
+                              "LayerIndex": 0,
+                              "HideFlags": 0,
+                              "Transform": {
+                                "$id": 104,
+                                "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                "_localPosition": {
+                                  "X": 5.9604643E-10F,
+                                  "Y": 0.0028806403F,
+                                  "Z": -1.1368684E-15F
+                                },
+                                "_localScale": {
+                                  "X": 1F,
+                                  "Y": 0.99999994F,
+                                  "Z": 1F
+                                },
+                                "_localRotation": {
+                                  "X": -2.0734192E-10F,
+                                  "Y": 2.2743615E-08F,
+                                  "Z": 0.014600395F,
+                                  "W": 0.9998934F
+                                }
+                              },
+                              "Components": [
+
+                              ],
+                              "Children": [
+                                {
+                                  "$id": 105,
+                                  "Name": "Claymore_Tail_04_end",
+                                  "AssetPath": "",
+                                  "Identifier": "be3b492a-b326-4c15-b293-765328f807a3",
+                                  "Static": 0B,
+                                  "Enabled": 1B,
+                                  "EnabledInHierarchy": 1B,
+                                  "TagIndex": 0,
+                                  "LayerIndex": 0,
+                                  "HideFlags": 0,
+                                  "Transform": {
+                                    "$id": 106,
+                                    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+                                    "_localPosition": {
+                                      "X": 0F,
+                                      "Y": 0.0038554808F,
+                                      "Z": -0F
+                                    },
+                                    "_localScale": {
+                                      "X": 1F,
+                                      "Y": 1F,
+                                      "Z": 1F
+                                    },
+                                    "_localRotation": {
+                                      "X": 0F,
+                                      "Y": 0F,
+                                      "Z": 0F,
+                                      "W": 1F
+                                    }
+                                  },
+                                  "Components": [
+
+                                  ],
+                                  "Children": [
+
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$id": 107,
+      "Name": "Head",
+      "AssetPath": "",
+      "Identifier": "a469eb11-6d86-4ced-95d2-c2d31e4f6e06",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 108,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": -1.4902389E-08F,
+          "Z": -9.947598E-14F
+        },
+        "_localScale": {
+          "X": 100F,
+          "Y": 100F,
+          "Z": 100F
+        },
+        "_localRotation": {
+          "X": 0.7071067F,
+          "Y": -2.0097181E-14F,
+          "Z": 1.0048593E-14F,
+          "W": 0.7071068F
+        }
+      },
+      "Components": [
+        {
+          "$id": 109,
+          "$type": "XEngine.Runtime.SkinnedMeshRenderer, XEngine.Runtime",
+          "SharedMesh": {
+            "AssetID": "8b0574eb-e9cb-ef39-7f17-f7799c54830f"
+          },
+          "Materials": {
+            "$id": 110,
+            "$values": [
+              {
+                "AssetID": "e08cf26d-1aaa-33e8-ea60-b456190da5fb"
+              }
+            ]
+          },
+          "RootBonePath": "Monster_Claymore/Bip001",
+          "BonePaths": {
+            "$id": 111,
+            "array": [
+              "Monster_Claymore/Bip001",
+              "Monster_Claymore/Bip001/Bip001 Pelvis",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot/Bip001 L Toe0",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot/Bip001 R Toe0",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 L Clavicle",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 L Clavicle/Bip001 L UpperArm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Core",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell01",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell02",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell03",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell04",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 R Clavicle",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 R Clavicle/Bip001 R UpperArm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01/Claymore_Tail_02",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01/Claymore_Tail_02/Claymore_Tail_03",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01/Claymore_Tail_02/Claymore_Tail_03/Claymore_Tail_04"
+            ]
+          },
+          "MainColor": {
+            "R": 1F,
+            "G": 1F,
+            "B": 1F,
+            "A": 1F
+          },
+          "LightmapIndex": -1,
+          "LightmapScaleOffset": {
+            "X": 1F,
+            "Y": 1F,
+            "Z": 0F,
+            "W": 0F
+          },
+          "RenderingLayers": {
+            "mask": 255U
+          },
+          "_blendShapeWeights": NULL,
+          "_identifier": "29739a3c-c0bc-43c5-94e9-ea9019899771",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewSkinnedMeshRenderer"
+        }
+      ],
+      "Children": [
+
+      ]
+    },
+    {
+      "$id": 112,
+      "Name": "Claymore",
+      "AssetPath": "",
+      "Identifier": "605e8d1d-cded-44f0-bea1-e38b45b3cc86",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 113,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 5.684342E-14F,
+          "Y": 2.9800248E-08F,
+          "Z": -2.23519E-08F
+        },
+        "_localScale": {
+          "X": 100F,
+          "Y": 99.99999F,
+          "Z": 100F
+        },
+        "_localRotation": {
+          "X": 0.7071067F,
+          "Y": 3.7682216E-14F,
+          "Z": 2.7633623E-14F,
+          "W": 0.7071068F
+        }
+      },
+      "Components": [
+        {
+          "$id": 114,
+          "$type": "XEngine.Runtime.SkinnedMeshRenderer, XEngine.Runtime",
+          "SharedMesh": {
+            "AssetID": "cfafb162-734b-ac77-f8e0-a32e4f941033"
+          },
+          "Materials": {
+            "$id": 115,
+            "$values": [
+              {
+                "AssetID": "e08cf26d-1aaa-33e8-ea60-b456190da5fb"
+              }
+            ]
+          },
+          "RootBonePath": "Monster_Claymore/Bip001",
+          "BonePaths": {
+            "$id": 116,
+            "array": [
+              "Monster_Claymore/Bip001",
+              "Monster_Claymore/Bip001/Bip001 Pelvis",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 L Thigh/Bip001 L Calf/Bip001 L Foot/Bip001 L Toe0",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 R Thigh/Bip001 R Calf/Bip001 R Foot/Bip001 R Toe0",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 L Clavicle",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 L Clavicle/Bip001 L UpperArm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 L Clavicle/Bip001 L UpperArm/Bip001 L Forearm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Core",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell01",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell02",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell03",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 Neck/Bip001 Head/Claymore_Head_Shell04",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 R Clavicle",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 R Clavicle/Bip001 R UpperArm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01/Claymore_Tail_02",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01/Claymore_Tail_02/Claymore_Tail_03",
+              "Monster_Claymore/Bip001/Bip001 Pelvis/Claymore_Tail_01/Claymore_Tail_02/Claymore_Tail_03/Claymore_Tail_04"
+            ]
+          },
+          "MainColor": {
+            "R": 1F,
+            "G": 1F,
+            "B": 1F,
+            "A": 1F
+          },
+          "LightmapIndex": -1,
+          "LightmapScaleOffset": {
+            "X": 1F,
+            "Y": 1F,
+            "Z": 0F,
+            "W": 0F
+          },
+          "RenderingLayers": {
+            "mask": 255U
+          },
+          "_blendShapeWeights": NULL,
+          "_identifier": "0d37c03c-1fe1-487e-9498-68dd6b63194e",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewSkinnedMeshRenderer"
+        }
+      ],
+      "Children": [
+
+      ]
+    }
+  ]
+}

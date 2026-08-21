@@ -1,0 +1,12 @@
+Packages:
+  $id: 2
+  $values:
+    - PackageName: "default"
+      PackageDescription: ""
+      EnableAddressable: true
+      Groups:
+        $id: 4
+        $values: []
+      $id: 3
+$id: 1
+$type: "XEngine.Editor.AssetBundles.Collector.AssetBundleCollectorSetting, XEngine.Editor"

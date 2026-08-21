@@ -1,0 +1,25 @@
+Scenes:
+  $id: 2
+  $values: []
+Config: 1
+OutputDirectory: "Builds"
+PackagingMode: 1
+AssetMode: 1
+MaxPakSizeMB: 2048
+ActiveProfileGuid: "c3ff63ee-0a0b-4408-a8ee-d4e6cd1aa3e4"
+ActivePipelineId: "xengine.desktop"
+PlatformProfiles:
+  $id: 3
+  $values:
+    - Platform: 0
+      SelfContained: false
+      PublishTrimmed: false
+      WindowWidth: 1280
+      WindowHeight: 720
+      ScriptingDefineSymbols:
+        $id: 5
+        $values: []
+      $id: 4
+      $type: "XEngine.Editor.Build.DesktopBuildProfile, XEngine.Editor"
+$id: 1
+$type: "XEngine.Editor.Projects.Settings.BuildSettings, XEngine.Editor"

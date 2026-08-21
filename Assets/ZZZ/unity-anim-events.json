@@ -1,0 +1,480 @@
+{
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_1.FBX": {
+    "Attack_Normal_1": {
+      "Loop": false,
+      "Events": [
+        {
+          "Time": 0.31343332,
+          "Function": "StartHit",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        },
+        {
+          "Time": 0.3951613,
+          "Function": "StopHit",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        }
+      ]
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_1_End.FBX": {
+    "Attack_Normal_1_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_2.FBX": {
+    "Attack_Normal_2": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_2_End.FBX": {
+    "Attack_Normal_2_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_3.FBX": {
+    "Attack_Normal_3": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_3_End.FBX": {
+    "Attack_Normal_3_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_4.FBX": {
+    "Attack_Normal_4": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Attack_Normal_4_End.FBX": {
+    "Attack_Normal_4_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@BigSkill.FBX": {
+    "BigSkill": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@BigSkill_End.FBX": {
+    "BigSkill_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@BigSkill_Start.FBX": {
+    "BigSkill_Start": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Evade_Back.FBX": {
+    "Evade_Back": {
+      "Loop": false,
+      "Events": []
+    },
+    "Evade_Back_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Evade_Front.FBX": {
+    "Evade_Front": {
+      "Loop": false,
+      "Events": []
+    },
+    "Evade_Front_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Idle.FBX": {
+    "Idle": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Idle_AFK.FBX": {
+    "Idle_AFK": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Run.FBX": {
+    "Run": {
+      "Loop": true,
+      "Events": [
+        {
+          "Time": 0,
+          "Function": "SetOutLeftFoot",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        },
+        {
+          "Time": 0.5,
+          "Function": "SetOutRightFoot",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        }
+      ]
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Run_End_L.FBX": {
+    "Run_End_L": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Run_End_R.FBX": {
+    "Run_End_R": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@SwitchIn_Normal.FBX": {
+    "SwitchIn_Normal": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@SwitchOut_Normal.FBX": {
+    "SwitchOut_Normal": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@TurnBack.FBX": {
+    "TurnBack": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u5B89\u6BD4/Anbi@Walk.FBX": {
+    "Walk": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_1.FBX": {
+    "Attack_Normal_1": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_1_End.FBX": {
+    "Attack_Normal_1_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_2.FBX": {
+    "Attack_Normal_2": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_2_End.FBX": {
+    "Attack_Normal_2_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_3.FBX": {
+    "Attack_Normal_3": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_3_End.FBX": {
+    "Attack_Normal_3_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_4.FBX": {
+    "Attack_Normal_4": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_4_End.FBX": {
+    "Attack_Normal_4_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_5.FBX": {
+    "Attack_Normal_5": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Attack_Normal_5_End.FBX": {
+    "Attack_Normal_5_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@BigSkill.FBX": {
+    "BigSkill": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@BigSkill_End.FBX": {
+    "BigSkill_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@BigSkill_Start.FBX": {
+    "BigSkill_Start": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Evade_Back.FBX": {
+    "Evade_Back": {
+      "Loop": false,
+      "Events": []
+    },
+    "Evade_Back_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Evade_Front.FBX": {
+    "Evade_Front": {
+      "Loop": false,
+      "Events": []
+    },
+    "Evade_Front_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Idle.FBX": {
+    "Idle": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Idle_AFK.FBX": {
+    "Idle_AFK": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Run.FBX": {
+    "Run": {
+      "Loop": true,
+      "Events": [
+        {
+          "Time": 0,
+          "Function": "SetOutRightFoot",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        },
+        {
+          "Time": 0.5,
+          "Function": "SetOutLeftFoot",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        }
+      ]
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Run_End.FBX": {
+    "Run_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@SwitchIn_Normal.FBX": {
+    "SwitchIn_Normal": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@SwitchOut_Normal.FBX": {
+    "SwitchOut_Normal": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@TurnBack.FBX": {
+    "TurnBack": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u53EF\u7433/Corin@Walk.FBX": {
+    "Walk": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Attack_Normal_1.FBX": {
+    "Attack_Normal_1": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Attack_Normal_1_End.FBX": {
+    "Attack_Normal_1_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Attack_Normal_2.FBX": {
+    "Attack_Normal_2": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Attack_Normal_2_End.FBX": {
+    "Attack_Normal_2_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Attack_Normal_3.FBX": {
+    "Attack_Normal_3": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Attack_Normal_3_End.FBX": {
+    "Attack_Normal_3_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@BigSkill.FBX": {
+    "BigSkill": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@BigSkill_End.FBX": {
+    "BigSkill_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@BigSkill_Start.FBX": {
+    "BigSkill_Start": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Evade_Back.FBX": {
+    "Evade_Back": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Evade_Back_End.FBX": {
+    "Evade_Back_End": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Evade_Front.FBX": {
+    "Evade_Front": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Evade_Front_End.FBX": {
+    "Evade_Front": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Idle.FBX": {
+    "Idle": {
+      "Loop": true,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Idle_AFK.FBX": {
+    "Idle_AFK": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Run.FBX": {
+    "Run": {
+      "Loop": true,
+      "Events": [
+        {
+          "Time": 0.47540984,
+          "Function": "SetOutRightFoot",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        },
+        {
+          "Time": 0,
+          "Function": "SetOutLeftFoot",
+          "FloatParam": 0,
+          "IntParam": 0,
+          "Data": ""
+        }
+      ]
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Run_End_L.FBX": {
+    "Run_End_L": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Run_End_R.FBX": {
+    "Run_End_R": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@SwitchIn_Normal.FBX": {
+    "SwitchIn_Normal": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@SwitchOut_Normal.FBX": {
+    "SwitchOut_Normal": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@TurnBack.FBX": {
+    "TurnBack": {
+      "Loop": false,
+      "Events": []
+    }
+  },
+  "Arts/PlayerModel/\u59AE\u53EF/Nostradamus@Walk.FBX": {
+    "Walk": {
+      "Loop": false,
+      "Events": []
+    }
+  }
+}

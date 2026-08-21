@@ -1,0 +1,5 @@
+FixedTimestep: 0.016666668
+MaxFixedIterations: 3
+DefaultTimeScale: 1
+$id: 1
+$type: "XEngine.Editor.Projects.Settings.TimeSettings, XEngine.Editor"
