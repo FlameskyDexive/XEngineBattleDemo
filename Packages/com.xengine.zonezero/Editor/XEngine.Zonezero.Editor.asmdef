@@ -1,0 +1,22 @@
+{
+  "name": "XEngine.Zonezero.Editor",
+  "references": [
+    "XEngine.Zonezero.Runtime",
+    "XEngine.Editor",
+    "XEngine.UnityImporter.Editor",
+    "XEngine.InputSystem.Runtime",
+    "XEngine.InputSystem.Editor",
+    "XEngine.ProBuilder.Runtime",
+    "XEngine.Cinemachine.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "defineConstraints": [],
+  "noEngineReferences": false
+}

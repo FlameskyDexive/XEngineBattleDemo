@@ -17,11 +17,15 @@
       ]
     }
   },
-  "OverrideScenes": false,
+  "OverrideScenes": true,
   "Scenes": {
     "$id": 4,
     "$values": [
-
+      {
+        "Path": "Assets/Scenes/ZonezeroCombat.scene",
+        "SceneGuid": "188582ee-9cfa-48d6-997e-27dd5dee220d",
+        "Enabled": true
+      }
     ]
   },
   "OverrideOutputDirectory": false,

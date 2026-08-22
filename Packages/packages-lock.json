@@ -1,8 +1,8 @@
 {
   "lockfileVersion": 1,
   "resolverVersion": "xengine-package-resolver/1",
-  "manifestHash": "e0370141938b34541d338cca086fa86748a2c06be5e9d11cb23ce31dc6f04dc9",
-  "generatedAtUtc": "2026-08-21T09:06:05.6191560Z",
+  "manifestHash": "d9468d2998ecd99a0c43bc60cb09b2ab05e1fc06ed96289b4ce616df74d53d3c",
+  "generatedAtUtc": "2026-08-21T22:55:10.1309000Z",
   "packages": [
     {
       "name": "com.xengine.2d.common",
@@ -29,6 +29,48 @@
       ]
     },
     {
+      "name": "com.xengine.cinemachine",
+      "version": "0.1.0",
+      "source": "builtin",
+      "logicalRoot": "Packages/com.xengine.cinemachine",
+      "resolvedPath": "Library/PackageCache/com.xengine.cinemachine@0.1.0",
+      "contentHash": "89192f9a8d3775cc89fa8b2ef708b71c9bde9083d23fae5d52519cd004d1e6f5",
+      "dependencies": {},
+      "dependencyClosure": []
+    },
+    {
+      "name": "com.xengine.inputsystem",
+      "version": "0.1.0",
+      "source": "builtin",
+      "sourceSpecifier": "0.1.0",
+      "logicalRoot": "Packages/com.xengine.inputsystem",
+      "resolvedPath": "Library/PackageCache/com.xengine.inputsystem@0.1.0",
+      "contentHash": "22110285f9fdd91fa67b05a682b790c52fb509354fd01f9f01d004f5595325f8",
+      "dependencies": {},
+      "dependencyClosure": []
+    },
+    {
+      "name": "com.xengine.magicacloth2",
+      "version": "0.1.0",
+      "source": "builtin",
+      "sourceSpecifier": "0.1.0",
+      "logicalRoot": "Packages/com.xengine.magicacloth2",
+      "resolvedPath": "Library/PackageCache/com.xengine.magicacloth2@0.1.0",
+      "contentHash": "4cbb847f58320867e4aeb30dde5496a2706e9cf6ce948097cef3ad9fbe171ac4",
+      "dependencies": {},
+      "dependencyClosure": []
+    },
+    {
+      "name": "com.xengine.probuilder",
+      "version": "0.1.0",
+      "source": "builtin",
+      "logicalRoot": "Packages/com.xengine.probuilder",
+      "resolvedPath": "Library/PackageCache/com.xengine.probuilder@0.1.0",
+      "contentHash": "d280217e9c2e2e6a256f3738149bd67cdae47481b2d6b45b4bef9961a1272efe",
+      "dependencies": {},
+      "dependencyClosure": []
+    },
+    {
       "name": "com.xengine.timeline",
       "version": "0.1.0",
       "source": "builtin",
@@ -44,7 +86,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.unityimporter",
       "resolvedPath": "Library/PackageCache/com.xengine.unityimporter@0.1.0",
-      "contentHash": "c2cfa17cfdbe15580c363a1e3c47486ab2e734a56fa070244ea0ec66f4e47bab",
+      "contentHash": "3cc7f018a118dee5bf18937ef81e3032b0633286d89fd88ccd30977dcdefb9c2",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -65,11 +107,19 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.zonezero",
       "resolvedPath": "Library/PackageCache/com.xengine.zonezero@0.1.0",
-      "contentHash": "904b3c9e302e98ce9463f2f26baaeea84f7417b8027163e1d797d42e57d10f98",
+      "contentHash": "106c13cfe0bcb2e8fc5bf0f2d4785f27346ad1697ea858e4ed9a9f0cf0119871",
       "dependencies": {
+        "com.xengine.cinemachine": "0.1.0",
+        "com.xengine.inputsystem": "0.1.0",
+        "com.xengine.magicacloth2": "0.1.0",
+        "com.xengine.probuilder": "0.1.0",
         "com.xengine.unityimporter": "0.1.0"
       },
       "dependencyClosure": [
+        "com.xengine.cinemachine",
+        "com.xengine.inputsystem",
+        "com.xengine.magicacloth2",
+        "com.xengine.probuilder",
         "com.xengine.unityimporter"
       ]
     }

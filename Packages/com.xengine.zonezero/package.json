@@ -1,0 +1,45 @@
+{
+  "name": "com.xengine.zonezero",
+  "version": "0.1.0",
+  "displayName": "Zonezero Toon Combat Demo",
+  "description": "Zenless-Zone-Zero-style anime combat demo: YSA Toon shader re-implementation (smoothstep band lighting, position-based face normals, inverted-hull outline), 3-character tag team with 4-hit combo / dodge / big-skill camera cuts, and skill VFX. Depends on the shared Unity importer, InputSystem, Cinemachine and ProBuilder packages. Sample character assets are converted from a private reference project for internal testing only and must not be redistributed.",
+  "installByDefault": false,
+  "xengine": "0.1.0",
+  "type": "package",
+  "category": "Official",
+  "documentationUrl": "Documentation~/index.md",
+  "changelogUrl": "CHANGELOG.md",
+  "licensesUrl": "LICENSE.md",
+  "supportedPlatforms": [
+    "Windows",
+    "Linux",
+    "MacOS",
+    "Android",
+    "HarmonyOS"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "zonezero",
+    "toon",
+    "npr",
+    "anime",
+    "outline",
+    "combat",
+    "vfx",
+    "demo"
+  ],
+  "dependencies": {
+    "com.xengine.unityimporter": "0.1.0",
+    "com.xengine.inputsystem": "0.1.0",
+    "com.xengine.probuilder": "0.1.0",
+    "com.xengine.cinemachine": "0.1.0",
+    "com.xengine.magicacloth2": "0.1.0"
+  },
+  "samples": [
+    {
+      "displayName": "Combat Demo",
+      "description": "Anbi/Corin/Nostradamus toon characters (tag-team switch, 4-hit combo with animation-event hit windows, front/back dodge, big-skill camera cuts) against Claymore training dummies in a ProBuilder arena, with weapon trails and hit sparks.",
+      "path": "Samples~/CombatDemo"
+    }
+  ]
+}

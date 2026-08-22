@@ -2,6 +2,6 @@ CompanyName: "DefaultCompany"
 ProductName: "XEngine"
 Version: "0.1.0"
 ApplicationIconPath: ""
-LastScenePath: "Scenes/ZonezeroCombat.scene"
+LastScenePath: "ZZZ/Scenes/M11Cloth.scene"
 $id: 1
 $type: "XEngine.Editor.Projects.Settings.GeneralSettings, XEngine.Editor"

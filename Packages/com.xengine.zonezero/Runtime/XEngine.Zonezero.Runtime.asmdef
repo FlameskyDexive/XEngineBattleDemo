@@ -1,0 +1,17 @@
+{
+  "name": "XEngine.Zonezero.Runtime",
+  "references": [
+    "XEngine.Runtime",
+    "XEngine.Cinemachine.Runtime",
+    "XEngine.InputSystem.Runtime",
+    "XEngine.MagicaCloth2.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "defineConstraints": [],
+  "noEngineReferences": false
+}

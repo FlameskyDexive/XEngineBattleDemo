@@ -1,0 +1,114 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Resources.Material, XEngine.Runtime",
+  "_shader": {
+    "AssetID": "d7af2277-7f05-3a57-b4ea-216e25ad79c6"
+  },
+  "_properties": {
+    "$id": 2,
+    "_colors": {
+      "$id": 3,
+      "entries": [
+        {
+          "key": "_OutlineColor",
+          "value": {
+            "R": 0.02F,
+            "G": 0.02F,
+            "B": 0.04F,
+            "A": 1F
+          }
+        }
+      ]
+    },
+    "_vectors2": {
+      "$id": 4,
+      "entries": [
+
+      ]
+    },
+    "_vectors3": {
+      "$id": 5,
+      "entries": [
+
+      ]
+    },
+    "_vectors4": {
+      "$id": 6,
+      "entries": [
+
+      ]
+    },
+    "_floats": {
+      "$id": 7,
+      "entries": [
+        {
+          "key": "_OutlineWidth",
+          "value": 0.35F
+        },
+        {
+          "key": "_VertexColorNormals",
+          "value": 1F
+        }
+      ]
+    },
+    "_ints": {
+      "$id": 8,
+      "entries": [
+
+      ]
+    },
+    "_matrices": {
+      "$id": 9,
+      "entries": [
+
+      ]
+    },
+    "_matrixArr": {
+      "$id": 10,
+      "entries": [
+
+      ]
+    },
+    "_textures": {
+      "$id": 11,
+      "entries": [
+
+      ]
+    },
+    "_textures3D": {
+      "$id": 12,
+      "entries": [
+
+      ]
+    },
+    "_texturesCube": {
+      "$id": 13,
+      "entries": [
+
+      ]
+    },
+    "_buffers": {
+      "$id": 14,
+      "entries": [
+
+      ]
+    },
+    "_bufferBindings": {
+      "$id": 15,
+      "entries": [
+
+      ]
+    }
+  },
+  "_overrides": {
+    "$id": 16,
+    "$values": [
+      "_OutlineColor",
+      "_OutlineWidth",
+      "_VertexColorNormals"
+    ]
+  },
+  "AssetPath": "",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "AnbiOutline"
+}
