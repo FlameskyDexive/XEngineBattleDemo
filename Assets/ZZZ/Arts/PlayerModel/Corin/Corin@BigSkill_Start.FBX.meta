@@ -1,0 +1,32 @@
+{
+  "guid": "bc18172d-0c9a-8208-8ecc-4fa43b89025a",
+  "importer": "EditorModelImporter",
+  "importerVersion": 14,
+  "settings": {
+    "generateNormals": true,
+    "generateSmoothNormals": true,
+    "recalculateNormals": false,
+    "calculateTangents": true,
+    "flipUVs": true,
+    "unitScale": 100F,
+    "generateLightmapUVs": false,
+    "importAnimation": true,
+    "resampleCurves": true,
+    "animationType": 0,
+    "avatarDefinition": 2,
+    "skinBoneCount": 4,
+    "stripBones": true,
+    "virtualGeometry": {
+      "enabled": false,
+      "clusterTriangles": 128,
+      "simplifyRatio": 0.5F,
+      "maxLodLevels": 16
+    },
+    "sdf": {
+      "enabled": false,
+      "resolution": 64,
+      "padding": 0.1F,
+      "maxDistance": 0.25F
+    }
+  }
+}

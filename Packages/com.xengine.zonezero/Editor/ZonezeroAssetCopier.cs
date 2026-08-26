@@ -24,18 +24,20 @@ namespace XEngine.Zonezero.Editor;
 /// </summary>
 public static partial class ZonezeroAssetCopier
 {
-    public const string DefaultSourceRoot = @"F:\Git\ZZZ\Assets";
+    public const string DefaultSourceRoot = @"D:\Engine\ZZZ\Assets";
     public const string AnimEventsFileName = "unity-anim-events.json";
 
     /// <summary>Character/enemy/prefab unit folders (relative to the source Assets root) copied
-    /// by the demo. Plug-in (MagicaCloth2/YSA Toon), scenes, and editor config stay out.</summary>
-    public static readonly string[] DemoUnits =
+    /// by the demo. The reference project names the hero unit folders in Chinese — they are
+    /// copied into English destinations. Plug-in (MagicaCloth2/YSA Toon), scenes, and editor
+    /// config stay out.</summary>
+    public static readonly (string Source, string Dest)[] DemoUnits =
     {
-        "Arts/PlayerModel/安比",
-        "Arts/PlayerModel/可琳",
-        "Arts/PlayerModel/妮可",
-        "Arts/EnemyModel/Claymore",
-        "Prefab",
+        ("Arts/PlayerModel/安比", "Arts/PlayerModel/Anbi"),
+        ("Arts/PlayerModel/可琳", "Arts/PlayerModel/Corin"),
+        ("Arts/PlayerModel/妮可", "Arts/PlayerModel/Nicole"),
+        ("Arts/EnemyModel/Claymore", "Arts/EnemyModel/Claymore"),
+        ("Prefab", "Prefab"),
     };
 
     /// <summary>File extensions copied verbatim (engine importers handle them natively).</summary>
@@ -74,22 +76,22 @@ public static partial class ZonezeroAssetCopier
 
     /// <summary>Copies the demo unit folders from the ZZZ source project into
     /// <paramref name="destinationDir"/> inside the current project's Assets.</summary>
-    public static CopyResult CopyUnits(string sourceRoot, IEnumerable<string> unitNames, string destinationDir)
+    public static CopyResult CopyUnits(string sourceRoot, IEnumerable<(string Source, string Dest)> unitNames, string destinationDir)
     {
         var result = new CopyResult();
         var guidMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var animEvents = new Dictionary<string, Dictionary<string, ClipMeta>>(StringComparer.OrdinalIgnoreCase);
 
         Directory.CreateDirectory(destinationDir);
-        foreach (string unitName in unitNames)
+        foreach ((string source, string dest) in unitNames)
         {
-            string unitDir = Path.Combine(sourceRoot, unitName);
+            string unitDir = Path.Combine(sourceRoot, source);
             if (!Directory.Exists(unitDir))
             {
                 result.Warnings.Add($"Unit folder not found: {unitDir}");
                 continue;
             }
-            CopyDirectory(unitDir, Path.Combine(destinationDir, unitName), destinationDir, result, guidMap, animEvents);
+            CopyDirectory(unitDir, Path.Combine(destinationDir, dest), destinationDir, result, guidMap, animEvents);
         }
 
         string mapPath = Path.Combine(destinationDir, UnityGuidMap.MapFileName);

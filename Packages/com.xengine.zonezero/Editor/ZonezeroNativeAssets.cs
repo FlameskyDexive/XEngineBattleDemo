@@ -45,16 +45,16 @@ public static class ZonezeroNativeAssets
 
     /// <summary>Runs all three generators against the Unity source tree. FBX/texture copies must
     /// already be imported (Zonezero/Copy ZZZ Assets Into Project).</summary>
-    public static GenerateResult GenerateAll(string sourceAssetsRoot, IEnumerable<string> unitNames,
+    public static GenerateResult GenerateAll(string sourceAssetsRoot, IEnumerable<(string Source, string Dest)> unitNames,
         string destinationDir, string destRelativeRoot, EditorAssetBackend backend)
     {
         var result = new GenerateResult();
         Dictionary<string, string> guidMap = LoadGuidMap(destinationDir, result.Warnings);
         var animEvents = ZonezeroControllerGenerator.LoadAnimEventsSidecar(destinationDir);
 
-        foreach (string unitName in unitNames)
+        foreach ((string source, string dest) in unitNames)
         {
-            string unitDir = Path.Combine(sourceAssetsRoot, unitName);
+            string unitDir = Path.Combine(sourceAssetsRoot, source);
             if (!Directory.Exists(unitDir)) continue;
 
             foreach (string matPath in Directory.GetFiles(unitDir, "*.mat", SearchOption.AllDirectories))
@@ -435,6 +435,11 @@ public static class ZonezeroNativeAssets
                 animator.Controller = new AssetRef<AnimatorController>(
                     ZonezeroAssetCopier.StableGuid(controllerUnityGuid));
             }
+
+            // The ZZZ player prefabs carry a CharacterController (the FSM's gravity + code-driven
+            // locomotion route through it); the native prefab mirrors the component.
+            if (instance.GetComponent<CharacterController>() == null)
+                instance.AddComponent<CharacterController>();
 
             string? unityPrefabGuid = ZonezeroAssetCopier.ReadUnityGuid(sourcePrefabPath + ".meta");
             Guid guid = unityPrefabGuid != null ? ZonezeroAssetCopier.StableGuid(unityPrefabGuid) : Guid.NewGuid();

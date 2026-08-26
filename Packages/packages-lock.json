@@ -10,7 +10,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.2d.common",
       "resolvedPath": "",
-      "contentHash": "4c023fb5a215edc1bc2a61683232dd5e398529f2fc368abf5d6e3156f8537012",
+      "contentHash": "5e151517c9a853fb1341c0992626b452ee68c361caaf9e0051657a81d70556e5",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -20,7 +20,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.2d.sprite",
       "resolvedPath": "",
-      "contentHash": "54b9a71a17018ce5ae1893f66970c9ddadd2451d843fbcf0361d5ddcf3bd0010",
+      "contentHash": "50f9dcb22b581bc2816f12940dafdb3b734281dd5beb983a4320a0bb8d3f020b",
       "dependencies": {
         "com.xengine.2d.common": "0.1.0"
       },
@@ -34,7 +34,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.cinemachine",
       "resolvedPath": "Library/PackageCache/com.xengine.cinemachine@0.1.0",
-      "contentHash": "89192f9a8d3775cc89fa8b2ef708b71c9bde9083d23fae5d52519cd004d1e6f5",
+      "contentHash": "fd01fe9ccf705527e17f23b89e8e75b332062ac1dad174c11d03711345c2d07e",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -45,7 +45,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.inputsystem",
       "resolvedPath": "Library/PackageCache/com.xengine.inputsystem@0.1.0",
-      "contentHash": "22110285f9fdd91fa67b05a682b790c52fb509354fd01f9f01d004f5595325f8",
+      "contentHash": "3a477db6c13d1dcc192a12880b0487cc699c69e2edd339fa161ed93efda831e2",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -56,7 +56,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.magicacloth2",
       "resolvedPath": "Library/PackageCache/com.xengine.magicacloth2@0.1.0",
-      "contentHash": "4cbb847f58320867e4aeb30dde5496a2706e9cf6ce948097cef3ad9fbe171ac4",
+      "contentHash": "da9547051f4cc809b4ada0a2bb5fdb124aedcdfc614fc77d04ec61958cbfbd8a",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -66,7 +66,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.probuilder",
       "resolvedPath": "Library/PackageCache/com.xengine.probuilder@0.1.0",
-      "contentHash": "d280217e9c2e2e6a256f3738149bd67cdae47481b2d6b45b4bef9961a1272efe",
+      "contentHash": "053501ec4878cef101f6163e080c71044ccd30ecff9991578994dff1e7616cf7",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -76,7 +76,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.timeline",
       "resolvedPath": "",
-      "contentHash": "2729485b3a5dc888f851c4a4dff04b24e44842cdfa521b76479d86f5dff4dcae",
+      "contentHash": "5cfd681e71359540d958c75f95f56b5874f878a707f7a0d2ef77c0096d3a32b3",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -86,7 +86,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.unityimporter",
       "resolvedPath": "Library/PackageCache/com.xengine.unityimporter@0.1.0",
-      "contentHash": "3cc7f018a118dee5bf18937ef81e3032b0633286d89fd88ccd30977dcdefb9c2",
+      "contentHash": "13e2b09a50d7c2971a8947a6ff62a67aad1d8cd838c7fc915725d8f0d62500cc",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -96,7 +96,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.xgui",
       "resolvedPath": "",
-      "contentHash": "35ce2a543540691875b098c4f56afdf9ff04ba39ae3b4ba64357c3f2d97f616b",
+      "contentHash": "6b7f68282423043460108fc3551f4748a50b1dcfb2de62184e8bd7ab5c00e5a7",
       "dependencies": {},
       "dependencyClosure": []
     },
