@@ -30,8 +30,14 @@ public sealed class PlayerController : MonoBehaviour
     private PlayerStateBase? _current;
     private PlayerInput? _playerInput;
     private Camera? _mainCamera;
+    private bool _animatorRuntimeWasReady;
 
     public float RotationSpeed = 8f;
+    /// <summary>Locomotion dash speeds (m/s). The ripped ZZZ clips are in-place cycles (no baked
+    /// root motion — the reference moved via CharacterController), so Run/Evade translation is
+    /// code-driven.</summary>
+    public float RunSpeed = 4f;
+    public float EvadeSpeed = 7f;
     public Float2 InputMove;
     public float EvadeTimer = 1f;
 
@@ -103,6 +109,14 @@ public sealed class PlayerController : MonoBehaviour
             EvadeTimer += Time.DeltaTime;
             if (EvadeTimer > 1f) EvadeTimer = 1f;
         }
+
+        // The animator's controller runtime can bind a few frames after the FSM's first
+        // CrossFade (scene members start disabled; the animator initializes on Activate).
+        // Once it is live, re-enter the current state once so the opening clip actually plays.
+        bool runtimeReady = Model?.Animator?.Runtime != null;
+        if (runtimeReady && !_animatorRuntimeWasReady)
+            _current?.Enter();
+        _animatorRuntimeWasReady = runtimeReady;
 
         _current?.Update();
     }

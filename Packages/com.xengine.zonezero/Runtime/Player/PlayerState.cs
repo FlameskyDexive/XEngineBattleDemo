@@ -59,8 +59,10 @@ public abstract class PlayerStateBase
         AnimationPlayTime += Time.DeltaTime;
 
         // Tag-team switch poll — legal from everything except the big-skill chain.
+        // SwitchModel may be null (PlayerInput inert / action missing) — guard like every
+        // other action poll.
         if (Controller.Model!.CurrentState is not (PlayerState.BigSkillStart or PlayerState.BigSkill)
-            && Controller.SwitchModel.Triggered())
+            && Controller.SwitchModel != null && Controller.SwitchModel.Triggered())
             Controller.SwitchNextModel();
     }
 

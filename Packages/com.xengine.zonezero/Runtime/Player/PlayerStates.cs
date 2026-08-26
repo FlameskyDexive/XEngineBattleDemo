@@ -111,6 +111,14 @@ public sealed class RunState : PlayerStateBase
         }
         Model.Transform.Rotation = Quaternion.Slerp(Model.Transform.Rotation, targetRotation,
             Time.DeltaTime * Controller.RotationSpeed);
+
+        // The ripped clips are in-place cycles (Run@Bip001 net ≈ 4cm/loop) — translate by input
+        // like the reference, which moved the CharacterController in code, not via root motion.
+        Float3 motion = targetDirection * (Time.DeltaTime * Controller.RunSpeed);
+        if (Model.CharacterController != null)
+            Model.CharacterController.Move(motion);
+        else
+            Model.Transform.Position = Model.Transform.Position + motion;
     }
 }
 
@@ -209,6 +217,7 @@ public sealed class EvadeState : PlayerStateBase
     public override void Update()
     {
         base.Update();
+        Dash();
         if (!IsAnimationEnd()) return;
 
         if (Controller.LastEvadeVariant == PlayerState.Evade_Front)
@@ -224,6 +233,22 @@ public sealed class EvadeState : PlayerStateBase
         {
             Controller.SwitchState(PlayerState.Evade_Back_End);
         }
+    }
+
+    /// <summary>The ripped evade clips are in-place (net ≈ 5cm) — dash the body through the clip's
+    /// active window instead: front evade along model forward, back evade backwards, like the
+    /// reference's controller-driven dodge.</summary>
+    private void Dash()
+    {
+        float t = NormalizedTime();
+        if (t >= 0.3f || Model.Animator?.CurrentClip == null) return;
+        float dir = Controller.LastEvadeVariant == PlayerState.Evade_Front ? 1f : -1f;
+        Float3 motion = Model.Transform.Rotation * new Float3(0f, 0f, dir)
+            * (Time.DeltaTime * Controller.EvadeSpeed);
+        if (Model.CharacterController != null)
+            Model.CharacterController.Move(motion);
+        else
+            Model.Transform.Position = Model.Transform.Position + motion;
     }
 }
 

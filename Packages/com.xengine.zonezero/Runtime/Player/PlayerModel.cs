@@ -31,7 +31,9 @@ public sealed class PlayerModel : MonoBehaviour
     public override void OnEnable()
     {
         Animator ??= GetComponent<Animator>();
-        CharacterController ??= GetComponent<CharacterController>();
+        // The FSM's gravity/locomotion route through the CharacterController; add one when the
+        // scene/prefab predates it being baked in (ZZZ player prefabs carry the component).
+        CharacterController ??= GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
         if (Animator != null)
             Animator.ApplyRootMotion = true;
     }
