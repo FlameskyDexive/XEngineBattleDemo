@@ -6,6 +6,7 @@ using XEngine.Editor;
 using XEngine.Editor.GUI.SceneView;
 using XEngine.Editor.Projects;
 using XEngine.Runtime;
+using XEngine.InputSystem;
 using XEngine.Runtime.Resources;
 using XEngine.Vector;
 
@@ -534,7 +535,7 @@ public static class ZonezeroMenu
                   $"{dummies} dummies, ground/sun/camera from the Universal template.");
     }
 
-    private static GameObject? InstantiateNativePrefab(EditorAssetBackend backend, string prefabPath)
+    internal static GameObject? InstantiateNativePrefab(EditorAssetBackend backend, string prefabPath)
     {
         Guid guid = backend.GetEntry(prefabPath)?.Guid ?? Guid.Empty;
         if (guid == Guid.Empty)
@@ -564,5 +565,100 @@ public static class ZonezeroMenu
         foreach (GameObject child in go.Children)
             count += CountNodes(child);
         return count;
+    }
+
+    // ================================================================
+    //  Battle Arena v2 — new-design combat sandbox (not a ZZZ port)
+    // ================================================================
+
+    /// <summary>GUID of the imported ZZZ .inputactions asset (Player map with Move/SkillJ/SkillK).</summary>
+    internal const string BattleInputActionsGuid = "1f57f6b5-bfad-4bc6-94f7-eaace3868732";
+
+    [MenuItem("Zonezero/Build Battle Arena v2")]
+    public static void BuildBattleArenaScene()
+    {
+        var backend = EditorAssetBackend.Instance;
+        if (backend == null) return;
+
+        EditorSceneManager.NewScene();
+        Scene scene = Scene.Current!;
+        if (FindRoot(scene, "Main Camera") == null || FindRoot(scene, "Directional Light") == null)
+        {
+            Debug.LogError("[Zonezero] Universal template objects missing after NewScene.");
+            return;
+        }
+        BuildProBuilderArena(scene);
+
+        // ── hero + allies (one faction) ──
+        var hero = InstantiateNativePrefab(backend, AnbiPrefabPath)!;
+        hero.Name = "Battle_Hero";
+        hero.Transform.Position = new Float3(0f, 0f, -4.5f);
+        hero.Transform.Forward = Float3.UnitZ;
+        scene.Add(hero);
+        hero.AddComponent<XEngine.Zonezero.Combat.HeroCombatController>();
+
+        SpawnAlly(backend, scene, CorinPrefabPath, "Battle_Ally_Corin", new Float3(-2.3f, 0f, -7.0f),
+            new XEngine.Zonezero.Combat.AllyCombatAI.PatrolRoute(
+                new Float3(-4.0f, 0f, -3.5f), new Float3(-0.5f, 0f, -8.5f)));
+        SpawnAlly(backend, scene, NostradamusPrefabPath, "Battle_Ally_Nike", new Float3(2.3f, 0f, -7.0f),
+            new XEngine.Zonezero.Combat.AllyCombatAI.PatrolRoute(
+                new Float3(4.2f, 0f, -6.0f), new Float3(0.8f, 0f, -9.0f)));
+
+        // ── enemy practice dummies ──
+        SpawnDummy(backend, scene, "Dummy_A", new Float3(-2.6f, 0f, 3.4f));
+        SpawnDummy(backend, scene, "Dummy_B", new Float3(0f, 0f, 5.2f));
+        SpawnDummy(backend, scene, "Dummy_C", new Float3(2.6f, 0f, 3.9f));
+
+        // ── fixed-angle follow camera on the hero ──
+        var templateCam = FindRoot(scene, "Main Camera");
+        if (templateCam != null) templateCam.Enabled = false;
+        var camGo = new GameObject("BattleCamera");
+        scene.Add(camGo);
+        camGo.Transform.Position = hero.Transform.Position - Float3.UnitZ * 6f
+                                  + new Float3(0f, 6f * MathF.Tan(40f * MathF.PI / 180f) + 0.8f, 0f);
+        camGo.Transform.Forward = Float3.UnitZ;
+        var cam = camGo.AddComponent<Camera>();
+        cam.FieldOfView = 46f;
+        cam.ClearFlags = CameraClearFlags.SolidColor;
+        cam.ClearColor = new Color(0.10f, 0.12f, 0.16f, 1f);
+        camGo.AddComponent<AudioListener>();
+        var rig = camGo.AddComponent<XEngine.Zonezero.Combat.BattleFollowCamera>();
+        rig.Target = hero;
+
+        // ── shared input asset (Move WASD + SkillJ J + SkillK K) ──
+        var inputGo = new GameObject("Battle_Input");
+        scene.Add(inputGo);
+        var input = inputGo.AddComponent<PlayerInput>();
+        input.Asset = new AssetRef<InputActionAsset>(Guid.Parse(BattleInputActionsGuid));
+        input.DefaultActionMap = "Player";
+
+        bool saved = EditorSceneManager.SaveAs("Scenes/ZonezeroBattle.scene");
+        Debug.Log($"[Zonezero] Battle Arena v2 built: 1 hero + 2 allies + 3 dummies; saved={saved}");
+    }
+
+    private static void SpawnAlly(EditorAssetBackend backend, Scene scene, string prefabPath,
+        string name, Float3 position, XEngine.Zonezero.Combat.AllyCombatAI.PatrolRoute route)
+    {
+        var go = InstantiateNativePrefab(backend, prefabPath)!;
+        go.Name = name;
+        go.Transform.Position = position;
+        go.Transform.Forward = Float3.UnitZ;
+        scene.Add(go);
+        var ai = go.AddComponent<XEngine.Zonezero.Combat.AllyCombatAI>();
+        ai.PatrolPointA = route.PointA;
+        ai.PatrolPointB = route.PointB;
+    }
+
+    private static void SpawnDummy(EditorAssetBackend backend, Scene scene, string name, Float3 position)
+    {
+        var dummy = InstantiateNativePrefab(backend, ClaymorePrefabPath);
+        if (dummy == null) return;
+        dummy.Name = name;
+        WeaponController.EnemySet.Add(dummy);
+        if (dummy.GetComponent<EnemyController>() == null)
+            dummy.AddComponent<EnemyController>();
+        dummy.Transform.Position = position;
+        dummy.Transform.Forward = -Float3.UnitZ;
+        scene.Add(dummy);
     }
 }
