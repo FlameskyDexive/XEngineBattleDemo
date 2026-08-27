@@ -3,6 +3,7 @@
 
 using System;
 
+using XEngine.Animation;
 using XEngine.Runtime;
 using XEngine.Runtime.Resources;
 using XEngine.Zonezero.Vfx;
@@ -146,6 +147,15 @@ public static class CombatMotor
     public static bool Play(Animator animator, string stateName, float fade = 0.08f)
     {
         if (animator == null || !animator.HasState(stateName)) return false;
+
+        // Re-issuing the state that is already playing restarts its clip at frame zero; a per-frame
+        // locomotion caller would therefore freeze idle/run on their first pose forever. Skip when
+        // the FSM is already on this exact state and fully faded in.
+        var rt = animator.Runtime;
+        if (rt != null && rt.CurrentStateIndex >= 0 && !rt.IsInTransition
+            && rt.Constant.States[rt.CurrentStateIndex].NameHash == AnimationNameHash.Hash(stateName))
+            return true;
+
         animator.CrossFade(stateName, fade);
         return true;
     }
