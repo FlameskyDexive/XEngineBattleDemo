@@ -46,8 +46,9 @@ send("tools/call", {"name": "runtime_state", "arguments": {}})
 proc.stdin.write(b'{"jsonrpc":"2.0","method":"notifications/initialized"}\n'); proc.stdin.flush()
 time.sleep(42)
 
-ev("ABOUT-CLICK",
-    '(XEngine.Editor.Core.MenuRegistry.RootMenus.LastOrDefault(m => m.Label.StartsWith("About")) ?? throw new Exception("menu missing")).OnClick!.Invoke(); "clicked"')
+ev("ABOUT-MENU-LIST", 'string.Join("|", XEngine.Editor.Core.MenuRegistry.RootMenus.Select(m => m.Label + (m.HasSubItems ? "(+)" : "")))')
+ev("ABOUT-INVOKE",
+    '(XEngine.Editor.Core.MenuRegistry.RootMenus.Last(m => m.Label == "About").SubItems[0].OnClick ?? throw new Exception("no action")).Invoke(); "clicked"')
 time.sleep(1.2)
 ev("OPEN?", '"Modal.IsOpen=" + XEngine.OrigamiUI.Modal.IsOpen')
 ev("CLOSE", 'XEngine.OrigamiUI.Modal.Pop(); "popped"')
