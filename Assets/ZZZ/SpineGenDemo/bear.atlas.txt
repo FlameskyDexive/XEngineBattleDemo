@@ -1,0 +1,25 @@
+bear.png
+size: 128,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+part_000
+  rotate: false
+  bounds: 0,0,57,49
+  offsets: 0,0,57,49
+  index: -1
+part_001
+  rotate: false
+  bounds: 57,0,33,33
+  offsets: 0,0,33,33
+  index: -1
+part_002
+  rotate: false
+  bounds: 90,0,10,28
+  offsets: 0,0,10,28
+  index: -1
+part_003
+  rotate: false
+  bounds: 100,0,10,28
+  offsets: 0,0,10,28
+  index: -1
