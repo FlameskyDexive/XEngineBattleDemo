@@ -317,7 +317,12 @@ Pass "Toon"
 
 			void main()
 			{
-				vec4 base = texture(_MainTex, texCoord0) * _MainColor;
+				// Engine convention (mirrors Default/Standard): textures are stored without
+				// hardware sRGB views, shaders decode manually. Skipping the decode lifted
+				// dark texels ~3x (measured 35/255 -> ~92 on screen) — the milky "white veil".
+				vec4 mainSample = texture(_MainTex, texCoord0);
+				vec4 base = vec4(gammaToLinearSpace(mainSample.rgb * _MainColor.rgb),
+				                 mainSample.a * _MainColor.a);
 				if (base.a < _AlphaCutoff)
 					discard;
 				if (_GradientEnabled > 0.5)
@@ -711,7 +716,10 @@ Pass "Toon"
 
 			float4 main(PSInput input) : SV_Target
 			{
-				float4 base = _MainTex.Sample(_MainTexSampler, input.texCoord0) * _MainColor;
+				// Engine convention (mirrors Default/Standard): manual sRGB decode — see GLSL twin.
+				float4 mainSample = _MainTex.Sample(_MainTexSampler, input.texCoord0);
+				float4 base = float4(gammaToLinearSpace(mainSample.rgb * _MainColor.rgb),
+				                     mainSample.a * _MainColor.a);
 				if (base.a < _AlphaCutoff)
 					discard;
 				if (_GradientEnabled > 0.5)
