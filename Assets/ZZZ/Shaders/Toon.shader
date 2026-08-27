@@ -14,6 +14,10 @@ Variants
 //   band  = smoothstep(midPoint, midPoint + smoothness, NdotL)
 //   shadow= smoothstep(0, shadowSmoothness, atten) -> max(shadow, 1 - power) -> * occlusion
 //   color = albedo * lerp(_Ambient, mainLightColor, band * shadow) + additionalBanded + ...
+// Light intensity is Unity-parity RAW (`GetMainLight().color` == color * intensity): the
+// legacy engine-wide "* 8" ForwardLightManager compensation is deliberately NOT applied
+// here — with it, any lit texel saturates to white and the imported Unity scene light
+// (intensity 1) stops matching the reference render (2026-08-27 toon alignment pass).
 // The engine light fetch (directional uniform + BVH/cluster additional lights) matches
 // Default/Standard via Lighting.glsl (GLSL) and StandardLighting.hlsl (Slang).
 
@@ -253,14 +257,14 @@ Pass "Toon"
 					shadowFactor = max(shadowFactor, 1.0 - _AdditionalShadowsPower);
 				}
 
-				vec3 lightTerm = saturate(L.Color * (L.Intensity * 8.0) * band * attenuation * shadowFactor) * albedo;
+				vec3 lightTerm = saturate(L.Color * L.Intensity * band * attenuation * shadowFactor) * albedo;
 				if (_AdditionalLightsSpecular > 0.5) {
 					vec3 h = normalize(viewDir + lightDir);
 					float spec = smoothstep(_SpecularMidPoint,
 					                        _SpecularMidPoint + _SpecularSmoothness,
 					                        dot(n, h));
 					lightTerm += saturate(spec) * _SpecularTint.rgb * _SpecularTint.a
-					           * L.Color * (L.Intensity * 8.0) * attenuation * shadowFactor;
+					           * L.Color * L.Intensity * attenuation * shadowFactor;
 				}
 				return lightTerm;
 			}
@@ -337,7 +341,7 @@ Pass "Toon"
 				if (_DirectionalLightEnabled != 0) {
 					lightDir = normalize(_DirectionalLightDirection);
 					ndl = dot(n, lightDir);
-					lightColor = _DirectionalLightColor * (_DirectionalLightIntensity * 8.0);
+					lightColor = _DirectionalLightColor * _DirectionalLightIntensity;
 				}
 
 				float mainBand = smoothstep(_MainLightMidPoint,
@@ -640,7 +644,7 @@ Pass "Toon"
 					shadowFactor = max(shadowFactor, 1.0 - _AdditionalShadowsPower);
 				}
 
-				float3 lightTerm = saturate(L.Color * (L.Intensity * 8.0) * band * attenuation * shadowFactor) * albedo;
+				float3 lightTerm = saturate(L.Color * L.Intensity * band * attenuation * shadowFactor) * albedo;
 				if (_AdditionalLightsSpecular > 0.5)
 				{
 					float3 h = normalize(viewDir + lightDir);
@@ -648,7 +652,7 @@ Pass "Toon"
 					                        _SpecularMidPoint + _SpecularSmoothness,
 					                        dot(n, h));
 					lightTerm += saturate(spec) * _SpecularTint.rgb * _SpecularTint.a
-					           * L.Color * (L.Intensity * 8.0) * attenuation * shadowFactor;
+					           * L.Color * L.Intensity * attenuation * shadowFactor;
 				}
 				return lightTerm;
 			}
@@ -731,7 +735,7 @@ Pass "Toon"
 				{
 					lightDir = normalize(_StandardDirectionalDirectionIntensity.xyz);
 					ndl = dot(n, lightDir);
-					lightColor = _StandardDirectionalColor.rgb * (_StandardDirectionalDirectionIntensity.w * 8.0);
+					lightColor = _StandardDirectionalColor.rgb * _StandardDirectionalDirectionIntensity.w;
 				}
 
 				float mainBand = smoothstep(_MainLightMidPoint,

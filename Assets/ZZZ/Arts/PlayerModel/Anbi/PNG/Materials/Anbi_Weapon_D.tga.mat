@@ -198,7 +198,7 @@
         },
         {
           "key": "_RimEnabled",
-          "value": 1F
+          "value": 0F
         },
         {
           "key": "_RimMidPoint",
@@ -218,7 +218,7 @@
         },
         {
           "key": "_MainLightSpecular",
-          "value": 1F
+          "value": 0F
         },
         {
           "key": "_AdditionalLightsSpecular",
@@ -254,7 +254,7 @@
         },
         {
           "key": "_ShrinkSize",
-          "value": -0.15F
+          "value": -0.1F
         },
         {
           "key": "_AlphaCutoff",
