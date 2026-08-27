@@ -130,7 +130,13 @@ public sealed class RunEndState : PlayerStateBase
     public override void Enter()
     {
         base.Enter();
-        PlayAnimation(Model.Foot == ModelFoot.Right ? "Run_End_R" : "Run_End_L", 0.1f);
+        // Left/right-foot variant chosen by the gait flag; Corin only ships one combined
+        // "Run_End" clip, so fall back to it when the split variants don't exist.
+        string variant = Model.Foot == ModelFoot.Right ? "Run_End_R" : "Run_End_L";
+        Animator? animator = Model.Animator;
+        if (animator != null && !animator.HasState(variant))
+            variant = "Run_End";
+        PlayAnimation(variant, 0.1f);
     }
 
     public override void Update()

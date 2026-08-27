@@ -40,9 +40,11 @@ public static class ZonezeroMenu
     public static readonly Float3 LineupForward = -Float3.UnitZ;
     public static readonly (string PrefabPath, Float3 Position)[] CharacterSlots =
     {
-        (CorinPrefabPath, new Float3(-2.4f, 0f, 0f)),
-        (AnbiPrefabPath, Float3.Zero),
-        (NostradamusPrefabPath, new Float3(2.4f, 0f, 0f)),
+        // Lineup sits in open floor: the original z=0 row put the capsule's 0.5 m radius 1 cm from
+        // the Structure's south face — swept collision reads that as a wall and freezes movement.
+        (CorinPrefabPath, new Float3(-2.4f, 0f, -4.5f)),
+        (AnbiPrefabPath, new Float3(0f, 0f, -6f)),
+        (NostradamusPrefabPath, new Float3(2.4f, 0f, -4.5f)),
     };
 
     [MenuItem("Zonezero/Copy ZZZ Assets Into Project")]

@@ -1,7 +1,7 @@
 {
   "$id": 1,
   "$type": "XEngine.Animation.AnimatorController, XEngine.Runtime",
-  "DefaultStateName": "New State",
+  "DefaultStateName": "Idle",
   "Parameters": {
     "$id": 2,
     "$values": [
@@ -318,45 +318,6 @@
       "PosY": 200F,
         "Behaviours": {
           "$id": 35,
-          "$values": [
-
-          ]
-        }
-      },
-      {
-        "$id": 36,
-        "Name": "New State",
-        "Tag": "",
-        "Speed": 1F,
-        "IsLooping": false,
-        "WriteDefaults": true,
-        "Mirror": false,
-        "CycleOffset": 0F,
-        "IKOnFeet": false,
-        "SpeedMultiplierParameter": "",
-        "MirrorParameter": "",
-        "CycleOffsetParameter": "",
-        "TimeParameter": "",
-        "Motion": {
-          "AssetID": "00000000-0000-0000-0000-000000000000"
-        },
-        "Motions": {
-          "$id": 37,
-          "$values": [
-
-          ]
-        },
-        "BlendTree": NULL,
-        "TransitionNames": {
-          "$id": 38,
-          "$values": [
-
-          ]
-        },
-        "PosX": 1000F,
-     "PosY": 760F,
-        "Behaviours": {
-          "$id": 39,
           "$values": [
 
           ]

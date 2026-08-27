@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 using XEngine.Animation;
@@ -97,6 +98,12 @@ public static class ZonezeroControllerGenerator
         int resolved = 0;
         foreach ((string name, string motionGuid, float posX, float posY) in states)
         {
+            // Unity controllers often carry a leftover empty "New State" (frequently the default).
+            // Entering it in the engine yields a silent no-clip state that dead-flashes every
+            // spawn — drop motion-less leftover defaults instead of compiling them in.
+            if (motionGuid.Length == 0 && name.StartsWith("New State", StringComparison.Ordinal))
+                continue;
+
             var state = new AnimatorController.State
             {
                 Name = name,
@@ -121,10 +128,25 @@ public static class ZonezeroControllerGenerator
             }
             controller.States.Add(state);
         }
-        controller.DefaultStateName = defaultState;
+
+        // The chosen default must exist AND have a clip; fall back Idle → first non-empty.
+        if (!HasMotion(controller, controller.DefaultStateName))
+        {
+            string? fallback = controller.States.FirstOrDefault(s => s.Name == "Idle" && s.Motion != null)?.Name
+                ?? controller.States.FirstOrDefault(s => s.Motion != null)?.Name;
+            if (fallback != null) controller.DefaultStateName = fallback;
+        }
         Debug.Log($"[Zonezero] Generated native controller '{controllerName}': {controller.States.Count} states, " +
-                  $"{resolved} motions resolved, default '{defaultState}'.");
+                  $"{resolved} motions resolved, default '{controller.DefaultStateName}'.");
         return controller;
+    }
+
+    private static bool HasMotion(AnimatorController controller, string stateName)
+    {
+        foreach (AnimatorController.State s in controller.States)
+            if (s.Name == stateName)
+                return s.Motion != null;
+        return false;
     }
 
     /// <summary>Fallback canvas layout for states whose Unity .controller carries no authored

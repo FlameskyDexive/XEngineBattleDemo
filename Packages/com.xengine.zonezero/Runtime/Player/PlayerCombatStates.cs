@@ -34,7 +34,16 @@ public sealed class NormalAttackState : PlayerStateBase
                 new Float3(direction.X, 0f, direction.Z), Float3.UnitY);
         }
 
-        PlayAnimation("Attack_Normal_" + Model.CurrentNormalAttackIndex, 0f);
+        // Combo segment guard: Nostradamus ships 3 segments, Corin 5 — clamp to what this
+        // character's controller actually has (AdvanceCombo derives the max lazily).
+        int idx = Model.CurrentNormalAttackIndex;
+        Animator? animator = Model.Animator;
+        if (animator != null && !animator.HasState($"Attack_Normal_{idx}"))
+        {
+            Model.CurrentNormalAttackIndex = 1;
+            idx = 1;
+        }
+        PlayAnimation("Attack_Normal_" + idx, 0f);
 
         // M10: slash arc at the swing start.
         XEngine.Zonezero.Vfx.ZonezeroVfx.SlashArc(Model.Transform.Position, Model.Transform.Forward);
@@ -70,7 +79,12 @@ public sealed class NormalAttackEndState : PlayerStateBase
     public override void Enter()
     {
         base.Enter();
-        PlayAnimation($"Attack_Normal_{Model.CurrentNormalAttackIndex}_End", 0f);
+        // Same segment guard for the recovery clip (an "_End" per shipped segment).
+        string name = $"Attack_Normal_{Model.CurrentNormalAttackIndex}_End";
+        Animator? animator = Model.Animator;
+        if (animator != null && !animator.HasState(name))
+            name = "Attack_Normal_1_End";
+        PlayAnimation(name, 0f);
     }
 
     public override void Update()

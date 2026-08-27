@@ -91,6 +91,11 @@ public sealed class PlayerController : MonoBehaviour
 
     public override void Start()
     {
+        // The reference locks the cursor at Start: gameplay camera is driven by pointer deltas and
+        // an unlocked cursor breaks the combat feel immediately.
+        if (Application.IsPlaying && Input.CursorLocked == false)
+            XEngine.Runtime.Input.LockCursor();
+
         // CrossFade no-ops before the animator graph ticks (edit-mode scene builds); re-enter
         // the current state when play begins so the opening clip actually starts.
         if (Model != null && _current != null)

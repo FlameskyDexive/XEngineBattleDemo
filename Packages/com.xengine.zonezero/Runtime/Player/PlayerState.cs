@@ -86,22 +86,34 @@ public abstract class PlayerStateBase
     }
 
     /// <summary>Wires the attack clips' authored StartHit/StopHit events (imported from the
-    /// FBX .meta sidecars into clip.Events) to the model's weapon hit windows. The engine's
-    /// event pipeline fires inline callbacks, so this re-binds them per playback.</summary>
+    /// FBX .meta sidecars into clip.Events) to the model's weapon hit windows, plus the Run
+    /// foot-phase markers. The engine snapshots clip.Events onto a state once at bind time — before
+    /// gameplay can route them at this character's weapon — so arm them HERE, on the live playable,
+    /// every playback instead (ClearEvents first keeps re-entry idempotent).</summary>
     private void ArmCombatEvents(AnimationClipPlayable playable, AnimationClip clip)
     {
         WeaponController? weapon = Model.GetComponentInChildren<WeaponController>();
-        if (weapon == null || clip.Events.Count == 0) return;
+        if (weapon == null) return;
+        float duration = clip.Duration > 0f ? clip.Duration : 1f;
+
+        playable.ClearEvents();
         for (int i = 0; i < clip.Events.Count; i++)
         {
             AnimationClipEvent clipEvent = clip.Events[i];
+            float nt = clipEvent.Time / duration;
             switch (clipEvent.FunctionName)
             {
                 case "StartHit":
-                    clip.Events[i] = clipEvent with { Callback = weapon.StartHit };
+                    playable.AddEvent(nt, weapon.StartHit);
                     break;
                 case "StopHit":
-                    clip.Events[i] = clipEvent with { Callback = weapon.StopHit };
+                    playable.AddEvent(nt, weapon.StopHit);
+                    break;
+                case "SetOutLeftFoot":
+                    playable.AddEvent(nt, () => Model.Foot = ModelFoot.Left);
+                    break;
+                case "SetOutRightFoot":
+                    playable.AddEvent(nt, () => Model.Foot = ModelFoot.Right);
                     break;
             }
         }
