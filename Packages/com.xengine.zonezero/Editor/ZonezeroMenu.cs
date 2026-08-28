@@ -553,6 +553,35 @@ public static class ZonezeroMenu
         return instance;
     }
 
+    /// <summary>
+    /// The Clay FBX importer produces bone hierarchy nodes with near-zero local positions
+    /// (all bones stacked at the same point). The mesh vertices are ×100 (unitScale applied
+    /// by ApplyUnitScale), but the bone node offsets were not scaled. This means the skin
+    /// matrices from the collapsed skeleton can't produce the correct bind pose, and skinned
+    /// vertices fall back to their raw positions (T-pose).
+    ///
+    /// Fix: scale each bone node's local position so bone offsets match the ×100 vertex scale.
+    /// Called after InstantiateNativePrefab at scene build time.
+    /// </summary>
+    internal static void FixBoneHierarchyScale(GameObject root)
+    {
+        // Walk the hierarchy and scale every child Transform's LocalPosition.
+        // The mesh vertices were already ×100 by ApplyUnitScale, but the bone node
+        // positions were not — scale them to match.
+        ScaleChildPositions(root.Transform, 100f);
+        Debug.Log($"[Zonezero] FixBoneHierarchyScale: scaled bone offsets ×100 on '{root.Name}'");
+    }
+
+    private static void ScaleChildPositions(XEngine.Vector.Transform t, float factor)
+    {
+        for (int i = 0; i < t.ChildCount; i++)
+        {
+            var child = t.GetChild(i);
+            child.LocalPosition = child.LocalPosition * factor;
+            ScaleChildPositions(child, factor);
+        }
+    }
+
     private static GameObject? FindRoot(Scene scene, string name)
     {
         foreach (GameObject root in scene.RootObjects)
@@ -609,6 +638,7 @@ public static class ZonezeroMenu
         codeGo.Name = "Test_CodeDriven";
         codeGo.Transform.Position = new Float3(-3f, 0f, -6f);
         codeGo.Transform.Forward = Float3.UnitZ;
+        FixBoneHierarchyScale(codeGo);
         var codeAnim = codeGo.GetComponent<Animator>();
         codeAnim.Controller = default; // clear FSM: pure code-driven mode
         var player = codeGo.AddComponent<XEngine.Zonezero.Combat.SingleClipPlayer>();
@@ -620,6 +650,7 @@ public static class ZonezeroMenu
         fsmGo.Name = "Test_FsmDriven";
         fsmGo.Transform.Position = new Float3(3f, 0f, -6f);
         fsmGo.Transform.Forward = Float3.UnitZ;
+        FixBoneHierarchyScale(fsmGo);
         scene.Add(fsmGo);
 
         // Camera framing both.
@@ -655,6 +686,7 @@ public static class ZonezeroMenu
         // ── hero + allies (one faction) ──
         var hero = InstantiateNativePrefab(backend, AnbiPrefabPath)!;
         hero.Name = "Battle_Hero";
+        FixBoneHierarchyScale(hero);
         hero.Transform.Position = new Float3(0f, 0f, -4.5f);
         hero.Transform.Forward = Float3.UnitZ;
         scene.Add(hero);
@@ -702,8 +734,9 @@ public static class ZonezeroMenu
     private static void SpawnAlly(EditorAssetBackend backend, Scene scene, string prefabPath,
         string name, Float3 position, XEngine.Zonezero.Combat.AllyCombatAI.PatrolRoute route)
     {
-        var go = InstantiateNativePrefab(backend, prefabPath)!;
+                var go = InstantiateNativePrefab(backend, prefabPath)!;
         go.Name = name;
+        FixBoneHierarchyScale(go);
         go.Transform.Position = position;
         go.Transform.Forward = Float3.UnitZ;
         scene.Add(go);

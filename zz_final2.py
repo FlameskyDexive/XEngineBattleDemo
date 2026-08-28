@@ -82,6 +82,9 @@ foreach (var g3 in gs)
 return "reimported " + gs.Length;''', "REIMPORT")
 time.sleep(2)
 
+# Rebuild prefabs from reimported models (critical: without this the prefab still has old bones)
+menu("Zonezero/Generate Native Assets"); time.sleep(5)
+
 # Build
 menu("Zonezero/Build Anim Single Test"); time.sleep(4)
 
