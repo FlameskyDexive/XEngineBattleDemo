@@ -1,0 +1,76 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Animation.AnimatorController, XEngine.Runtime",
+  "DefaultStateName": "New State",
+  "Parameters": {
+    "$id": 2,
+    "$values": [
+
+    ]
+  },
+  "States": {
+    "$id": 3,
+    "$values": [
+      {
+        "$id": 4,
+        "Name": "New State",
+        "Tag": "",
+        "Speed": 1F,
+        "IsLooping": true,
+        "WriteDefaults": true,
+        "Mirror": false,
+        "CycleOffset": 0F,
+        "IKOnFeet": false,
+        "SpeedMultiplierParameter": "",
+        "MirrorParameter": "",
+        "CycleOffsetParameter": "",
+        "TimeParameter": "",
+        "Motion": {
+          "AssetID": "00000000-0000-0000-0000-000000000000"
+        },
+        "Motions": {
+          "$id": 5,
+          "$values": [
+
+          ]
+        },
+        "BlendTree": NULL,
+        "TransitionNames": {
+          "$id": 6,
+          "$values": [
+
+          ]
+        },
+        "PosX": 0F,
+        "PosY": 0F,
+        "Behaviours": {
+          "$id": 7,
+          "$values": [
+
+          ]
+        }
+      }
+    ]
+  },
+  "Transitions": {
+    "$id": 8,
+    "$values": [
+
+    ]
+  },
+  "AnyStateTransitions": {
+    "$id": 9,
+    "$values": [
+
+    ]
+  },
+  "Layers": {
+    "$id": 10,
+    "$values": [
+
+    ]
+  },
+  "AssetPath": "",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "Test_CodeDriven"
+}
