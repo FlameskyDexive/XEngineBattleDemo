@@ -638,7 +638,6 @@ public static class ZonezeroMenu
         codeGo.Name = "Test_CodeDriven";
         codeGo.Transform.Position = new Float3(-3f, 0f, -6f);
         codeGo.Transform.Forward = Float3.UnitZ;
-        FixBoneHierarchyScale(codeGo);
         var codeAnim = codeGo.GetComponent<Animator>();
         codeAnim.Controller = default; // clear FSM: pure code-driven mode
         var player = codeGo.AddComponent<XEngine.Zonezero.Combat.SingleClipPlayer>();
@@ -650,7 +649,6 @@ public static class ZonezeroMenu
         fsmGo.Name = "Test_FsmDriven";
         fsmGo.Transform.Position = new Float3(3f, 0f, -6f);
         fsmGo.Transform.Forward = Float3.UnitZ;
-        FixBoneHierarchyScale(fsmGo);
         scene.Add(fsmGo);
 
         // Camera framing both.
@@ -686,7 +684,6 @@ public static class ZonezeroMenu
         // ── hero + allies (one faction) ──
         var hero = InstantiateNativePrefab(backend, AnbiPrefabPath)!;
         hero.Name = "Battle_Hero";
-        FixBoneHierarchyScale(hero);
         hero.Transform.Position = new Float3(0f, 0f, -4.5f);
         hero.Transform.Forward = Float3.UnitZ;
         scene.Add(hero);
@@ -736,7 +733,6 @@ public static class ZonezeroMenu
     {
                 var go = InstantiateNativePrefab(backend, prefabPath)!;
         go.Name = name;
-        FixBoneHierarchyScale(go);
         go.Transform.Position = position;
         go.Transform.Forward = Float3.UnitZ;
         scene.Add(go);

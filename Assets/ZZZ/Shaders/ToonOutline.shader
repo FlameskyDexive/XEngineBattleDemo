@@ -2,6 +2,10 @@ Shader "Zonezero/ToonOutline"
 
 Variants
 {
+    Variant("HAS_TANGENTS")
+    Variant("SKINNED")
+    Variant("HAS_BONEINDICES")
+    Variant("HAS_BONEWEIGHTS")
 }
 
 // Inverted-hull outline ported from the ZZZ reference project's YSA "Perfect Outline"
