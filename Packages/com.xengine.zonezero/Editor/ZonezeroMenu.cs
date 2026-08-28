@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
+using XEngine.Animation;
 using XEngine.Editor;
 using XEngine.Editor.GUI.SceneView;
 using XEngine.Editor.Projects;
@@ -573,6 +575,67 @@ public static class ZonezeroMenu
 
     /// <summary>GUID of the imported ZZZ .inputactions asset (Player map with Move/SkillJ/SkillK).</summary>
     internal const string BattleInputActionsGuid = "1f57f6b5-bfad-4bc6-94f7-eaace3868732";
+
+    /// <summary>English-directory Corin controller (the healthy copy with resolved motions).</summary>
+    internal const string HealthyCorinControllerGuid = "58c28ec0-40bc-4ce5-82a7-132f6165880a";
+
+    [MenuItem("Zonezero/Build Anim Single Test")]
+    public static void BuildAnimSingleTest()
+    {
+        var backend = EditorAssetBackend.Instance;
+        if (backend == null) return;
+
+        EditorSceneManager.NewScene();
+        Scene scene = Scene.Current!;
+        if (FindRoot(scene, "Main Camera") == null || FindRoot(scene, "Directional Light") == null)
+        {
+            Debug.LogError("[Zonezero] Universal template objects missing after NewScene.");
+            return;
+        }
+        BuildProBuilderArena(scene);
+
+        // Resolve Corin's Run clip guid from the healthy controller (state "Run" -> Motion).
+        var ctrlRef = new AssetRef<AnimatorController>(Guid.Parse(HealthyCorinControllerGuid));
+        ctrlRef.EnsureLoaded();
+        var ctrl = (AnimatorController?)ctrlRef.Res;
+        if (ctrl == null) { Debug.LogError("[Zonezero] healthy Corin controller failed to load."); return; }
+        var runState = ctrl.States.FirstOrDefault(s2 => s2.Name == "Run");
+        if (runState == null || runState.Motion.AssetID == Guid.Empty)
+        { Debug.LogError("[Zonezero] controller has no Run motion."); return; }
+        Guid runClip = runState.Motion.AssetID;
+
+        // LEFT: pure code-driven (controller cleared, SingleClipPlayer plays the Run clip).
+        var codeGo = InstantiateNativePrefab(backend, CorinPrefabPath)!;
+        codeGo.Name = "Test_CodeDriven";
+        codeGo.Transform.Position = new Float3(-3f, 0f, -6f);
+        codeGo.Transform.Forward = Float3.UnitZ;
+        var codeAnim = codeGo.GetComponent<Animator>();
+        codeAnim.Controller = default; // clear FSM: pure code-driven mode
+        var player = codeGo.AddComponent<XEngine.Zonezero.Combat.SingleClipPlayer>();
+        player.Clip = new AssetRef<AnimationClip>(runClip);
+        scene.Add(codeGo);
+
+        // RIGHT: FSM-driven (controller stays; FSM default state = Idle). Eval will Play("Run").
+        var fsmGo = InstantiateNativePrefab(backend, CorinPrefabPath)!;
+        fsmGo.Name = "Test_FsmDriven";
+        fsmGo.Transform.Position = new Float3(3f, 0f, -6f);
+        fsmGo.Transform.Forward = Float3.UnitZ;
+        scene.Add(fsmGo);
+
+        // Camera framing both.
+        var camGo = new GameObject("TestCamera");
+        scene.Add(camGo);
+        camGo.Transform.Position = new Float3(0f, 2.2f, -11.5f);
+        camGo.Transform.Forward = Float3.UnitZ;
+        var cam = camGo.AddComponent<Camera>();
+        cam.FieldOfView = 50f;
+        cam.ClearFlags = CameraClearFlags.SolidColor;
+        cam.ClearColor = new Color(0.10f, 0.12f, 0.16f, 1f);
+        FindRoot(scene, "Main Camera")!.Enabled = false;
+
+        bool saved = EditorSceneManager.SaveAs("Scenes/AnimSingleTest.scene");
+        Debug.Log($"[Zonezero] AnimSingleTest built: code-driven @(-3) fsm-driven @(3), runClip={runClip.ToString()[..8]}, saved={saved}");
+    }
 
     [MenuItem("Zonezero/Build Battle Arena v2")]
     public static void BuildBattleArenaScene()
