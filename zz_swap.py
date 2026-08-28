@@ -95,6 +95,8 @@ def shoot(name):
 send0 = call_eval
 send0('return "ready";')
 print("[open]", send0('return XEngine.Editor.GUI.SceneView.EditorSceneManager.OpenScene("Scenes/AnimSingleTest.scene");')[:60], flush=True)
+# reimport the two Corin FBX clips to trigger the progress modal path
+print("[reimport]", send0('var db = XEngine.Editor.EditorAssetBackend.Instance!; var e1 = db.GetEntry("ZZZ/Arts/PlayerModel/Corlin/Corin@Run.FBX"); db.Reimport(e1!.Guid);')[:100], flush=True)
 time.sleep(3)
 proc.stdin.write(json.dumps({"jsonrpc": "2.0", "id": 999001, "method": "tools/call",
     "params": {"name": "runtime_playmode", "arguments": {"action": "enter"}}}).encode() + b"\n")
