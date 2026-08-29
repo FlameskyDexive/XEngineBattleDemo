@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "resolverVersion": "xengine-package-resolver/1",
   "manifestHash": "89a9a381de23903e61cb6575ddb00df3435a4d9a9d346a7857e19315325567c8",
-  "generatedAtUtc": "2026-08-29T03:59:22.3768098Z",
+  "generatedAtUtc": "2026-08-29T08:21:17.5509418Z",
   "packages": [
     {
       "name": "com.xengine.2d.common",
