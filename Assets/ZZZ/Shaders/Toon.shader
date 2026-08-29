@@ -471,8 +471,8 @@ Pass "Toon"
 				float2 vertexTexCoord0 : TEXCOORD0;
 				float3 vertexNormal : NORMAL;
 #ifdef HAS_BONEINDICES
-				float4 vertexBoneIndices : TEXCOORD4;
-				float4 vertexBoneWeights : TEXCOORD5;
+				float4 vertexBoneIndices : BLENDINDICES;
+				float4 vertexBoneWeights : BLENDWEIGHT;
 #endif
 			};
 
