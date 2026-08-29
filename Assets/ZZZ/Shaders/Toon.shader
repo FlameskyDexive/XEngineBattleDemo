@@ -2,6 +2,10 @@ Shader "Zonezero/Toon"
 
 Variants
 {
+    Variant("HAS_TANGENTS")
+    Variant("SKINNED")
+    Variant("HAS_BONEINDICES")
+    Variant("HAS_BONEWEIGHTS")
 }
 
 // Cel/toon shading ported from the ZZZ reference project's "YSA Toon/Lit" Unity shader graph
@@ -465,6 +469,12 @@ Pass "Toon"
 				float3 vertexPosition : POSITION;
 				float2 vertexTexCoord0 : TEXCOORD0;
 				float3 vertexNormal : NORMAL;
+#ifdef HAS_BONEINDICES
+				float4 vertexBoneIndices : BLENDINDICES;
+#endif
+#ifdef HAS_BONEWEIGHTS
+				float4 vertexBoneWeights : BLENDWEIGHT;
+#endif
 			};
 
 			struct VSOutput
@@ -474,15 +484,23 @@ Pass "Toon"
 				float3 worldPos : TEXCOORD1;
 				float3 objectPos : TEXCOORD2;
 				float3 vNormal : TEXCOORD3;
+				float4 vDbgTex : TEXCOORD4;
 			};
 
 			VSOutput main(VSInput input)
 			{
 				VSOutput o;
+				bool SKINNED_ON = false;
 				float3 objectPos = input.vertexPosition;
+#if defined(SKINNED) && defined(HAS_BONEINDICES) && defined(HAS_BONEWEIGHTS)
+				SKINNED_ON = true;
+				float3 worldPosition = TransformPositionSkinned(objectPos, input.vertexBoneIndices, input.vertexBoneWeights);
+				float3 worldNormal = normalize(mul((float3x3)XENGINE_MATRIX_M, XSkinNormal(GetMorphedNormal(input.vertexNormal), input.vertexBoneIndices, input.vertexBoneWeights)));
+#else
 				float3 worldPosition = TransformPosition(objectPos);
 				float3 worldNormal = TransformDirection(GetMorphedNormal(input.vertexNormal));
-				if (_ShrinkSize != 0.0)
+#endif
+				if (_ShrinkSize != 0.0 && !SKINNED_ON)
 				{
 					// YSA CameraFixMultiplier — see the GLSL twin for the formula commentary.
 					float4 clip = mul(XENGINE_MATRIX_VP, float4(worldPosition, 1.0));
@@ -502,6 +520,7 @@ Pass "Toon"
 					worldPosition = shrunk;
 				}
 				o.position = TransformClip(objectPos);
+				o.vDbgTex = float4(0, 0, 0, 0);
 				o.texCoord0 = input.vertexTexCoord0 * _Tiling + _Offset;
 				o.worldPos = worldPosition;
 				o.objectPos = objectPos;
@@ -591,6 +610,7 @@ Pass "Toon"
 				float3 worldPos : TEXCOORD1;
 				float3 objectPos : TEXCOORD2;
 				float3 vNormal : TEXCOORD3;
+				float4 vDbgTex : TEXCOORD4;
 			};
 
 			float ToonMainShadow(PSInput input, float3 n)
