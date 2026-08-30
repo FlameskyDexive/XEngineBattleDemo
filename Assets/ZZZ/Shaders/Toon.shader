@@ -519,9 +519,14 @@ Pass "Toon"
 					objectPos = mul(xengine_WorldToObject, float4(shrunk, 1.0)).xyz;
 					worldPosition = shrunk;
 				}
-				o.position = SKINNED_ON
-					? TransformClipSkinned(input.vertexPosition, input.vertexBoneIndices, input.vertexBoneWeights)
-					: TransformClip(objectPos);
+#if defined(SKINNED) && defined(HAS_BONEINDICES) && defined(HAS_BONEWEIGHTS)
+				// Must gate at PREPROCESSOR time: SKINNED_ON is a runtime bool, and the offline
+				// artifact compile of the base variant (no SKINNED defines) still elaborates the
+				// taken-at-runtime branch — where vertexBoneIndices/TransformClipSkinned don't exist.
+				o.position = TransformClipSkinned(input.vertexPosition, input.vertexBoneIndices, input.vertexBoneWeights);
+#else
+				o.position = TransformClip(objectPos);
+#endif
 				o.vDbgTex = float4(0, 0, 0, 0);
 				o.texCoord0 = input.vertexTexCoord0 * _Tiling + _Offset;
 				o.worldPos = worldPosition;
