@@ -519,7 +519,9 @@ Pass "Toon"
 					objectPos = mul(xengine_WorldToObject, float4(shrunk, 1.0)).xyz;
 					worldPosition = shrunk;
 				}
-				o.position = TransformClip(objectPos);
+				o.position = SKINNED_ON
+					? TransformClipSkinned(input.vertexPosition, input.vertexBoneIndices, input.vertexBoneWeights)
+					: TransformClip(objectPos);
 				o.vDbgTex = float4(0, 0, 0, 0);
 				o.texCoord0 = input.vertexTexCoord0 * _Tiling + _Offset;
 				o.worldPos = worldPosition;
