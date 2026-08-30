@@ -163,10 +163,10 @@
             "Z": 1F
           },
           "_localRotation": {
-            "X": -0.4082179F,
-            "Y": 0.23456971F,
-            "Z": 0.10938165F,
-            "W": 0.87542605F
+            "X": -0.1460354F,
+            "Y": 0.8525371F,
+            "Z": -0.3805622F,
+            "W": -0.3271492F
           }
         },
         "Components": [
@@ -182,7 +182,7 @@
               "B": 0.839F,
               "A": 1F
             },
-            "Intensity": 1F,
+            "Intensity": 2F,
             "ShadowStrength": 1F,
             "ShadowBias": 0.001F,
             "ShadowNormalBias": 0F,
