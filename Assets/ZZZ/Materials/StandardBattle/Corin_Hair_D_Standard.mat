@@ -1,0 +1,376 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Resources.Material, XEngine.Runtime",
+  "_shader": {
+    "AssetID": "87bedf66-4e8b-0056-bc2e-4f8c7fc22a5a"
+  },
+  "_properties": {
+    "$id": 2,
+    "_colors": {
+      "$id": 3,
+      "entries": [
+        {
+          "key": "_Ambient",
+          "value": {
+            "R": 0.8F,
+            "G": 0.8F,
+            "B": 0.8F,
+            "A": 0F
+          }
+        },
+        {
+          "key": "_MainColor",
+          "value": {
+            "R": 1F,
+            "G": 1F,
+            "B": 1F,
+            "A": 1F
+          }
+        },
+        {
+          "key": "_GColor1",
+          "value": {
+            "R": 0F,
+            "G": 0F,
+            "B": 0F,
+            "A": 0F
+          }
+        },
+        {
+          "key": "_GColor2",
+          "value": {
+            "R": 0F,
+            "G": 0F,
+            "B": 0F,
+            "A": 0F
+          }
+        },
+        {
+          "key": "_RimColor",
+          "value": {
+            "R": 1F,
+            "G": 0F,
+            "B": 0F,
+            "A": 1F
+          }
+        },
+        {
+          "key": "_SpecularTint",
+          "value": {
+            "R": 1F,
+            "G": 1F,
+            "B": 1F,
+            "A": 1F
+          }
+        },
+        {
+          "key": "_SpecularTextureColor",
+          "value": {
+            "R": 1F,
+            "G": 1F,
+            "B": 1F,
+            "A": 1F
+          }
+        },
+        {
+          "key": "_EmissionColor",
+          "value": {
+            "R": 0F,
+            "G": 0F,
+            "B": 0F,
+            "A": 1F
+          }
+        }
+      ]
+    },
+    "_vectors2": {
+      "$id": 4,
+      "entries": [
+        {
+          "key": "_Tiling",
+          "value": {
+            "X": 1F,
+            "Y": 1F
+          }
+        }
+      ]
+    },
+    "_vectors3": {
+      "$id": 5,
+      "entries": [
+
+      ]
+    },
+    "_vectors4": {
+      "$id": 6,
+      "entries": [
+        {
+          "key": "_FaceX",
+          "value": {
+            "X": 0F,
+            "Y": 10F,
+            "Z": 0F,
+            "W": 0F
+          }
+        },
+        {
+          "key": "_FaceY",
+          "value": {
+            "X": 0F,
+            "Y": 10F,
+            "Z": 0F,
+            "W": 0F
+          }
+        },
+        {
+          "key": "_FaceZ",
+          "value": {
+            "X": 0F,
+            "Y": 10F,
+            "Z": 0F,
+            "W": 0F
+          }
+        }
+      ]
+    },
+    "_floats": {
+      "$id": 7,
+      "entries": [
+        {
+          "key": "_MainLightMidPoint",
+          "value": 0F
+        },
+        {
+          "key": "_MainLightSmoothness",
+          "value": 1F
+        },
+        {
+          "key": "_ReceiveShadowsEnabled",
+          "value": 1F
+        },
+        {
+          "key": "_MainShadowsPower",
+          "value": 0.5F
+        },
+        {
+          "key": "_ShadowSmoothness",
+          "value": 1F
+        },
+        {
+          "key": "_OcclusionPower",
+          "value": 1F
+        },
+        {
+          "key": "_AdditionalLightsEnabled",
+          "value": 1F
+        },
+        {
+          "key": "_AdditionalLightsMidPoint",
+          "value": 0F
+        },
+        {
+          "key": "_AdditionalLightsSmoothness",
+          "value": 1F
+        },
+        {
+          "key": "_AdditionalLightShadows",
+          "value": 1F
+        },
+        {
+          "key": "_AdditionalShadowsPower",
+          "value": 1F
+        },
+        {
+          "key": "_GradientEnabled",
+          "value": 0F
+        },
+        {
+          "key": "_GradientMultiplier",
+          "value": 1F
+        },
+        {
+          "key": "_GradientOffset",
+          "value": 0F
+        },
+        {
+          "key": "_InverseColors",
+          "value": 0F
+        },
+        {
+          "key": "_RimEnabled",
+          "value": 0F
+        },
+        {
+          "key": "_RimMidPoint",
+          "value": 0.6F
+        },
+        {
+          "key": "_RimSmoothness",
+          "value": 0.1F
+        },
+        {
+          "key": "_DynamicRemap",
+          "value": 0.5F
+        },
+        {
+          "key": "_RimHideOnShadow",
+          "value": 1F
+        },
+        {
+          "key": "_MainLightSpecular",
+          "value": 0F
+        },
+        {
+          "key": "_AdditionalLightsSpecular",
+          "value": 0F
+        },
+        {
+          "key": "_SpecularMapPower",
+          "value": 0F
+        },
+        {
+          "key": "_SpecularMidPoint",
+          "value": 0.9F
+        },
+        {
+          "key": "_SpecularSmoothness",
+          "value": 0.1F
+        },
+        {
+          "key": "_SpecularCustomizeEnabled",
+          "value": 0F
+        },
+        {
+          "key": "_SpecularHideOnShadows",
+          "value": 1F
+        },
+        {
+          "key": "_Emission",
+          "value": 0F
+        },
+        {
+          "key": "_IsFace",
+          "value": 0F
+        },
+        {
+          "key": "_ShrinkSize",
+          "value": -0.1F
+        },
+        {
+          "key": "_AlphaCutoff",
+          "value": 0F
+        },
+        {
+          "key": "_GradientDirection",
+          "value": 0F
+        }
+      ]
+    },
+    "_ints": {
+      "$id": 8,
+      "entries": [
+
+      ]
+    },
+    "_matrices": {
+      "$id": 9,
+      "entries": [
+
+      ]
+    },
+    "_matrixArr": {
+      "$id": 10,
+      "entries": [
+
+      ]
+    },
+    "_textures": {
+      "$id": 11,
+      "entries": [
+        {
+          "key": "_MainTex",
+          "value": {
+            "AssetID": "50ff028e-ee73-6b5f-0020-a5241859770c"
+          }
+        }
+      ]
+    },
+    "_textures3D": {
+      "$id": 12,
+      "entries": [
+
+      ]
+    },
+    "_texturesCube": {
+      "$id": 13,
+      "entries": [
+
+      ]
+    },
+    "_buffers": {
+      "$id": 14,
+      "entries": [
+
+      ]
+    },
+    "_bufferBindings": {
+      "$id": 15,
+      "entries": [
+
+      ]
+    }
+  },
+  "_overrides": {
+    "$id": 16,
+    "$values": [
+      "_MainTex",
+      "_Ambient",
+      "_MainColor",
+      "_GColor1",
+      "_GColor2",
+      "_MainLightMidPoint",
+      "_MainLightSmoothness",
+      "_ReceiveShadowsEnabled",
+      "_MainShadowsPower",
+      "_ShadowSmoothness",
+      "_OcclusionPower",
+      "_AdditionalLightsEnabled",
+      "_AdditionalLightsMidPoint",
+      "_AdditionalLightsSmoothness",
+      "_AdditionalLightShadows",
+      "_AdditionalShadowsPower",
+      "_GradientEnabled",
+      "_GradientMultiplier",
+      "_GradientOffset",
+      "_InverseColors",
+      "_RimColor",
+      "_RimEnabled",
+      "_RimMidPoint",
+      "_RimSmoothness",
+      "_DynamicRemap",
+      "_RimHideOnShadow",
+      "_MainLightSpecular",
+      "_AdditionalLightsSpecular",
+      "_SpecularMapPower",
+      "_SpecularMidPoint",
+      "_SpecularSmoothness",
+      "_SpecularTint",
+      "_SpecularCustomizeEnabled",
+      "_SpecularHideOnShadows",
+      "_SpecularTextureColor",
+      "_Emission",
+      "_EmissionColor",
+      "_IsFace",
+      "_ShrinkSize",
+      "_FaceX",
+      "_FaceY",
+      "_FaceZ",
+      "_Tiling",
+      "_AlphaCutoff",
+      "_GradientDirection"
+    ]
+  },
+  "AssetPath": "ZZZ/Materials/StandardBattle/Corin_Hair_D_Standard.mat",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "Corin_Hair_D_Standard"
+}
