@@ -95,6 +95,10 @@ Pass "Outline"
 				float3 vertexPosition : POSITION;
 				float3 vertexNormal : NORMAL;
 				float4 vertexColor : COLOR0;
+#ifdef HAS_BONEINDICES
+				float4 vertexBoneIndices : TEXCOORD4;
+				float4 vertexBoneWeights : TEXCOORD5;
+#endif
 			};
 
 			struct VSOutput
@@ -105,7 +109,11 @@ Pass "Outline"
 			VSOutput main(VSInput input)
 			{
 				VSOutput o;
+#if defined(SKINNED) && defined(HAS_BONEINDICES)
+				float3 worldPos = TransformPositionSkinned(input.vertexPosition, input.vertexBoneIndices, input.vertexBoneWeights);
+#else
 				float3 worldPos = TransformPosition(input.vertexPosition);
+#endif
 				float3 worldNormal;
 				if (_VertexColorNormals > 0.5)
 					worldNormal = TransformDirection(normalize(input.vertexColor.rgb));

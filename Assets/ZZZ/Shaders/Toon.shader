@@ -889,6 +889,10 @@ Pass "ToonShadow"
 			{
 				float3 vertexPosition : POSITION;
 				float2 vertexTexCoord0 : TEXCOORD0;
+#ifdef HAS_BONEINDICES
+				float4 vertexBoneIndices : TEXCOORD4;
+				float4 vertexBoneWeights : TEXCOORD5;
+#endif
 			};
 
 			struct VSOutput
@@ -900,7 +904,11 @@ Pass "ToonShadow"
 			VSOutput main(VSInput input)
 			{
 				VSOutput o;
+#if defined(SKINNED) && defined(HAS_BONEINDICES)
+				o.position = TransformClipSkinned(input.vertexPosition, input.vertexBoneIndices, input.vertexBoneWeights);
+#else
 				o.position = TransformClip(input.vertexPosition);
+#endif
 				o.texCoord0 = input.vertexTexCoord0 * _Tiling + _Offset;
 				return o;
 			}
