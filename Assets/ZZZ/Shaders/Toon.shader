@@ -2,6 +2,10 @@ Shader "Zonezero/Toon"
 
 Variants
 {
+    Variant("HAS_TANGENTS")
+    Variant("SKINNED")
+    Variant("HAS_BONEINDICES")
+    Variant("HAS_BONEWEIGHTS")
 }
 
 // Cel/toon shading ported from the ZZZ reference project's "YSA Toon/Lit" Unity shader graph
@@ -129,7 +133,7 @@ Pass "Toon"
 				} else {
 					objectPos = vertexPosition;
 					worldPos = worldPosition;
-					gl_Position = TransformClip(vertexPosition);
+					gl_Position = TransformClip(worldPosition);
 				}
 				texCoord0 = vertexTexCoord0 * _Tiling + _Offset;
 				vNormal = worldNormal;
@@ -404,6 +408,7 @@ Pass "Toon"
 		Vertex
 		{
 			#include "XEngineCG"
+			#include "VertexAttributes"
 
 			cbuffer ToonShadingMaterial : register(b2)
 			{
@@ -465,6 +470,10 @@ Pass "Toon"
 				float3 vertexPosition : POSITION;
 				float2 vertexTexCoord0 : TEXCOORD0;
 				float3 vertexNormal : NORMAL;
+#ifdef HAS_BONEINDICES
+				float4 vertexBoneIndices : BLENDINDICES;
+				float4 vertexBoneWeights : BLENDWEIGHT;
+#endif
 			};
 
 			struct VSOutput
@@ -480,8 +489,16 @@ Pass "Toon"
 			{
 				VSOutput o;
 				float3 objectPos = input.vertexPosition;
+#if defined(SKINNED) && defined(HAS_BONEINDICES)
+				float3 worldPosition = TransformPositionSkinned(objectPos, input.vertexBoneIndices, input.vertexBoneWeights);
+#else
 				float3 worldPosition = TransformPosition(objectPos);
+#endif
+#if defined(SKINNED) && defined(HAS_BONEINDICES)
+				float3 worldNormal = normalize(mul((float3x3)XENGINE_MATRIX_M, GetSkinnedNormal(GetMorphedNormal(input.vertexNormal), input.vertexBoneIndices, input.vertexBoneWeights)));
+#else
 				float3 worldNormal = TransformDirection(GetMorphedNormal(input.vertexNormal));
+#endif
 				if (_ShrinkSize != 0.0)
 				{
 					// YSA CameraFixMultiplier — see the GLSL twin for the formula commentary.
@@ -501,7 +518,11 @@ Pass "Toon"
 					objectPos = mul(xengine_WorldToObject, float4(shrunk, 1.0)).xyz;
 					worldPosition = shrunk;
 				}
+#if defined(SKINNED) && defined(HAS_BONEINDICES)
+				o.position = TransformClipSkinned(objectPos, input.vertexBoneIndices, input.vertexBoneWeights);
+#else
 				o.position = TransformClip(objectPos);
+#endif
 				o.texCoord0 = input.vertexTexCoord0 * _Tiling + _Offset;
 				o.worldPos = worldPosition;
 				o.objectPos = objectPos;

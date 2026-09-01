@@ -1,0 +1,8 @@
+DefaultPipeline:
+  AssetID: "00000000-0000-0000-0000-000000000000"
+ShadowsEnabled: true
+ShadowDistance: 100
+ShadowAtlasSize: 4096
+ImageEffectsEnabled: true
+AntiAliasing: 0
+$id: 1

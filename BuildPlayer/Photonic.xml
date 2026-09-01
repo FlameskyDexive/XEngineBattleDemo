@@ -1,0 +1,1224 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Photonic</name>
+    </assembly>
+    <members>
+        <member name="T:XEngine.Photonic.AutoAtlasPacker">
+            <summary>
+            Convenience helper that bin-packs a list of mesh instances across one or more
+            <see cref="T:XEngine.Photonic.LightmapTarget"/>s. Each mesh's atlas footprint is sized from its world-space
+            surface area times the <c>texelsPerWorldUnit</c> density squared (so larger surfaces get
+            more lightmap resolution), then shelf-packed into atlases: when the current atlas runs
+            out of room, a new one is created.
+            </summary>
+            <remarks>
+            This sits on top of the imperative API: it ultimately just calls
+            <see cref="M:XEngine.Photonic.LightmapBaker.CreateTextureTarget(System.String,System.Int32,System.Int32)"/> and
+            <see cref="M:XEngine.Photonic.LightmapTarget.AddBakeInstance(XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4,System.Nullable{XEngine.Vector.Float2},System.Nullable{XEngine.Vector.Float2},System.String)"/> for you. If you want finer control over which
+            instance lives in which atlas, you can keep using the imperative methods directly.
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.AutoAtlasPacker.Pack(XEngine.Photonic.LightmapBaker,System.Collections.Generic.IReadOnlyList{System.ValueTuple{XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4}},System.Int32,System.Int32,System.Single,System.Int32,System.String)">
+            <summary>
+            Pack the given meshes into N atlas pages. Returns the targets that were created (in
+            creation order: index 0 is the first atlas, etc.), and a parallel array mapping each
+            input mesh to the <see cref="T:XEngine.Photonic.BakeInstance"/> that was added for it.
+            </summary>
+            <param name="baker">The baker that should own the new targets and instances.</param>
+            <param name="meshes">Mesh + world-transform pairs to pack. Each mesh must have a UV layer
+            named <paramref name="bakeUVLayer"/> with coords in <c>[0, 1]^2</c> (i.e. each mesh's UV1
+            fills its own atlas region, not all of UV space).</param>
+            <param name="atlasWidth">Page width in pixels.</param>
+            <param name="atlasHeight">Page height in pixels.</param>
+            <param name="texelsPerWorldUnit">Target lightmap density. 50 = each metre of world surface
+            gets ~50 texels along its largest dimension; bump it up for higher quality.</param>
+            <param name="padding">Pixels of padding between every placement.</param>
+            <param name="bakeUVLayer">Name of the UV layer to use as the bake layer.</param>
+        </member>
+        <member name="M:XEngine.Photonic.AutoAtlasPacker.PackFixed(XEngine.Photonic.LightmapBaker,System.Collections.Generic.IReadOnlyList{System.ValueTuple{XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4,System.Int32,XEngine.Vector.Float2,XEngine.Vector.Float2}},System.Int32,System.Int32,System.String)">
+            <summary>
+            "Lock atlas": recreate targets and instances from <b>previously-computed</b> placements
+            (atlas index + UV offset/scale per mesh) instead of repacking. Use this on a re-bake so each
+            renderer keeps the exact same atlas region — its lightmap index and scale/offset stay stable,
+            which matters when those values were already persisted on the renderers/scene.
+            </summary>
+            <param name="baker">The baker that should own the new targets and instances.</param>
+            <param name="items">Per-mesh placement: mesh, world transform, target/atlas index, and the
+            UV offset/scale into that atlas (as produced by a prior <see cref="M:XEngine.Photonic.AutoAtlasPacker.Pack(XEngine.Photonic.LightmapBaker,System.Collections.Generic.IReadOnlyList{System.ValueTuple{XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4}},System.Int32,System.Int32,System.Single,System.Int32,System.String)"/> /
+            <see cref="P:XEngine.Photonic.BakeInstance.UVOffset"/> + <see cref="P:XEngine.Photonic.BakeInstance.UVScale"/>).</param>
+            <param name="atlasWidth">Page width in pixels (must match the original bake).</param>
+            <param name="atlasHeight">Page height in pixels (must match the original bake).</param>
+            <param name="bakeUVLayer">Name of the UV layer to use as the bake layer.</param>
+        </member>
+        <member name="M:XEngine.Photonic.AutoAtlasPacker.MeshMaxWorldOverUVRatio(XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4,System.String)">
+            <summary>
+            Largest per-triangle <c>world_area / uv_area</c> ratio across every triangle in the mesh
+            under the given transform. Returns 0 for empty or fully-degenerate meshes (callers clamp).
+            </summary>
+            <remarks>
+            Triangles with sub-pixel UV chart area or sub-mm world area are skipped: a single
+            genuinely-degenerate triangle would otherwise dominate the ratio and produce an atlas the
+            size of the whole page for one bad face. The thresholds (<c>1e-9 m^2</c> world,
+            <c>1e-10</c> UV) sit well below anything a real shipped model produces.
+            </remarks>
+        </member>
+        <member name="T:XEngine.Photonic.AutoAtlasResult">
+            <summary>Result of an <see cref="M:XEngine.Photonic.AutoAtlasPacker.Pack(XEngine.Photonic.LightmapBaker,System.Collections.Generic.IReadOnlyList{System.ValueTuple{XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4}},System.Int32,System.Int32,System.Single,System.Int32,System.String)"/> call.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.AutoAtlasResult.Targets">
+            <summary>One target per atlas page. Length is the smallest number of pages that fit the input.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.AutoAtlasResult.Instances">
+            <summary>One <see cref="T:XEngine.Photonic.BakeInstance"/> per input mesh, in the same order as the input list.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.AutoAtlasResult.Placements">
+            <summary>For each input mesh: which atlas it landed in (index into <see cref="P:XEngine.Photonic.AutoAtlasResult.Targets"/>), its pixel offset, and its pixel footprint.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeInstance">
+            <summary>
+            One placement of a <see cref="T:XEngine.Photonic.BakeMesh"/> into a <see cref="T:XEngine.Photonic.LightmapTarget"/>. Holds the
+            world transform, the UV transform that maps the mesh's bake UV layer into atlas space, and
+            shadow/visibility flags.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.Mesh">
+            <summary>The mesh this instance represents.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.WorldTransform">
+            <summary>Object-to-world transform applied to mesh vertices.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.UVOffset">
+            <summary>UV translation applied to the bake UV layer when placing this instance in the atlas.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.UVScale">
+            <summary>UV scale applied to the bake UV layer when placing this instance in the atlas.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.BakeUVLayer">
+            <summary>Name of the UV layer used for atlas placement (defaults to <c>"UV1"</c>).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.CastsShadows">
+            <summary>True if this instance should cast shadows for direct lighting.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.ReceivesLighting">
+            <summary>True if this instance receives baked lighting (false means it occludes but isn't written into).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeInstance.Target">
+            <summary>The target this instance bakes into.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeOptions">
+            <summary>
+            Global knobs for a bake. Per-instance / per-target settings live on those objects.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.Bounces">
+            <summary>Indirect diffuse bounces. 0 disables GI; the demo defaults to 2.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.RussianRoulette">
+            <summary>Russian-roulette termination probability (per bounce). 0 disables RR.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.RayBias">
+            <summary>Surface offset along the geometric normal for the ray origin, to avoid self-intersection.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.MaxRayDistance">
+            <summary>Maximum ray distance for visibility tests. Mostly relevant for indirect bounces.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.SkyColor">
+            <summary>Environment (sky) radiance returned when a ray misses everything. Used as the
+            constant fallback when <see cref="P:XEngine.Photonic.BakeOptions.Environment"/> is not set.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.Environment">
+            <summary>
+            Optional HDR environment: given a normalized ray direction (the direction the ray travels
+            into the sky), returns the incoming radiance. Lets callers plug a cubemap/equirect sky as a
+            GI source instead of the flat <see cref="P:XEngine.Photonic.BakeOptions.SkyColor"/>. When null, <see cref="P:XEngine.Photonic.BakeOptions.SkyColor"/> is used.
+            <para><b>Thread-safety:</b> invoked concurrently from many bake worker threads; the callback
+            must be pure / read-only (e.g. sampling immutable cubemap data).</para>
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.UseHemisphereLUT">
+            <summary>
+            When true, indirect bounce directions are drawn from a precomputed 16k-entry
+            Halton-distributed cosine-hemisphere LUT (cheap, low-discrepancy). When false, each
+            bounce builds a fresh direction via Malley's method (sqrt + sin/cos + sqrt). The LUT
+            is the faster default; flip this off if you suspect it's causing visible structure
+            in the lightmap from repeated directions.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.IgnoreAlbedo">
+            <summary>
+            When true, both the flat material color and the diffuse texture are ignored. Every
+            surface acts as a white (1, 1, 1) Lambertian. Useful for diagnosing whether visible
+            lightmap artifacts are caused by texture sampling vs. the path tracer itself.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.IncludeDirectLighting">
+            <summary>
+            When true, the lightmap includes direct lighting at the texel itself (sun rays directly
+            striking the surface being baked). When false, only the indirect contribution is stored:
+            direct shadow rays at bounce hit points are <i>still</i> fired (so light bounced off other
+            surfaces propagates correctly), but the texel's own direct lighting must be added at
+            runtime by a dynamic-light shader. The standard "indirect-only baked lighting" pipeline.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.DoBackfaceCull">
+            <summary>
+            When true, all bake rays (visibility, bounce, and shadow/occlusion) cull back faces, so light
+            behaves as it does in a backface-culled rasterizer: it can pass up through a one-sided floor,
+            the way XEngine's backface-culled shadows allow. When false the tracer is two-sided (historic
+            behavior). The front-face winding is fixed to the renderer's convention by the integrator.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.DilatePixels">
+            <summary>Edge dilation pixels applied after the bake, to prevent bilinear bleed at seams.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.Denoise">
+            <summary>
+            Run an edge-avoiding wavelet denoiser over the converged lightmap (before dilation), guided by
+            per-texel normal + position so it removes Monte-Carlo noise without bleeding across chart seams
+            or geometric / lighting edges. Off by default. Applied once at finalize via <see cref="M:XEngine.Photonic.Job.Denoise"/>.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.DenoiseIterations">
+            <summary>Denoiser a-trous passes; each doubles the kernel reach (1, 2, 4, ...). 5 ~= a 32px effective radius.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.DenoiseNormalPhi">
+            <summary>Denoiser normal edge-stop exponent. Higher = sharper preservation of normal discontinuities.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.DenoisePositionScale">
+            <summary>Denoiser position bandwidth as a multiple of the per-texel world footprint. Lower = preserves finer spatial detail.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.MaxDegreeOfParallelism">
+            <summary>Cap on worker threads. -1 = use the runtime default.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.Seed">
+            <summary>Deterministic seed for the bake's PRNG. Two bakes with the same seed produce the same output.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeOptions.SamplesPerIteration">
+            <summary>
+            Indirect samples shot per texel per iteration. The bake runs as a progressive temporal
+            accumulator: each iteration shoots this many indirect samples per texel and folds them
+            into a running average. The atlas is updated after each iteration, so the caller can
+            render a preview while the bake converges. The job keeps running until <see cref="M:XEngine.Photonic.Job.Cancel"/>
+            is called. Caller-side: emulate "one-shot" by polling until satisfied, then cancelling.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.JobStatus">
+            <summary>Final state of a bake.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.JobStatus.Pending">
+            <summary>Job is still running or has not started.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.JobStatus.Cancelled">
+            <summary>Job was cancelled via <c>Cancel()</c>.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.JobStatus.Failed">
+            <summary>Job threw an exception. See <see cref="P:XEngine.Photonic.Job.Error"/>.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Imaging.Dilate">
+            <summary>
+            Lightmap-style edge dilation. Walks every empty pixel and fills it with the average of the
+            non-empty pixels in its 3x3 neighbourhood. Repeated <c>n</c> times to grow the lit area by
+            <c>n</c> pixels: enough to cover bilinear filter taps that would otherwise sample black.
+            </summary>
+            <remarks>
+            Each pass reads from a frozen snapshot and writes to the live <c>rgb</c> / <c>covered</c>
+            buffers; rows within a pass are independent, so the row loop runs through
+            <see cref="M:System.Threading.Tasks.Parallel.For(System.Int32,System.Int32,System.Action{System.Int32})"/>.
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Imaging.Dilate.Run(System.Single[],System.Boolean[],System.Int32,System.Int32,System.Int32)">
+            <summary>Run dilation in-place. <paramref name="covered"/> marks the already-valid texels.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Imaging.LightmapDenoiser">
+            <summary>
+            Edge-avoiding a-trous wavelet denoiser for baked lightmaps. Smooths the
+            Monte-Carlo noise left on a surface without bleeding across chart seams or geometric / lighting
+            edges, by weighting each tap with the rasterizer's per-texel world position + normal guides.
+            Operates on covered texels only, in linear HDR, and is meant to run once on the converged atlas
+            just before the final dilation.
+            </summary>
+            <remarks>
+            Each pass reads a frozen snapshot and writes a ping-pong buffer; rows are independent so the
+            row loop runs through <see cref="M:System.Threading.Tasks.Parallel.For(System.Int32,System.Int32,System.Action{System.Int32})"/>.
+            The tap spacing doubles every pass (1, 2, 4, ...), so a handful of passes covers a wide kernel
+            at a few taps each.
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Imaging.LightmapDenoiser.Run(System.Single[],System.Boolean[],XEngine.Photonic.Rasterization.TexelSample[],System.Int32,System.Int32,System.Int32,System.Single,System.Single)">
+            <summary>
+            Denoise <paramref name="rgb"/> (R,G,B interleaved HDR, length <c>width*height*3</c>) in place.
+            <paramref name="covered"/> / <paramref name="samples"/> are the rasterizer's per-texel coverage
+            + guides (row-major <c>y*width + x</c>). There is no radiance edge-stop: taps are weighted only
+            by the geometric guides (same surface normal + same plane), so Monte-Carlo noise is averaged out
+            regardless of magnitude (shadow edges on a flat surface soften as a result). Uncovered texels are
+            left untouched for dilation.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Integration.BakeAcceleration">
+            <summary>
+            The ray-tracing acceleration structure + pre-resolved material tables for a bake. Shared by the
+            per-frame <see cref="T:XEngine.Photonic.Job"/> (lightmap texels) and <see cref="M:XEngine.Photonic.LightmapBaker.BakeProbes(System.Collections.Generic.IReadOnlyList{XEngine.Vector.Float3},System.Int32,System.Nullable{System.Int32})"/> (light
+            probes) so both trace against an identical scene.
+            </summary>
+            <remarks>
+            Baking is static (nothing moves) and every surface is baked uniquely, so there's no need for a
+            two-level TLAS-over-instances structure. Instead we bake all instances' triangles into a single
+            <b>world-space</b> <see cref="T:XEngine.Photonic.Raytracing.Blas"/> — one tight triangle-level BVH with no per-ray
+            instance transform and no instance-AABB culling to defeat on overlapping geometry. Per-hit shading
+            reads world position/normal/UV0 straight off the merged mesh; the merged material groups map 1:1
+            to <see cref="F:XEngine.Photonic.Integration.BakeAcceleration.MergedMats"/>.
+            <para>The rasterizer keys texels by the source <see cref="T:XEngine.Photonic.BakeInstance"/> + its material group, so
+            <see cref="F:XEngine.Photonic.Integration.BakeAcceleration.InstanceMaterials"/> keeps per-instance material resolution for that path.</para>
+            </remarks>
+        </member>
+        <member name="F:XEngine.Photonic.Integration.BakeAcceleration.Blas">
+            <summary>Single merged world-space BLAS over every instance's triangles.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Integration.BakeAcceleration.MergedMats">
+            <summary>Resolved material per merged material group (indexed by <c>TriRef.MaterialGroupIndex</c>).</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Integration.BakeAcceleration.InstanceMaterials">
+            <summary>Resolved materials per instance: <c>InstanceMaterials[instanceIndex][materialGroupIndex]</c>. Used by the rasterizer/texel path.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Integration.BakeAcceleration.Instances">
+            <summary>Canonical instance array (used by the rasterizer, which is independent of the BLAS).</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Integration.PathIntegrator">
+             <summary>
+             CPU path tracer. Given a surface point with a normal and a material, returns the radiance
+             arriving on that point from all lights (direct) plus indirect diffuse bounces.
+             </summary>
+             <remarks>
+             Direct: next-event estimation. For every light, sample one shadow ray; multiply by the
+             material's diffuse albedo x dot(n, l).
+            
+             Indirect: a small number of cosine-weighted bounces. With cosine sampling, the PDF is
+             <c>cos / π</c> and the integrand <c>brdf * cos / pdf = albedo</c>. So each bounce just
+             multiplies the carried throughput by the surface's diffuse albedo. Cheap and converges fast
+             on diffuse scenes.
+            
+             Material lookups are precomputed: callers pass <c>resolvedMats[blasIndex][groupIndex]</c> so
+             the inner loop avoids the per-bounce <c>FindMaterial</c> dictionary hit.
+             </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.Integrate(XEngine.Vector.Float3,XEngine.Vector.Float3,XEngine.Vector.Float3,XEngine.Vector.Float3,System.Int32,System.Int32,System.Int32,XEngine.Photonic.Sampling.Sampler@)">
+            <summary>
+            Direct + indirect irradiance at a surface point. The lightmap stores <i>incoming</i> light;
+            the runtime shader multiplies by the surface's own diffuse texture at draw time. The
+            texel's own <paramref name="albedo"/> parameter is therefore <b>not</b> applied here: only
+            hit-surface albedos (one per bounce) are applied inside <see cref="M:XEngine.Photonic.Integration.PathIntegrator.TracePath(XEngine.Vector.Float3,XEngine.Vector.Float3,XEngine.Vector.Float3,System.Int32,XEngine.Photonic.Sampling.Sampler@)"/>. This avoids
+            double-modulation (<c>albedo^2 x light</c> at runtime) and keeps the lightmap free of the
+            texel's diffuse-texture noise.
+            </summary>
+            <remarks>
+            <para><b>Direct</b>: <see cref="M:XEngine.Photonic.Integration.PathIntegrator.SampleAllLights(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Boolean)"/> is deterministic with the current set of
+            light types (point / directional / spot: no area lights yet, so no soft shadows), so the
+            answer is the same regardless of <paramref name="directSamples"/>.</para>
+            <para><b>Indirect</b>: cosine-weighted hemisphere sampling via the precomputed
+            <see cref="T:XEngine.Photonic.Sampling.CosineHemisphereLUT"/>; throughput starts at <c>1</c> and picks up hit albedos
+            only at bounce points.</para>
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.ResolveHitSurface(XEngine.Photonic.Raytracing.HitInfo,XEngine.Vector.Float3@,XEngine.Vector.Float3@)">
+            <summary>
+            Resolve the diffuse albedo and emissive of a ray hit (material colour x diffuse texel, or
+            white when <see cref="P:XEngine.Photonic.BakeOptions.IgnoreAlbedo"/> is set). Reads straight off the merged mesh.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.ComputeDirectLighting(XEngine.Vector.Float3,XEngine.Vector.Float3)">
+            <summary>
+            Deterministic direct lighting at a surface point: one shadow ray per light, no albedo
+            applied. Caller multiplies by their own albedo. Used by continuous mode to cache the
+            direct term once per texel.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.ComputeBakedDirectLighting(XEngine.Vector.Float3,XEngine.Vector.Float3)">
+            <summary>
+            Direct lighting from baked-direct lights only (<see cref="P:XEngine.Photonic.Scene.Lights.Light.BakeDirect"/>).
+            This is what the lightmap stores at the texel; "mixed" lights are excluded here and applied
+            in realtime at runtime. Bounced/indirect energy from all lights is still baked elsewhere.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.SampleEnvironment(XEngine.Vector.Float3)">
+            <summary>Environment radiance for a ray that hit nothing: the optional HDR environment
+            callback if set, otherwise the flat <see cref="P:XEngine.Photonic.BakeOptions.SkyColor"/>.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.IntegrateProbe(XEngine.Vector.Float3,System.Int32,System.Int32,XEngine.Photonic.Sampling.Sampler@)">
+            <summary>
+            Project the radiance arriving at a probe <paramref name="position"/> from every direction
+            into 9-coefficient RGB spherical harmonics. <paramref name="samples"/> uniform-sphere rays
+            are traced; each ray's radiance is the hit surface's outgoing radiance (emissive +
+            albedo·(baked-direct + indirect bounces)), matching the lightmap's shading convention, or the
+            environment on a miss. Used by <see cref="M:XEngine.Photonic.LightmapBaker.BakeProbes(System.Collections.Generic.IReadOnlyList{XEngine.Vector.Float3},System.Int32,System.Nullable{System.Int32})"/> to light dynamic objects.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.ProbeIncomingRadiance(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Int32,XEngine.Photonic.Sampling.Sampler@)">
+            <summary>Radiance arriving at a probe along <paramref name="dir"/>: environment on a miss,
+            otherwise the hit surface's outgoing radiance under the lightmap shading convention.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.IntegrateIndirect(XEngine.Vector.Float3,XEngine.Vector.Float3,XEngine.Vector.Float3,System.Int32,System.Int32,XEngine.Photonic.Sampling.Sampler@)">
+             <summary>
+             Indirect contribution at a surface point: <b>sum</b> of N path traces, each cosine-sampled
+             and bounced up to <paramref name="bounces"/> times. The caller divides by the running total
+             sample count when reading the average.
+            
+             The throughput starts at <c>(1, 1, 1)</c>: the texel's own albedo is intentionally NOT
+             folded in here, since the lightmap stores irradiance and the runtime shader applies the
+             surface's diffuse texture at draw time. <paramref name="albedo"/> is accepted for API
+             compatibility but ignored.
+             </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.RecordDirectShadowRays(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Collections.Generic.List{XEngine.Photonic.DebugSegment})">
+            <summary>
+            Record the shadow rays the integrator would cast at <paramref name="position"/> for each
+            scene light. Used by the demo's ray-visualisation tool. Doesn't accumulate radiance.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.TracePathRecorded(XEngine.Vector.Float3,XEngine.Vector.Float3,XEngine.Vector.Float3,System.Int32,XEngine.Photonic.Sampling.Sampler@,System.Collections.Generic.List{XEngine.Photonic.DebugSegment})">
+            <summary>
+            Trace one path identical to <see cref="M:XEngine.Photonic.Integration.PathIntegrator.TracePath(XEngine.Vector.Float3,XEngine.Vector.Float3,XEngine.Vector.Float3,System.Int32,XEngine.Photonic.Sampling.Sampler@)"/>, but append each bounce segment (and
+            each per-bounce shadow ray) to <paramref name="segs"/>. The radiance is computed and returned
+            but the caller usually discards it: this method is for visualisation only.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Integration.PathIntegrator.SampleAllLights(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Boolean)">
+            <summary>
+            Direct lighting at a surface point via next-event estimation. When
+            <paramref name="bakedDirectOnly"/> is true, only lights with <see cref="P:XEngine.Photonic.Scene.Lights.Light.BakeDirect"/>
+            contribute — used for the lightmap texel itself, so "mixed" lights (BakeDirect=false) leave
+            their direct term to the runtime shader. Bounce hits call this with <c>false</c> so every
+            light's bounced (indirect) energy is still baked.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.DebugSegment">
+            <summary>
+            A recorded ray segment from a bake-time path trace. The demo uses these to draw the bounce
+            chain for a hovered texel each frame so you can see exactly where the path tracer's rays are
+            going (and which ones get occluded).
+            </summary>
+        </member>
+        <member name="F:XEngine.Photonic.DebugSegment.Start">
+            <summary>World-space ray origin.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.DebugSegment.End">
+            <summary>World-space ray endpoint: either the hit position or origin + dir * maxT if no hit.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.DebugSegment.BounceIndex">
+            <summary>0 = primary bounce direction from the texel, 1 = first bounce, etc.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.DebugSegment.IsShadow">
+            <summary>True for shadow rays (NEE direct lighting); false for diffuse bounce rays.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.DebugSegment.Hit">
+            <summary>True if this ray hit something within its <see cref="F:XEngine.Photonic.DebugSegment.End"/>; false if it missed (only meaningful for shadow rays and bounce rays that go off into the sky).</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Job">
+            <summary>
+            A running bake: created by <see cref="M:XEngine.Photonic.LightmapBaker.Start"/>, driven via <see cref="M:XEngine.Photonic.Job.Poll"/> /
+            <see cref="M:XEngine.Photonic.Job.Wait"/>, terminated via <see cref="M:XEngine.Photonic.Job.Cancel"/>.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.Job.IterationCount">
+            <summary>
+            Number of completed sample-accumulation passes in continuous mode. Increments after each
+            iteration; the caller can watch it (e.g. once per render frame) and re-upload the atlas
+            when it changes. Always 0 outside of continuous mode.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.SetDebugTexel(XEngine.Photonic.LightmapTarget,System.Int32,System.Int32)">
+            <summary>
+            Set which texel's rays the integrator should record each iteration. Pass <c>null</c>
+            for <paramref name="target"/> (or coordinates outside the target) to disable recording.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.ReadDebugSegments">
+            <summary>Returns a snapshot of the segments produced by the most recent recorded path for the debug texel.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.GetTexelInfo(XEngine.Photonic.LightmapTarget,System.Int32,System.Int32)">
+            <summary>
+            Read back the integrator's recorded data for one texel of the given target. Returns
+            <see cref="F:XEngine.Photonic.TexelDiagnostic.Valid"/> = false until the rasterise phase has completed,
+            or if the target wasn't part of this bake.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.Denoise">
+            <summary>
+            Run the edge-avoiding denoiser over every target's converged atlas, then re-dilate the seams.
+            No-op unless <see cref="P:XEngine.Photonic.BakeOptions.Denoise"/> is set or the bake never rasterized. Mutates the
+            pixel buffers in place using the rasterizer's retained per-texel guides, so call it once after
+            the bake has stopped (<see cref="M:XEngine.Photonic.Job.Cancel"/> then <see cref="M:XEngine.Photonic.Job.Wait"/>); reads after this see the
+            denoised result.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.Job.Status">
+            <summary>Current state.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Job.Error">
+            <summary>Exception captured if <see cref="P:XEngine.Photonic.Job.Status"/> is <see cref="F:XEngine.Photonic.JobStatus.Failed"/>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Job.Activity">
+            <summary>Free-text description of what the bake is doing right now (texel rasterisation, integration, etc.).</summary>
+        </member>
+        <member name="E:XEngine.Photonic.Job.OnIterationComplete">
+            <summary>
+            Fires after the worker thread finishes folding a full iteration into the atlas. Argument
+            is the iteration count just completed. The callback runs on the worker thread; don't touch
+            UI state directly from it without marshalling.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.Start(XEngine.Photonic.BakeScene,System.Collections.Generic.IReadOnlyList{XEngine.Photonic.LightmapTarget},XEngine.Photonic.BakeOptions)">
+            <summary>Internal entry point used by <see cref="M:XEngine.Photonic.LightmapBaker.Start"/>.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.Poll">
+            <summary>Returns true while the job is still running.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.Wait">
+            <summary>
+            Block until the job ends. If the bake threw, the inner exception is rethrown here
+            (rather than wrapped in <see cref="T:System.AggregateException"/>).
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.RunIterations(System.Int32)">
+            <summary>
+            Block until <paramref name="iterations"/> additional accumulator iterations have completed
+            (or the bake is cancelled / fails). Useful for headless / scripted bakes:
+            <c>baker.Start().RunIterations(64); baker.Cancel();</c>.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.Cancel">
+            <summary>Request cancellation. The job ends as soon as the worker reaches its next cancel-check.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Job.IntegrateContinuous(XEngine.Photonic.Rasterization.TargetWorkspace[],XEngine.Photonic.Integration.BakeAcceleration)">
+            <summary>
+            Continuous / temporal bake: pre-compute deterministic direct lighting once per texel, then
+            loop forever folding new indirect samples into a running average until cancelled. After each
+            iteration <see cref="P:XEngine.Photonic.LightmapTarget.PixelsRGB"/> reflects <c>direct + indirectSum/count</c>
+            for every covered texel, so a viewer that polls <see cref="P:XEngine.Photonic.Job.IterationCount"/> can show a
+            live preview converging.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.LightmapBaker">
+            <summary>
+            Top-level entry point: one baker per bake. Owns a <see cref="T:XEngine.Photonic.BakeScene"/>, a set of
+            <see cref="T:XEngine.Photonic.LightmapTarget"/>s, and the running <see cref="P:XEngine.Photonic.LightmapBaker.Job"/>.
+            </summary>
+            <example>
+            <code>
+            using var baker = new LightmapBaker();
+            var scene = baker.BeginScene("Bake");
+            var mesh  = scene.BeginMesh("floor")
+                             .AddVertices(positions, normals)
+                             .AddUVLayer("UV0", materialUVs)
+                             .AddUVLayer("UV1", lightmapUVs)
+                             .AddMaterialGroup("mat0", indices)
+                             .End();
+            scene.CreatePointLight("sun", Float4x4.CreateTranslation(0, 5, 0),
+                                   new Float3(10, 10, 10), range: 20f);
+            var target = baker.CreateTextureTarget("page0", 512, 512);
+            target.AddBakeInstance(mesh, Float4x4.Identity);
+            scene.End();
+            var job = baker.Start();
+            job.Wait();
+            var hdr = target.ReadHDR();
+            </code>
+            </example>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapBaker.Options">
+            <summary>Global bake settings. Tweak before calling <see cref="M:XEngine.Photonic.LightmapBaker.Start"/>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapBaker.Scene">
+            <summary>The scene attached to this baker, or null if <see cref="M:XEngine.Photonic.LightmapBaker.BeginScene(System.String)"/> hasn't run yet.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapBaker.Targets">
+            <summary>Texture targets created on this baker.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapBaker.Job">
+            <summary>The active job after <see cref="M:XEngine.Photonic.LightmapBaker.Start"/>, or null if no job has been started.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapBaker.BeginScene(System.String)">
+            <summary>Create the (single) scene this baker owns.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapBaker.CreateTextureTarget(System.String,System.Int32,System.Int32)">
+            <summary>Allocate a new texture target (one atlas page). Width/height should match the UV1 packing.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapBaker.Start">
+            <summary>
+            Kick off the bake on a background thread. Use <see cref="M:XEngine.Photonic.Job.Poll"/> /
+            <see cref="E:XEngine.Photonic.Job.OnIterationComplete"/> / <see cref="P:XEngine.Photonic.Job.Activity"/> to drive a UI.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapBaker.Cancel">
+            <summary>Synchronously cancel any running job. Safe to call from any thread.</summary>
+        </member>
+        <member name="E:XEngine.Photonic.LightmapBaker.Warning">
+            <summary>
+            Raised for non-fatal bake issues (e.g. a mesh with no normals). Subscribe to surface them in
+            an editor log. May fire on the calling thread (scene build) or a worker thread.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapBaker.BakeProbes(System.Collections.Generic.IReadOnlyList{XEngine.Vector.Float3},System.Int32,System.Nullable{System.Int32})">
+             <summary>
+             Bake light-probe spherical harmonics (9-coefficient RGB, SH-L2) at the given world positions.
+             Each probe captures the full directional radiance environment so dynamic (non-lightmapped)
+             objects can reconstruct ambient irradiance for any normal (see <see cref="M:XEngine.Photonic.Sh9Rgb.EvaluateIrradiance(XEngine.Vector.Float3)"/>).
+            
+             <para>Blocking and synchronous (probe counts are normally modest and this is an editor-time
+             operation). Uses the same scene geometry, lights, bounce count, and environment as a lightmap
+             bake — the instances added to this baker's targets act as the occluders, so call after the
+             scene + targets are set up (<see cref="M:XEngine.Photonic.BakeScene.End"/> must have run).</para>
+             </summary>
+             <param name="positions">World-space probe positions.</param>
+             <param name="samplesPerProbe">Uniform-sphere rays traced per probe. Higher = smoother SH, slower.</param>
+             <param name="bounces">Indirect bounces; defaults to <see cref="P:XEngine.Photonic.BakeOptions.Bounces"/> when null.</param>
+        </member>
+        <member name="T:XEngine.Photonic.LightmapTarget">
+            <summary>
+            One lightmap atlas page. Holds the HDR output buffer and the list of instance placements
+            that contribute pixels into it.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapTarget.Name">
+            <summary>Target name (informational; used in logs and debug images).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapTarget.Width">
+            <summary>Atlas page width in pixels.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapTarget.Height">
+            <summary>Atlas page height in pixels.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapTarget.PixelsRGB">
+            <summary>
+            Backing buffer for <see cref="P:XEngine.Photonic.LightmapTarget.Pixels"/>. Internal so the bake worker can mutate it in
+            place; external consumers should use the <see cref="P:XEngine.Photonic.LightmapTarget.Pixels"/> span (read-only) or
+            the <see cref="M:XEngine.Photonic.LightmapTarget.ReadHDR"/> / <see cref="M:XEngine.Photonic.LightmapTarget.ReadLDR(System.Single,System.Single)"/> helpers. Demos / tooling that need
+            the raw array (e.g. for zero-copy GL upload) gain access via InternalsVisibleTo.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapTarget.Pixels">
+            <summary>Read-only view over the live HDR buffer in (R, G, B, R, G, B, ...) layout, length <c>Width*Height*3</c>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.LightmapTarget.Instances">
+            <summary>Instances whose UV1 maps into this target.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.LightmapTarget.CoverageMask">
+            <summary>
+            Per-texel coverage: 1 where a triangle covers the texel (a real baked value), 0 where the
+            texel is empty atlas space or was only filled by the seam-dilation pass. Populated by the
+            bake once the rasterise phase completes; empty before then. Length <c>Width*Height</c>,
+            row-major (<c>y*Width + x</c>). Useful for runtime seam handling, re-bakes, and debugging.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapTarget.AddBakeInstance(XEngine.Photonic.BakeMesh,XEngine.Vector.Float4x4,System.Nullable{XEngine.Vector.Float2},System.Nullable{XEngine.Vector.Float2},System.String)">
+            <summary>
+            Place a mesh instance into this atlas page. <paramref name="uvOffset"/> + <paramref name="uvScale"/>
+            transform the mesh's bake-UV layer into [0,1]^2 of the target. Default: identity (whole page).
+            </summary>
+            <param name="mesh">The mesh to instance into this target.</param>
+            <param name="worldTransform">Object-to-world transform applied to the mesh's vertices.</param>
+            <param name="uvOffset">Translation applied to the bake-UV layer when sampling the atlas.</param>
+            <param name="uvScale">Scale applied to the bake-UV layer when sampling the atlas.</param>
+            <param name="bakeUVLayer">UV layer used for lightmap atlas placement (defaults to <c>"UV1"</c>).</param>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapTarget.ReadHDR">
+            <summary>Returns a fresh HDR snapshot of the current pixel data (R,G,B interleaved). Read after the job has succeeded.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapTarget.ReadHDRRGBA">
+            <summary>
+            HDR snapshot as RGBA float (alpha = 1), length <c>Width*Height*4</c>. This is the correct
+            thing to upload to an <c>Rgba16f</c>/<c>Rgba32f</c> lightmap texture: the values stay
+            linear HDR so the runtime multiplies them by albedo and tonemaps the whole scene afterward.
+            Do NOT use <see cref="M:XEngine.Photonic.LightmapTarget.ReadLDR(System.Single,System.Single)"/> for storage — it tonemaps, which is only correct for a preview.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapTarget.ReadRGBM(System.Single)">
+            <summary>
+            Encode the HDR lightmap as 8-bit RGBM (RGBA8) without tonemapping: a compact lossy HDR
+            format for shipped builds. The stored alpha carries a shared multiplier so values up to
+            <paramref name="maxRange"/> survive in 8 bits per channel.
+            <para>Decode in the shader as <c>rgb * a * maxRange</c> (with the same <paramref name="maxRange"/>).
+            Sample the texture in <b>linear</b> space (no sRGB) — the data is linear radiance, not colour.</para>
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.LightmapTarget.ReadLDR(System.Single,System.Single)">
+            <summary>
+            Tonemapped + gamma-encoded 8-bit RGB, for <b>previews only</b>. This bakes in Reinhard
+            tonemapping and gamma, which is wrong for storing an actual lightmap (the lightmap must stay
+            linear HDR and be tonemapped with the rest of the scene at runtime). For storage use
+            <see cref="M:XEngine.Photonic.LightmapTarget.ReadHDRRGBA"/> (float) or <see cref="M:XEngine.Photonic.LightmapTarget.ReadRGBM(System.Single)"/> (compact 8-bit HDR).
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Rasterization.ConservativeTexelMapper">
+            <summary>
+            Walks every triangle in atlas UV space, marks the pixels it conservatively covers, and fills
+            the per-texel world-space sample (position, normal, source material).
+            </summary>
+            <remarks>
+            Conservative = a pixel is marked covered whenever the triangle touches its 1x1 square in any
+            way, even by a sub-pixel sliver. This is what stops seams from cracking. The clipping check
+            is the same triangle/AABB SAT test used in software rasterisers for conservative coverage.
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Rasterization.ConservativeTexelMapper.EdgeFunction(XEngine.Vector.Float2,XEngine.Vector.Float2,XEngine.Vector.Float2)">
+            <summary>2D signed edge function: positive when (a, b, c) is CCW.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Rasterization.ConservativeTexelMapper.TrianglePixelOverlap(XEngine.Vector.Float2,XEngine.Vector.Float2,XEngine.Vector.Float2,XEngine.Vector.Float2,XEngine.Vector.Float2)">
+            <summary>SAT-based triangle/AABB overlap in 2D (conservative coverage).</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Rasterization.ConservativeTexelMapper.ClampToTriangle(XEngine.Vector.Float2,XEngine.Vector.Float2,XEngine.Vector.Float2,XEngine.Vector.Float2,System.Single@,System.Single@,System.Single@)">
+            <summary>Closest barycentric coordinates inside the triangle to the given 2D point.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Rasterization.ConservativeTexelMapper.NormalMatrix(XEngine.Vector.Float4x4)">
+            <summary>
+            "Normal matrix": for rigid + uniform-scale transforms it's <c>M</c> itself; for general
+            non-uniform scale it's the inverse-transpose of the upper 3x3. Photonic uses uniform
+            scaling for instances, so the simple form is fine; we still build inverse-transpose for
+            robustness.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Rasterization.TexelSample">
+            <summary>
+            One per atlas-page pixel that any triangle conservatively covers. The integrator reads
+            <see cref="F:XEngine.Photonic.Rasterization.TexelSample.Position"/> + <see cref="F:XEngine.Photonic.Rasterization.TexelSample.Normal"/> to spawn rays; <see cref="F:XEngine.Photonic.Rasterization.TexelSample.MaterialGroupIndex"/>
+            lets it look up the source material for albedo.
+            </summary>
+        </member>
+        <member name="F:XEngine.Photonic.Rasterization.TexelSample.StrictlyInside">
+            <summary>
+            True when the pixel centre lies strictly inside this triangle (all barycentrics >= 0
+            without clamping). A "strict" writer beats a "conservative-only" writer when multiple
+            triangles cover the same atlas pixel: that's what prevents a sliver / hidden triangle
+            from stealing the texel from the surface the user actually sees.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Rasterization.TargetWorkspace">
+            <summary>
+            Per-target accumulation arrays. Pixel layout is row-major: <c>y * Width + x</c>.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Rasterization.TargetWorkspace.Flush">
+            <summary>Copy <see cref="F:XEngine.Photonic.Rasterization.TargetWorkspace.Pixels"/> into the target's float buffer.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Raytracing.Blas">
+            <summary>
+            Per-mesh acceleration structure. We build a binary SAH BVH, collapse it into a wider BVH4
+            where each node stores 4 children's AABBs in SoA Vector128 lanes, and pad every leaf to
+            exactly 4 triangles in SoA storage. Per node visit we do one SIMD ray-vs-4-AABB; per leaf
+            visit we do one SIMD ray-vs-4-triangle test (Möller-Trumbore). Padding triangles are
+            degenerate (E1 = E2 = 0) so the SIMD test rejects them automatically.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Raytracing.Blas.Node4">
+            <summary>
+            BVH4 node: SoA AABB packs (lane <c>i</c> = child <c>i</c>) plus child / prim arrays.
+            Inner children store a node index in <c>C{i}</c>; leaves store the 4-aligned first
+            triangle index, with <c>P{i}</c> &gt; 0 marking it as a leaf.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Raytracing.Blas.TriRef">
+            <summary>Triangle vertex indices + material group. Looked up at hit time for material info.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Raytracing.Blas.Triangles">
+            <summary>
+            Triangle reference array (parallel to the SoA edge arrays). Indices are padded so leaves
+            occupy exactly 4 contiguous slots; padded slots have <c>I0=I1=I2=0</c>.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Raytracing.Blas.RayTri8(System.Int32,System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Runtime.Intrinsics.Vector256{System.Single},System.Boolean,System.Boolean,System.Runtime.Intrinsics.Vector256{System.Single}@,System.Runtime.Intrinsics.Vector256{System.Single}@,System.Runtime.Intrinsics.Vector256{System.Single}@,System.UInt32@)">
+            <summary>
+            SIMD Möller-Trumbore against <see cref="F:XEngine.Photonic.Raytracing.Blas.SimdWidth"/> (= 8 with AVX2) triangles starting at
+            <paramref name="firstTri"/>. Returns per-lane (t, u, v) and a bitmask of which lanes hit
+            (within <c>tMin..maxT</c>). Padding triangles have <c>E1 = E2 = 0</c>, so <c>|det|</c> is
+            zero and they're naturally rejected.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Raytracing.Blas.ClosestHit(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Single,System.Single,System.Single@,System.Single@,System.Single@,System.Int32@,System.Boolean,System.Boolean)">
+            <summary>
+            Closest-hit query: SIMD ray-vs-4-AABB at each node, sort hit children by entry distance,
+            push far-to-near. Leaves run one SIMD ray-vs-4-triangle per 4-pack.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Raytracing.Blas.AnyHit(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Single,System.Single,System.Boolean,System.Boolean)">
+            <summary>Any-hit: return on the first triangle hit closer than <paramref name="maxT"/>.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Raytracing.HitInfo">
+            <summary>Result of a closest-hit query against the scene BVH.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.Hit">
+            <summary>True when something was hit.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.Distance">
+            <summary>Hit distance along the incoming ray.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.U">
+            <summary>Barycentric (u, v) inside the triangle (w = 1 - u - v on the first vertex).</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.V">
+            <summary>Barycentric (u, v) inside the triangle (w = 1 - u - v on the first vertex).</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.InstanceIndex">
+            <summary>Index into the TLAS instance list.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.TriangleIndex">
+            <summary>Triangle entry index within the hit mesh's BLAS.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.Position">
+            <summary>World-space hit position.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.Raytracing.HitInfo.Normal">
+            <summary>Interpolated world-space normal (renormalised).</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Raytracing.RayMath">
+            <summary>Small shared math helpers for the ray-tracing / rasterization paths.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Raytracing.RayMath.Transform(XEngine.Vector.Float4x4,XEngine.Vector.Float3,System.Single)">
+            <summary>Transform a vector with implicit w (1 for points, 0 for directions). Column-major matrix.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.CosineHemisphereLUT">
+            <summary>
+            Static 16384-entry cosine-weighted hemisphere lookup, in tangent space (N = +Z). Generated
+            once with a Halton-2,3 low-discrepancy sequence: each consecutive pair of entries is well
+            stratified, which kills the banding you'd get from a naive random LUT.
+            </summary>
+            <remarks>
+            Use:
+            <code>
+            uint i = sampler.NextU32();
+            var tsd = CosineHemisphereLUT.Get(i);
+            Hemisphere.BuildOrthonormalBasis(normal, out var T, out var B);
+            var worldDir = T * tsd.X + B * tsd.Y + normal * tsd.Z;
+            </code>
+            The cost saved vs <see cref="M:XEngine.Photonic.Sampling.Hemisphere.SampleCosine(XEngine.Vector.Float3,System.Single,System.Single)"/> is the sqrt+sin+cos per bounce ray.
+            On a Sponza-scale bake that's ~10M trig calls saved.
+            </remarks>
+        </member>
+        <member name="F:XEngine.Photonic.Sampling.CosineHemisphereLUT.Size">
+            <summary>Number of pre-generated tangent-space directions. Power of two so masking works.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.CosineHemisphereLUT.Get(System.UInt32)">
+            <summary>Lookup by any 32-bit value (auto-masked). Returns a unit-length cosine-weighted hemisphere direction.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Sampling.CosineHemisphereLUT.Directions">
+            <summary>Direct array access (read-only). Useful for debug/diagnostic callers.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.IAttenuation">
+            <summary>
+            User-pluggable light falloff model. Photonic queries <see cref="M:XEngine.Photonic.Sampling.IAttenuation.Evaluate(System.Single,System.Single)"/> for the unitless
+            multiplier applied to a light's radiance at a given surface distance.
+            </summary>
+            <remarks>
+            Implement your own for any specific falloff curve you need (physically-plausible inverse
+            square, smooth normalised quadratic, hard cutoff, etc).
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.IAttenuation.Evaluate(System.Single,System.Single)">
+            <summary>Evaluate the multiplier at <paramref name="distance"/> for a light of <paramref name="range"/>.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.InverseSquareAttenuation">
+            <summary>Inverse-square falloff with a smooth range cutoff. Matches a physically-plausible point light.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.InverseSquareAttenuation.Evaluate(System.Single,System.Single)">
+            <inheritdoc />
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.NormalizedQuadraticAttenuation">
+            <summary>
+            Normalised quadratic falloff: <c>att = 1 / (1 + 25 * (d/r)^2)</c>. A cheap closed-form
+            alternative to a ramp lookup that stays bright near the source and tails off smoothly.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.NormalizedQuadraticAttenuation.Evaluate(System.Single,System.Single)">
+            <inheritdoc />
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.ConstantAttenuation">
+            <summary>No attenuation at all (full intensity until the light's <c>range</c>). Useful for directional-like spots.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.ConstantAttenuation.Evaluate(System.Single,System.Single)">
+            <inheritdoc />
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.Sampler">
+            <summary>
+            Cheap deterministic PRNG (splitmix64 + xoshiro fast forward). Per-texel seeded so bakes
+            are reproducible. Not cryptographic, not great for high-dim Monte Carlo, plenty good for
+            per-texel hemisphere sampling.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Sampler.#ctor(System.UInt64)">
+            <summary>Construct with a 64-bit seed (typically derived from texel coordinates).</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Sampler.NextU32">
+            <summary>Raw 32-bit value. Faster than <see cref="M:XEngine.Photonic.Sampling.Sampler.NextFloat"/> when you only need bits (e.g. table indexing).</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Sampler.NextFloat">
+            <summary>Uniform [0, 1) float.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Sampler.NextFloat2">
+            <summary>Uniform [0,1) Float2.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.Sampling.Hemisphere">
+            <summary>
+            Hemisphere sampling and lightmap-friendly utility transforms. All routines assume
+            the surface normal is unit length.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Hemisphere.SampleCosine(XEngine.Vector.Float3,System.Single,System.Single)">
+            <summary>
+            Cosine-weighted hemisphere sample around <paramref name="normal"/>. Sampling PDF is
+            <c>cosθ/π</c>, so the integrator cancels the cosθ term and multiplies by the lambert albedo / π.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Hemisphere.SampleUniform(XEngine.Vector.Float3,System.Single,System.Single)">
+            <summary>
+            Uniform (solid-angle) hemisphere sample around <paramref name="normal"/>. Sampling PDF is the
+            constant 1/(2π). Preferred over cosine sampling when projecting incoming radiance onto a
+            spherical-harmonic basis: it avoids the cosθ weighting that would otherwise have to be divided
+            back out (and blow up near the horizon), giving a clean, low-variance projection.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sampling.Hemisphere.BuildOrthonormalBasis(XEngine.Vector.Float3,XEngine.Vector.Float3@,XEngine.Vector.Float3@)">
+            <summary>
+            Frisvad's "Building an orthonormal basis, revisited": no branches, no trig. Produces a
+            pair (tangent, bitangent) such that (t, b, n) is right-handed and orthonormal.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeMaterial">
+            <summary>
+            Material used during baking. Only the channels Photonic actually consumes are exposed:
+            diffuse albedo (driving bounce colour), an optional emissive source, and per-channel UV
+            transforms / texture references.
+            </summary>
+            <remarks>
+            Plain mutable POCO; populate fields after <see cref="M:XEngine.Photonic.BakeScene.CreateMaterial(System.String)"/>.
+            </remarks>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.Name">
+            <summary>Material name as registered on the scene.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.DiffuseColor">
+            <summary>Linear-space base colour. Used directly when no texture is bound.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.DiffuseTexture">
+            <summary>Optional diffuse albedo texture. Sampled at the bake hit's <see cref="P:XEngine.Photonic.BakeMaterial.DiffuseUVLayer"/>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.DiffuseUVLayer">
+            <summary>UV layer the diffuse texture is sampled from. Defaults to <c>"UV0"</c>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.Emissive">
+            <summary>Linear-space emissive colour added to direct lighting at any bake hit on this material.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.EmissiveTexture">
+            <summary>Optional emissive texture (modulated by <see cref="P:XEngine.Photonic.BakeMaterial.Emissive"/>).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.EmissiveUVLayer">
+            <summary>UV layer the emissive texture is sampled from. Defaults to <c>"UV0"</c>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.AlphaTexture">
+            <summary>Optional alpha mask; below <see cref="P:XEngine.Photonic.BakeMaterial.AlphaCutoff"/> the shadow ray treats the hit as a miss.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.AlphaCutoff">
+            <summary>Alpha cutoff for the alpha-mask shadow test.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMaterial.DoubleSided">
+            <summary>True if the surface is double-sided; controls back-face shading.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeMesh">
+            <summary>
+            Immutable bake-time mesh. Built via <see cref="M:XEngine.Photonic.BakeScene.BeginMesh(System.String)"/>.
+            </summary>
+            <remarks>
+            Layout: a single vertex buffer with parallel attribute streams, multiple UV layers identified
+            by name, and one or more material groups (submeshes) each holding a run of triangle indices.
+            </remarks>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.Name">
+            <summary>Mesh name as registered on the scene.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.Positions">
+            <summary>Vertex positions in mesh-local space.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.Normals">
+            <summary>Per-vertex normals. May be all zeros if the caller didn't supply any.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.UVLayers">
+            <summary>UV layers, keyed by name. <c>"UV0"</c> is the material/shading layer, <c>"UV1"</c> is the bake layer.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.MaterialGroups">
+            <summary>Material groups (submeshes), in the order they were added.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.Bounds">
+            <summary>Local-space AABB enclosing every vertex.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeMesh.MaterialGroup">
+            <summary>A submesh: an index range plus the material it shades with.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.MaterialGroup.MaterialName">
+            <summary>Material name as it was registered on the scene; may be null if unmatched.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeMesh.MaterialGroup.Indices">
+            <summary>Triangle indices into <see cref="P:XEngine.Photonic.BakeMesh.Positions"/>. Length is a multiple of 3.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeMesh.Builder">
+            <summary>
+            Fluent builder for a <see cref="T:XEngine.Photonic.BakeMesh"/>. Chain <c>AddVertices</c>, <c>AddUVLayer</c>,
+            and <c>AddMaterialGroup</c> calls, finalise with <c>End</c>.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeMesh.Builder.AddVertices(XEngine.Vector.Float3[],XEngine.Vector.Float3[])">
+            <summary>Set per-vertex positions and (optional) normals. Must be called exactly once.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeMesh.Builder.AddUVLayer(System.String,XEngine.Vector.Float2[])">
+            <summary>Add a named UV layer. Length must match vertex count.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeMesh.Builder.AddMaterialGroup(System.String,System.Int32[])">
+            <summary>Add a submesh: a material name + the triangle indices that use it.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeMesh.Builder.End">
+            <summary>Finalise and register on the scene.</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeScene">
+            <summary>
+            The bake scene: build meshes, materials and lights here, then call <see cref="M:XEngine.Photonic.BakeScene.End"/> before
+            starting a job.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.Name">
+            <summary>Scene name (informational).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.Ended">
+            <summary>True once <see cref="M:XEngine.Photonic.BakeScene.End"/> has been called; further mutation throws.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.DefaultAttenuation">
+            <summary>Default attenuation applied to point/spot lights that don't override it themselves.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.Meshes">
+            <summary>Meshes added to this scene, keyed by name.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.Materials">
+            <summary>Materials in this scene, keyed by name.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.Textures">
+            <summary>Textures in this scene, keyed by name.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeScene.Lights">
+            <summary>Lights in this scene, in insertion order.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.BeginMesh(System.String)">
+            <summary>Begin building a new mesh. Returns a fluent builder; call <c>.End()</c> to finalise.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.FindMesh(System.String)">
+            <summary>Find an existing mesh, or null.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.CreateMaterial(System.String)">
+            <summary>Create a material. Returns the new instance; populate properties directly.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.FindMaterial(System.String)">
+            <summary>Find an existing material, or null.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.CreateTextureRGBA(System.String,System.Int32,System.Int32,System.Byte[],System.Single)">
+            <summary>Register an RGBA byte texture (linear or sRGB; <paramref name="inputGamma"/> says which).</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.FindTexture(System.String)">
+            <summary>Find an existing texture, or null.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.CreatePointLight(System.String,XEngine.Vector.Float4x4,XEngine.Vector.Float3,System.Single)">
+            <summary>Add a point light at the translation of <paramref name="xform"/> with the given range and linear-RGB intensity.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.CreateDirectionalLight(System.String,XEngine.Vector.Float4x4,XEngine.Vector.Float3)">
+            <summary>Add a directional light. <paramref name="xform"/>'s -Z column is the light direction.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.CreateSpotLight(System.String,XEngine.Vector.Float4x4,XEngine.Vector.Float3,System.Single,System.Single)">
+            <summary>Add a spot light. Cone angle is in radians; -Z column is the axis.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeScene.End">
+            <summary>Finalise the scene (no further mutation).</summary>
+        </member>
+        <member name="T:XEngine.Photonic.BakeTexture">
+            <summary>
+            Linear-RGB texture. The constructor decodes the input bytes through <see cref="P:XEngine.Photonic.BakeTexture.InputGamma"/>
+            into a linear <see cref="T:XEngine.Vector.Float3"/> buffer once; samples after that point are plain bilinear
+            reads with no per-tap <c>Math.Pow</c>. That's the difference between "albedo sampling is
+            negligible" and "albedo sampling is the bake's hottest function".
+            </summary>
+            <remarks>
+            Alpha is intentionally not stored: Photonic's current path tracer doesn't read it. If you
+            need alpha-masked transparency in the future, store a parallel <c>byte[]</c> alpha buffer.
+            </remarks>
+        </member>
+        <member name="P:XEngine.Photonic.BakeTexture.Name">
+            <summary>Texture name.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeTexture.Width">
+            <summary>Pixel width.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeTexture.Height">
+            <summary>Pixel height.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.BakeTexture.InputGamma">
+            <summary>Source gamma the byte data was decoded with. 2.2 for sRGB, 1.0 for linear.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeTexture.SampleNearestRGB(System.Single,System.Single)">
+            <summary>
+            Point (nearest-neighbour) sample. Use this on the bounce path: the variance washes out
+            across indirect samples and you save 4 texel fetches + 6 lerps vs bilinear.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.BakeTexture.SampleLinearRGBA(System.Single,System.Single)">
+            <summary>
+            Bilinear sample in linear RGB, wrap addressing. Returns <c>(R, G, B, 1)</c>: alpha is
+            always 1 (see class summary).
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Scene.Lights.DirectionalLight">
+            <summary>Parallel light source (no falloff). Radiance is constant; shadow ray goes to infinity.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Scene.Lights.DirectionalLight.Sample(XEngine.Vector.Float3,XEngine.Vector.Float3@,XEngine.Vector.Float3@,System.Single@,XEngine.Photonic.Sampling.IAttenuation)">
+            <inheritdoc />
+        </member>
+        <member name="T:XEngine.Photonic.Scene.Lights.Light">
+            <summary>
+            Base type for all bake lights. Sub-types define the shape (point, directional, spot).
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.Name">
+            <summary>Light name (informational).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.Color">
+            <summary>Linear-RGB radiant intensity. Combined with attenuation to produce irradiance at a hit.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.Transform">
+            <summary>Object-to-world transform. The +Z column is the light's forward axis (direction the light travels).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.CastsShadows">
+            <summary>Whether this light contributes shadow rays to the bake.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.BakeDirect">
+            <summary>
+            Whether this light's <b>direct</b> contribution is written into the lightmap at the baked
+            texel itself. Its <i>indirect</i> (bounced) contribution is always baked regardless.
+            <para>
+            Set <c>true</c> (default) for fully-baked lights. Set <c>false</c> for "mixed" lights whose
+            direct lighting + shadows are applied in realtime by the runtime shader while only their
+            bounced GI is baked. Realtime-only lights should simply not be added to the bake scene.
+            </para>
+            Gated by <see cref="P:XEngine.Photonic.BakeOptions.IncludeDirectLighting"/>: when that master switch is off, no
+            light's direct is baked at the texel regardless of this flag.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.IndirectScale">
+            <summary>Indirect-only scale applied during bounce sampling (1.0 = no bias).</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.WorldPosition">
+            <summary>World-space position read from the translation column of <see cref="P:XEngine.Photonic.Scene.Lights.Light.Transform"/>.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.Light.WorldForward">
+            <summary>
+            World-space forward direction (the +Z column, i.e. the direction the light *travels*).
+            For directional lights this is the direction the photons move; surfaces receive radiance
+            from -WorldForward. Built to match the OpenGL/right-handed convention XEngine.Vector uses.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Scene.Lights.Light.Sample(XEngine.Vector.Float3,XEngine.Vector.Float3@,XEngine.Vector.Float3@,System.Single@,XEngine.Photonic.Sampling.IAttenuation)">
+            <summary>
+            Sample the irradiance arriving at <paramref name="position"/> from this light along
+            <paramref name="toLight"/>. Returns false if the light contributes nothing (out of range,
+            outside cone, behind). The shadow ray (origin, target, maxDist) is filled regardless.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.Scene.Lights.PointLight">
+            <summary>Omnidirectional point light with a finite range and pluggable attenuation curve.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.PointLight.Range">
+            <summary>World-space range. Past this distance the light contributes nothing.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.PointLight.Attenuation">
+            <summary>
+            Optional per-light attenuation override. When null, the scene's
+            <see cref="P:XEngine.Photonic.BakeScene.DefaultAttenuation"/> is used.
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Scene.Lights.PointLight.Sample(XEngine.Vector.Float3,XEngine.Vector.Float3@,XEngine.Vector.Float3@,System.Single@,XEngine.Photonic.Sampling.IAttenuation)">
+            <inheritdoc />
+        </member>
+        <member name="T:XEngine.Photonic.Scene.Lights.SpotLight">
+            <summary>Cone-shaped point light. <see cref="P:XEngine.Photonic.Scene.Lights.SpotLight.ConeAngle"/> is the full cone in radians.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.SpotLight.Range">
+            <summary>Maximum distance the spot reaches.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.SpotLight.ConeAngle">
+            <summary>Full cone angle in radians. Half of this is the half-angle from the axis to the edge.</summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.SpotLight.InnerConeAngle">
+            <summary>
+            Inner cone (radians) used for soft-edge falloff. Below this angle, full intensity; between
+            the inner and outer cone the intensity is smoothstep-faded; outside, zero.
+            </summary>
+        </member>
+        <member name="P:XEngine.Photonic.Scene.Lights.SpotLight.Attenuation">
+            <summary>Optional per-light attenuation override.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Scene.Lights.SpotLight.Sample(XEngine.Vector.Float3,XEngine.Vector.Float3@,XEngine.Vector.Float3@,System.Single@,XEngine.Photonic.Sampling.IAttenuation)">
+            <inheritdoc />
+        </member>
+        <member name="T:XEngine.Photonic.Sh9Rgb">
+            <summary>
+            Order-2 (9-coefficient) real spherical-harmonic projection of an RGB radiance field. This is
+            the standard light-probe representation: it captures the full directional ambient environment
+            at a point so dynamic (non-lightmapped) objects can reconstruct irradiance for any normal.
+            </summary>
+            <remarks>
+            <para>Stores the raw radiance projection coefficients (NOT pre-convolved with the cosine lobe),
+            nine per channel, in the conventional ordering: band 0 (1 coeff), band 1 (3), band 2 (5). Use
+            <see cref="M:XEngine.Photonic.Sh9Rgb.GetCoefficients"/> to read them out for GPU upload, or <see cref="M:XEngine.Photonic.Sh9Rgb.EvaluateIrradiance(XEngine.Vector.Float3)"/>
+            to reconstruct <c>E/π</c> for a given normal on the CPU (same units the lightmap stores, so a
+            Lambert surface multiplies by albedo at runtime).</para>
+            </remarks>
+        </member>
+        <member name="M:XEngine.Photonic.Sh9Rgb.Accumulate(XEngine.Vector.Float3,XEngine.Vector.Float3,System.Single)">
+            <summary>
+            Fold one radiance sample arriving from unit direction <paramref name="dir"/> into the
+            projection, scaled by <paramref name="weight"/> (the reciprocal sampling PDF). The caller
+            divides by the sample count afterwards (or passes <c>weight = 4π / sampleCount</c>).
+            </summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sh9Rgb.Scaled(System.Single)">
+            <summary>This projection scaled by <paramref name="s"/> (used to turn a running sum into a mean).</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sh9Rgb.GetCoefficients">
+            <summary>The nine raw radiance coefficients (band 0, 1, 2 order), for serialization / GPU upload.</summary>
+        </member>
+        <member name="M:XEngine.Photonic.Sh9Rgb.EvaluateIrradiance(XEngine.Vector.Float3)">
+            <summary>
+            Reconstruct the diffuse irradiance response (<c>E/π</c>) for a surface oriented along
+            <paramref name="normal"/>, applying the cosine-lobe convolution. Negative lobes (SH ringing
+            under sparse sampling) are clamped to zero.
+            </summary>
+        </member>
+        <member name="T:XEngine.Photonic.TexelDiagnostic">
+            <summary>
+            A snapshot of one texel's recorded state in the bake. Used by debug viewers to inspect what
+            the integrator actually saw for a given atlas pixel.
+            </summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.Valid">
+            <summary>True when the target index / coordinates were valid and the workspaces are allocated.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.Covered">
+            <summary>True if any triangle conservatively covered this texel.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.Position">
+            <summary>The world-space sample position the integrator uses.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.Normal">
+            <summary>Surface normal at the sample point.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.WorldRadius">
+            <summary>Half-extent of the texel's world footprint, in metres. Scales the denoiser's position bandwidth.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.LightmapValue">
+            <summary>Current RGB value stored at this texel in the target's pixel buffer.</summary>
+        </member>
+        <member name="F:XEngine.Photonic.TexelDiagnostic.IndirectSampleCount">
+            <summary>Indirect samples accumulated at this texel (continuous mode only).</summary>
+        </member>
+    </members>
+</doc>
