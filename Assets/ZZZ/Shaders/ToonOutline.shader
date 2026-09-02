@@ -100,8 +100,8 @@ Pass "Outline"
 				float3 vertexNormal : NORMAL;
 				float4 vertexColor : COLOR0;
 #ifdef HAS_BONEINDICES
-				float4 vertexBoneIndices : TEXCOORD4;
-				float4 vertexBoneWeights : TEXCOORD5;
+				float4 vertexBoneIndices : BLENDINDICES;
+				float4 vertexBoneWeights : BLENDWEIGHT;
 #endif
 			};
 

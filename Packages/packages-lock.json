@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "resolverVersion": "xengine-package-resolver/1",
   "manifestHash": "89a9a381de23903e61cb6575ddb00df3435a4d9a9d346a7857e19315325567c8",
-  "generatedAtUtc": "2026-08-31T08:01:37.2890076Z",
+  "generatedAtUtc": "2026-09-02T15:59:13.1741861Z",
   "packages": [
     {
       "name": "com.xengine.2d.common",
@@ -10,7 +10,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.2d.common",
       "resolvedPath": "",
-      "contentHash": "4c023fb5a215edc1bc2a61683232dd5e398529f2fc368abf5d6e3156f8537012",
+      "contentHash": "5ba5fbf4aa52658c89b41b07ffc91a9c4cddd767977da6fc9df97cbd45b9451e",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -20,7 +20,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.2d.sprite",
       "resolvedPath": "",
-      "contentHash": "54b9a71a17018ce5ae1893f66970c9ddadd2451d843fbcf0361d5ddcf3bd0010",
+      "contentHash": "da6cb7801d5c8d71fac4c811348d8a7c6a8b5ad8300eec0990e9b5502c7c720c",
       "dependencies": {
         "com.xengine.2d.common": "0.1.0"
       },
@@ -34,7 +34,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.cinemachine",
       "resolvedPath": "Library/PackageCache/com.xengine.cinemachine@0.1.0",
-      "contentHash": "c4e83c22200fc529f4e14911bf8c15eef6289b878d4604c4790949218b0032b0",
+      "contentHash": "fd01fe9ccf705527e17f23b89e8e75b332062ac1dad174c11d03711345c2d07e",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -45,7 +45,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.inputsystem",
       "resolvedPath": "Library/PackageCache/com.xengine.inputsystem@0.1.0",
-      "contentHash": "12d733b8ac9b88abfc5c79a537f09158255a82d511ce489f575713c4ac6d3565",
+      "contentHash": "ca09a36f6bd10fa7d15341ca8611355df0da2bb65660f1cb885a43ef596618c9",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -56,7 +56,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.magicacloth2",
       "resolvedPath": "Library/PackageCache/com.xengine.magicacloth2@0.1.0",
-      "contentHash": "4cbb847f58320867e4aeb30dde5496a2706e9cf6ce948097cef3ad9fbe171ac4",
+      "contentHash": "da9547051f4cc809b4ada0a2bb5fdb124aedcdfc614fc77d04ec61958cbfbd8a",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -66,7 +66,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.probuilder",
       "resolvedPath": "Library/PackageCache/com.xengine.probuilder@0.1.0",
-      "contentHash": "d280217e9c2e2e6a256f3738149bd67cdae47481b2d6b45b4bef9961a1272efe",
+      "contentHash": "053501ec4878cef101f6163e080c71044ccd30ecff9991578994dff1e7616cf7",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -77,7 +77,7 @@
       "sourceSpecifier": "0.1.1",
       "logicalRoot": "Packages/com.xengine.spine",
       "resolvedPath": "Library/PackageCache/com.xengine.spine@0.1.1",
-      "contentHash": "27589a820d47743c3dbc758b7fedf5e39395db967158fe6bcbde00cb7cfe9b30",
+      "contentHash": "0b4b06a4d5c2cf8098294f156487f45bcdd7baec00779e34307b44beee014d01",
       "dependencies": {
         "com.xengine.xgui": "0.1.0"
       },
@@ -91,7 +91,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.timeline",
       "resolvedPath": "",
-      "contentHash": "2729485b3a5dc888f851c4a4dff04b24e44842cdfa521b76479d86f5dff4dcae",
+      "contentHash": "1fb5509eb2de8f8d8d9850ced077faadae414842e3b36aed0f1c472dcf9dac46",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -101,7 +101,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.unityimporter",
       "resolvedPath": "Library/PackageCache/com.xengine.unityimporter@0.1.0",
-      "contentHash": "c2cfa17cfdbe15580c363a1e3c47486ab2e734a56fa070244ea0ec66f4e47bab",
+      "contentHash": "1b78eb01515417c01b8a96f537820a12afb837f53c111fa47b4a9850c89b8dda",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -112,7 +112,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.xgui",
       "resolvedPath": "",
-      "contentHash": "35ce2a543540691875b098c4f56afdf9ff04ba39ae3b4ba64357c3f2d97f616b",
+      "contentHash": "0d26a96eacbd8fde4ffe37ecf8a71a6c630d2b1d0c8538f319fa4d9d1c3cf292",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -123,7 +123,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.zonezero",
       "resolvedPath": "Packages/com.xengine.zonezero",
-      "contentHash": "ed7410491fb0c37b9f64a295e1495b3ddc74ce12cfcc00393be1fb29fb5c103a",
+      "contentHash": "ab446b898d7dc480087ead5dde8c7b668cdbc74e30b12051f45e50f886b7fa27",
       "dependencies": {
         "com.xengine.cinemachine": "0.1.0",
         "com.xengine.inputsystem": "0.1.0",

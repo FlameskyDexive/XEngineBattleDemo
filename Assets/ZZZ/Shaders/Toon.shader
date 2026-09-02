@@ -495,7 +495,7 @@ Pass "Toon"
 				float3 worldPosition = TransformPosition(objectPos);
 #endif
 #if defined(SKINNED) && defined(HAS_BONEINDICES)
-				float3 worldNormal = normalize(mul((float3x3)XENGINE_MATRIX_M, GetSkinnedNormal(GetMorphedNormal(input.vertexNormal), input.vertexBoneIndices, input.vertexBoneWeights)));
+				float3 worldNormal = normalize(mul((float3x3)XENGINE_MATRIX_M, XSkinNormal(GetMorphedNormal(input.vertexNormal), input.vertexBoneIndices, input.vertexBoneWeights)));
 #else
 				float3 worldNormal = TransformDirection(GetMorphedNormal(input.vertexNormal));
 #endif
@@ -884,8 +884,8 @@ Pass "ToonShadow"
 				float3 vertexPosition : POSITION;
 				float2 vertexTexCoord0 : TEXCOORD0;
 #ifdef HAS_BONEINDICES
-				float4 vertexBoneIndices : TEXCOORD4;
-				float4 vertexBoneWeights : TEXCOORD5;
+				float4 vertexBoneIndices : BLENDINDICES;
+				float4 vertexBoneWeights : BLENDWEIGHT;
 #endif
 			};
 

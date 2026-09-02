@@ -393,7 +393,7 @@ public static class ZonezeroNativeAssets
             }
 
             var fbxEntry = backend.GetEntry($"{destRelativeRoot}/{fbxRel}");
-            if (fbxEntry == null || AssetDatabase.Get(fbxEntry.Guid) is not Model model)
+            if (fbxEntry == null || AssetDatabase.Get(fbxEntry.Guid) is not PrefabAsset model)
             {
                 result.Warnings.Add($"Prefab '{charName}': engine FBX '{destRelativeRoot}/{fbxRel}' not imported.");
                 return false;
@@ -466,7 +466,7 @@ public static class ZonezeroNativeAssets
         try
         {
             var entry = backend.GetEntry(modelRelativePath);
-            if (entry == null || AssetDatabase.Get(entry.Guid) is not Model model)
+            if (entry == null || AssetDatabase.Get(entry.Guid) is not PrefabAsset model)
             {
                 result.Warnings.Add($"Prefab '{prefabName}': model '{modelRelativePath}' not imported.");
                 return false;
