@@ -1,7 +1,7 @@
 {
   "guid": "fedcad15-c035-4787-8e31-5d36d7c6e150",
   "importer": "EditorModelImporter",
-  "importerVersion": 14,
+  "importerVersion": 15,
   "settings": {
     "generateNormals": true,
     "generateSmoothNormals": true,

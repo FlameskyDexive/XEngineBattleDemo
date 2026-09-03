@@ -1,7 +1,7 @@
 {
   "guid": "ccd8b1b3-6e94-5b45-b155-888dc0573568",
   "importer": "EditorModelImporter",
-  "importerVersion": 14,
+  "importerVersion": 15,
   "settings": {
     "generateNormals": true,
     "generateSmoothNormals": true,
