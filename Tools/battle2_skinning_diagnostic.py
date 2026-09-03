@@ -89,6 +89,7 @@ foreach (string rootName in names)
         float minX = float.MaxValue, minY = float.MaxValue, minZ = float.MaxValue;
         float maxX = float.MinValue, maxY = float.MinValue, maxZ = float.MinValue;
         float maxMatrixTranslation = 0f;
+        var skinnedPositions = new XEngine.Vector.Float3[count];
         for (int b = 0; b < skin.Length; b++)
         {
             var m = skin[b];
@@ -126,6 +127,7 @@ foreach (string rootName in names)
                 nonFinite++;
                 continue;
             }
+            skinnedPositions[v] = new XEngine.Vector.Float3(ax, ay, az);
             minX = System.MathF.Min(minX, ax); maxX = System.MathF.Max(maxX, ax);
             minY = System.MathF.Min(minY, ay); maxY = System.MathF.Max(maxY, ay);
             minZ = System.MathF.Min(minZ, az); maxZ = System.MathF.Max(maxZ, az);
@@ -134,6 +136,23 @@ foreach (string rootName in names)
         float extentX = count > 0 ? maxX - minX : 0f;
         float extentY = count > 0 ? maxY - minY : 0f;
         float extentZ = count > 0 ? maxZ - minZ : 0f;
+        float maxTriangleEdge = 0f;
+        int edgesOver025m = 0;
+        var triangles = mesh.Indices;
+        for (int t = 0; t + 2 < triangles.Length; t += 3)
+        {
+            int ia = (int)triangles[t], ib = (int)triangles[t + 1], ic = (int)triangles[t + 2];
+            if ((uint)ia >= (uint)count || (uint)ib >= (uint)count || (uint)ic >= (uint)count)
+                continue;
+            var a = skinnedPositions[ia]; var b = skinnedPositions[ib]; var c = skinnedPositions[ic];
+            float ab = XEngine.Vector.Float3.Length(a - b);
+            float bc = XEngine.Vector.Float3.Length(b - c);
+            float ca = XEngine.Vector.Float3.Length(c - a);
+            maxTriangleEdge = System.MathF.Max(maxTriangleEdge, System.MathF.Max(ab, System.MathF.Max(bc, ca)));
+            if (ab > 0.25f) edgesOver025m++;
+            if (bc > 0.25f) edgesOver025m++;
+            if (ca > 0.25f) edgesOver025m++;
+        }
         uint texHandle = tex != null ? (uint)tex.Handle.Handle : 0u;
         sb.Append("SMR|").Append(rootName).Append('|').Append(smr.GameObject.Name).Append('|')
           .Append(mesh.Name).Append('|').Append(smr.InstanceID).Append('|').Append(count).Append('|')
@@ -141,7 +160,8 @@ foreach (string rootName in names)
           .Append(badWeight).Append('|').Append(nonFinite).Append('|')
           .Append(extentX.ToString("R", inv)).Append('|').Append(extentY.ToString("R", inv)).Append('|')
           .Append(extentZ.ToString("R", inv)).Append('|')
-          .Append(maxMatrixTranslation.ToString("R", inv)).Append('|').Append(texHandle).Append('\n');
+          .Append(maxMatrixTranslation.ToString("R", inv)).Append('|').Append(texHandle).Append('|')
+          .Append(maxTriangleEdge.ToString("R", inv)).Append('|').Append(edgesOver025m).Append('\n');
     }
 }
 return sb.ToString();
@@ -381,7 +401,7 @@ def parse_metrics(text: str, sample_time: float) -> list[dict[str, Any]]:
                     "position": [float(fields[4]), float(fields[5]), float(fields[6])],
                 }
             )
-        elif fields[0] == "SMR" and len(fields) == 16 and fields[3] != "NOT_READY":
+        elif fields[0] == "SMR" and len(fields) >= 16 and fields[3] != "NOT_READY":
             parsed.append(
                 {
                     "kind": "smr",
@@ -399,6 +419,8 @@ def parse_metrics(text: str, sample_time: float) -> list[dict[str, Any]]:
                     "extent": [float(fields[11]), float(fields[12]), float(fields[13])],
                     "maxMatrixTranslation": float(fields[14]),
                     "boneTextureHandle": int(fields[15]),
+                    "maxTriangleEdge": float(fields[16]) if len(fields) > 16 else None,
+                    "edgesOver025m": int(fields[17]) if len(fields) > 17 else None,
                 }
             )
         else:
