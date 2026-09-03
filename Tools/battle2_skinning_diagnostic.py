@@ -505,6 +505,10 @@ def main() -> int:
         report["editCameraOverview"] = client.eval(OVERVIEW_CAMERA_CODE)
         time.sleep(0.2)
         report["screenshots"].append(capture(client, output, "edit-overview.png"))
+        for hero in HERO_NAMES:
+            client.eval(CLOSEUP_CAMERA_TEMPLATE.replace("__HERO__", hero))
+            time.sleep(0.2)
+            report["screenshots"].append(capture(client, output, f"edit-{hero}.png"))
 
         client.tool("runtime_playmode", {"action": "enter"}, timeout=300)
         play_started = time.monotonic()
