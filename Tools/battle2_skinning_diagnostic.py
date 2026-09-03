@@ -212,6 +212,32 @@ return "closeup:" + hero.Transform.Position.ToString();
 '''
 
 
+HERO_IDENTIFIER_TEMPLATE = r'''
+foreach (var root in Scene.Current.RootObjects)
+    if (root.Name == "__HERO__") return root.Identifier.ToString();
+return "";
+'''
+
+
+DISABLE_HERO_GAMEPLAY_CODE = r'''
+var names = new[] { "Battle_Hero", "Battle_Ally_Corin", "Battle_Ally_Nike" };
+int disabled = 0;
+foreach (string name in names)
+    foreach (var root in Scene.Current.RootObjects)
+        if (root.Name == name)
+        {
+            foreach (var behaviour in root.GetComponents<XEngine.Runtime.MonoBehaviour>())
+                if (behaviour is not XEngine.Runtime.Animator && behaviour.Enabled)
+                {
+                    behaviour.Enabled = false;
+                    disabled++;
+                }
+            break;
+        }
+return "disabled:" + disabled;
+'''
+
+
 @dataclass
 class RpcResponse:
     raw: dict[str, Any]
@@ -227,6 +253,11 @@ class RpcResponse:
         result = self.raw.get("result") or {}
         value = result.get("structuredContent")
         return value if isinstance(value, dict) else {}
+
+    @property
+    def is_error(self) -> bool:
+        result = self.raw.get("result") or {}
+        return result.get("isError") is True
 
 
 def unwrap_json_envelope(value: str) -> Any:
@@ -384,7 +415,7 @@ def capture(client: EditorMcp, output: Path, name: str) -> str:
     return destination.name
 
 
-def parse_metrics(text: str, sample_time: float) -> list[dict[str, Any]]:
+def parse_metrics(text: str, sample_time: float, phase: str | None = None) -> list[dict[str, Any]]:
     parsed: list[dict[str, Any]] = []
     for line in text.splitlines():
         fields = line.split("|")
@@ -425,7 +456,28 @@ def parse_metrics(text: str, sample_time: float) -> list[dict[str, Any]]:
             )
         else:
             parsed.append({"kind": "raw", "time": sample_time, "line": line})
+    if phase is not None:
+        for metric in parsed:
+            metric["phase"] = phase
     return parsed
+
+
+def response_value(response: RpcResponse) -> Any:
+    if response.structured:
+        return response.structured
+    return unwrap_json_envelope(response.text)
+
+
+def animation_name_hash(name: str) -> int:
+    """Match AnimationNameHash.Hash (FNV-1a over .NET UTF-16 code units)."""
+    if not name:
+        return 0
+    value = 2166136261
+    encoded = name.encode("utf-16-le")
+    for index in range(0, len(encoded), 2):
+        value ^= encoded[index] | (encoded[index + 1] << 8)
+        value = (value * 16777619) & 0xFFFFFFFF
+    return value if value < 0x80000000 else value - 0x100000000
 
 
 def runtime_log_entries(response: RpcResponse) -> list[dict[str, Any]]:
@@ -480,6 +532,11 @@ def main() -> int:
     parser.add_argument("--ready-timeout", type=float, default=180.0)
     parser.add_argument("--skin-diag", action="store_true")
     parser.add_argument(
+        "--state-matrix",
+        action="store_true",
+        help="exercise Idle, Run, Attack_Normal_1, and the two intervening cross-fades",
+    )
+    parser.add_argument(
         "--visual-failure",
         action="append",
         default=[],
@@ -509,6 +566,7 @@ def main() -> int:
         "sourceProjectSha": git_sha(script.parents[1]),
         "sampleTimes": sample_times,
         "metrics": [],
+        "stateMatrix": [],
         "screenshots": [],
         "errors": [],
     }
@@ -550,6 +608,139 @@ def main() -> int:
                     client.eval(CLOSEUP_CAMERA_TEMPLATE.replace("__HERO__", hero))
                     time.sleep(0.2)
                     report["screenshots"].append(capture(client, output, f"play-{tag}s-{hero}.png"))
+
+        if args.state_matrix:
+            report["disabledHeroGameplay"] = client.eval(DISABLE_HERO_GAMEPLAY_CODE)
+            identifiers: dict[str, str] = {}
+            for hero in HERO_NAMES:
+                identifier = client.eval(HERO_IDENTIFIER_TEMPLATE.replace("__HERO__", hero)).strip()
+                if not identifier:
+                    report["errors"].append(f"state matrix could not resolve {hero} identifier")
+                else:
+                    identifiers[hero] = identifier
+
+            def read_state(identifier: str) -> Any:
+                return response_value(
+                    client.tool("runtime_animator_state", {"identifier": identifier}, timeout=120)
+                )
+
+            def play_state(state_name: str, fade_duration: float) -> tuple[dict[str, Any], dict[str, Any]]:
+                results: dict[str, Any] = {}
+                immediate_states: dict[str, Any] = {}
+                for hero, identifier in identifiers.items():
+                    response = client.tool(
+                        "runtime_animator_play",
+                        {
+                            "identifier": identifier,
+                            "stateName": state_name,
+                            "layer": 0,
+                            "fadeDuration": fade_duration,
+                        },
+                        timeout=120,
+                    )
+                    results[hero] = response_value(response)
+                    if response.is_error:
+                        report["errors"].append(
+                            f"{hero} could not play {state_name}: {response.text or response.raw}"
+                        )
+                    # Short non-looping clips can finish a fade before three serial RPC reads
+                    # complete. Snapshot each hero immediately after its own play command.
+                    immediate_states[hero] = read_state(identifier)
+                return results, immediate_states
+
+            def read_states() -> dict[str, Any]:
+                states: dict[str, Any] = {}
+                for hero, identifier in identifiers.items():
+                    states[hero] = read_state(identifier)
+                return states
+
+            def sample_state_phase(
+                phase: str,
+                closeups: bool,
+                validation_states: dict[str, Any] | None = None,
+            ) -> None:
+                states = validation_states if validation_states is not None else read_states()
+                client.eval(OVERVIEW_CAMERA_CODE)
+                time.sleep(0.15)
+                overview = capture(client, output, f"state-{phase}-overview.png")
+                report["screenshots"].append(overview)
+                elapsed = time.monotonic() - play_started
+                metric_text = client.eval(SAMPLE_CODE, timeout=300)
+                (output / f"state-{phase}-metrics.txt").write_text(metric_text, encoding="utf-8")
+                phase_metrics = parse_metrics(metric_text, elapsed, phase)
+                report["metrics"].extend(phase_metrics)
+                states_after_capture = read_states()
+                captures = [overview]
+                if closeups:
+                    for hero in HERO_NAMES:
+                        client.eval(CLOSEUP_CAMERA_TEMPLATE.replace("__HERO__", hero))
+                        time.sleep(0.15)
+                        image = capture(client, output, f"state-{phase}-{hero}.png")
+                        report["screenshots"].append(image)
+                        captures.append(image)
+                report["stateMatrix"].append(
+                    {
+                        "phase": phase,
+                        "elapsed": elapsed,
+                        "states": states,
+                        "statesAfterCapture": states_after_capture,
+                        "screenshots": captures,
+                    }
+                )
+
+            report["statePlayIdle"], _ = play_state("Idle", 0.0)
+            time.sleep(0.2)
+            sample_state_phase("idle", closeups=True)
+            report["statePlayRunTransition"], run_transition_states = play_state("Run", 5.0)
+            time.sleep(0.03)
+            sample_state_phase("idle-to-run", closeups=False, validation_states=run_transition_states)
+            report["statePlayRun"], _ = play_state("Run", 0.0)
+            time.sleep(0.2)
+            sample_state_phase("run", closeups=True)
+            report["statePlayAttackTransition"], attack_transition_states = play_state(
+                "Attack_Normal_1", 5.0
+            )
+            time.sleep(0.03)
+            sample_state_phase(
+                "run-to-attack", closeups=False, validation_states=attack_transition_states
+            )
+            report["statePlayAttack"], _ = play_state("Attack_Normal_1", 0.0)
+            time.sleep(0.2)
+            sample_state_phase("attack-normal-1", closeups=True)
+
+            expected_states = {
+                "idle": ("Idle", False),
+                "idle-to-run": ("Run", True),
+                "run": ("Run", False),
+                "run-to-attack": ("Attack_Normal_1", True),
+                "attack-normal-1": ("Attack_Normal_1", False),
+            }
+            for state_sample in report["stateMatrix"]:
+                expected_name, expected_transition = expected_states[state_sample["phase"]]
+                expected_hash = animation_name_hash(expected_name)
+                for hero in HERO_NAMES:
+                    state = state_sample["states"].get(hero)
+                    layers = state.get("layers") if isinstance(state, dict) else None
+                    layer = layers[0] if isinstance(layers, list) and layers else {}
+                    actual_name = layer.get("stateName")
+                    actual_hash = layer.get("nameHash")
+                    if actual_name and actual_name != expected_name:
+                        report["errors"].append(
+                            f"{hero} expected state {expected_name} during {state_sample['phase']}: {layer}"
+                        )
+                    elif not actual_name and actual_hash != expected_hash:
+                        report["errors"].append(
+                            f"{hero} expected state hash {expected_hash} ({expected_name}) "
+                            f"during {state_sample['phase']}: {layer}"
+                        )
+                    if bool(layer.get("isInTransition")) != expected_transition:
+                        report["errors"].append(
+                            f"{hero} transition flag mismatch during {state_sample['phase']}: {layer}"
+                        )
+
+        client.eval(OVERVIEW_CAMERA_CODE)
+        time.sleep(3.0)  # fill the 120-frame history after screenshot/eval acceptance work
+        report["runtimeStats"] = response_value(client.tool("runtime_stats", timeout=120))
 
         logs = client.tool("runtime_logs", {"count": 512, "minimumSeverity": "Warning"}, timeout=120)
         log_entries = runtime_log_entries(logs)
