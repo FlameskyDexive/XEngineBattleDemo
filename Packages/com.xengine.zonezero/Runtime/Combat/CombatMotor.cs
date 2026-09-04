@@ -19,14 +19,12 @@ namespace XEngine.Zonezero.Combat;
 public static class BattleTargets
 {
     private static readonly System.Collections.Generic.List<GameObject> s_enemies = new();
-    private static float _nextScan;
-    private static bool _scanned;
+    private static float _rescanAt;
 
     public static void Register(GameObject enemy)
     {
         if (!s_enemies.Contains(enemy))
             s_enemies.Add(enemy);
-        _scanned = true;
     }
 
     public static void Unregister(GameObject enemy) => s_enemies.Remove(enemy);
@@ -64,7 +62,49 @@ public static class BattleTargets
         return best;
     }
 
-    private static float _rescanAt;
+    /// <summary>
+    /// Picks one active practice dummy without allocating. The caller owns the xorshift state so
+    /// multiple allies have independent, deterministic random streams seeded from their identifiers.
+    /// </summary>
+    public static GameObject? FindRandom(ref uint randomState)
+    {
+        PruneAndRescan();
+
+        int activeCount = 0;
+        for (int i = 0; i < s_enemies.Count; i++)
+        {
+            GameObject enemy = s_enemies[i];
+            if (enemy.EnabledInHierarchy && IsEnemy(enemy))
+                activeCount++;
+        }
+
+        if (activeCount == 0)
+        {
+            if (TimeSinceStartup() > _rescanAt)
+            {
+                _rescanAt = TimeSinceStartup() + 0.5f;
+                ScanScene();
+            }
+            return null;
+        }
+
+        uint value = randomState;
+        value ^= value << 13;
+        value ^= value >> 17;
+        value ^= value << 5;
+        randomState = value == 0 ? 0xA341316Cu : value;
+        int selected = (int)(randomState % (uint)activeCount);
+
+        for (int i = 0; i < s_enemies.Count; i++)
+        {
+            GameObject enemy = s_enemies[i];
+            if (!enemy.EnabledInHierarchy || !IsEnemy(enemy))
+                continue;
+            if (selected-- == 0)
+                return enemy;
+        }
+        return null;
+    }
 
     private static float TimeSinceStartup() => XEngine.Runtime.Time.TimeSinceStartup;
 
@@ -89,7 +129,6 @@ public static class BattleTargets
     /// <summary>Fallback discovery after a fresh play session (dummy GOs carry EnemyController).</summary>
     private static void ScanScene()
     {
-        _scanned = true;
         Scene? scene = Scene.Current;
         if (scene == null) return;
         foreach (GameObject root in scene.RootObjects)

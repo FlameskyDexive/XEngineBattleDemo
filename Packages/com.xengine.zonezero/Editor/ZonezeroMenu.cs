@@ -697,9 +697,11 @@ public static class ZonezeroMenu
                 new Float3(4.2f, 0f, -6.0f), new Float3(0.8f, 0f, -9.0f)));
 
         // ── enemy practice dummies ──
-        SpawnDummy(backend, scene, "Dummy_A", new Float3(-2.6f, 0f, 3.4f));
-        SpawnDummy(backend, scene, "Dummy_B", new Float3(0f, 0f, 5.2f));
-        SpawnDummy(backend, scene, "Dummy_C", new Float3(2.6f, 0f, 3.9f));
+        // Keep the training line on the heroes' side of the arena's Z=0 collision boundary so
+        // simple CharacterController-driven demo AI can actually enter melee range.
+        SpawnDummy(backend, scene, "Dummy_A", new Float3(-2.6f, 0f, -1.0f));
+        SpawnDummy(backend, scene, "Dummy_B", new Float3(0f, 0f, -0.6f));
+        SpawnDummy(backend, scene, "Dummy_C", new Float3(2.6f, 0f, -1.0f));
 
         // ── fixed-heading 2.5D follow camera on the hero ──
         var templateCam = FindRoot(scene, "Main Camera");
