@@ -147,10 +147,10 @@
             "Z": 1F
           },
           "_localRotation": {
-            "X": 0.48990133F,
-            "Y": 0.15051298F,
-            "Z": -0.08630836F,
-            "W": 0.854338F
+            "X": 0.15033601F,
+            "Y": 0.83826745F,
+            "Z": 0.4381598F,
+            "W": -0.28761604F
           }
         },
         "Components": [
@@ -158,18 +158,18 @@
             "$id": 12,
             "$type": "XEngine.Runtime.DirectionalLight, XEngine.Runtime",
             "ShadowResolution": 2048L,
-            "Cascades": 2L,
-            "ShadowDistance": 70F,
+            "Cascades": 4L,
+            "ShadowDistance": 55F,
             "Color": {
               "R": 1F,
-              "G": 1F,
-              "B": 1F,
+              "G": 0.92F,
+              "B": 0.82F,
               "A": 1F
             },
-            "Intensity": 1F,
-            "ShadowStrength": 1F,
-            "ShadowBias": 0.001F,
-            "ShadowNormalBias": 0F,
+            "Intensity": 1.35F,
+            "ShadowStrength": 0.86F,
+            "ShadowBias": 0.002F,
+            "ShadowNormalBias": 0.015F,
             "CastShadows": true,
             "ShadowQuality": 1L,
             "BakeMode": 0L,
@@ -246,9 +246,9 @@
             "IsGlobal": true,
             "Weight": 1F,
             "BlendDistance": 0F,
-            "Priority": 0,
+            "Priority": 10L,
             "Profile": {
-              "AssetID": "00000000-0000-0000-0000-000000000000"
+              "AssetID": "825750711f454f54817646eb4630532d"
             },
             "_identifier": "6d98a8fc-ef36-482d-8ffe-a2ef3a75cff4",
             "_enabled": true,
@@ -35276,11 +35276,11 @@
 
               ]
             },
-            "ClearFlags": 1L,
+            "ClearFlags": 3L,
             "ClearColor": {
-              "R": 0.1F,
-              "G": 0.12F,
-              "B": 0.16F,
+              "R": 0.025F,
+              "G": 0.035F,
+              "B": 0.065F,
               "A": 1F
             },
             "CullingMask": {
@@ -35290,7 +35290,7 @@
             "FieldOfView": 46F,
             "OrthographicSize": 0.5F,
             "NearClipPlane": 0.1F,
-            "FarClipPlane": 100F,
+            "FarClipPlane": 120F,
             "Viewrect": {
               "Min": {
                 "X": 0F,
@@ -35312,7 +35312,7 @@
             },
             "Pipeline": NULL,
             "Target": NULL,
-            "HDR": false,
+            "HDR": true,
             "RenderScale": 1F,
             "_identifier": "fc7c6752-f987-44a0-bf08-df2eb8e3ea29",
             "_enabled": true,
@@ -35354,6 +35354,26 @@
             "FollowSpeed": 8L,
             "TargetHeight": 1.15F,
             "LookAhead": 0.75F
+          },
+          {
+            "$type": "XEngine.Runtime.UniversalAdditionalCameraData, XEngine.Runtime",
+            "_identifier": {
+              "$t": "g",
+              "$v": "eacecbae-a26f-4ad9-8bf0-866f71103fbd"
+            },
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": {
+              "$t": "g",
+              "$v": "00000000-0000-0000-0000-000000000000"
+            },
+            "Name": "",
+            "RenderShadows": true,
+            "RenderPostProcessing": true,
+            "Antialiasing": 0L,
+            "RequiresDepthTexture": false
           }
         ],
         "Children": [
@@ -38653,6 +38673,10 @@
       },
       {
         "$t": "g",
+        "$v": "eacecbae-a26f-4ad9-8bf0-866f71103fbd"
+      },
+      {
+        "$t": "g",
         "$v": "44a273e4-ce61-4c44-875d-bfb5a9d2e5e8"
       }
     ]
@@ -39421,25 +39445,25 @@
       39,
       40,
       41,
-      44,
-      45
+      45,
+      46
     ]
   },
   "Fog": {
     "Mode": 3L,
     "Color": {
-      "R": 0.5F,
-      "G": 0.5F,
-      "B": 0.5F,
+      "R": 0.08F,
+      "G": 0.11F,
+      "B": 0.17F,
       "A": 1F
     },
-    "Start": 20F,
-    "End": 100F,
-    "Density": 0.01F
+    "Start": 24F,
+    "End": 70F,
+    "Density": 0.008F
   },
   "Ambient": {
-    "Mode": 0L,
-    "Strength": 1F,
+    "Mode": 1L,
+    "Strength": 1.15F,
     "Color": {
       "X": 0.43F,
       "Y": 0.55F,
@@ -39447,15 +39471,15 @@
       "W": 1F
     },
     "SkyColor": {
-      "X": 0.3F,
-      "Y": 0.3F,
-      "Z": 0.4F,
+      "X": 0.28F,
+      "Y": 0.34F,
+      "Z": 0.48F,
       "W": 1F
     },
     "GroundColor": {
-      "X": 0.2F,
-      "Y": 0.2F,
-      "Z": 0.2F,
+      "X": 0.1F,
+      "Y": 0.12F,
+      "Z": 0.18F,
       "W": 1F
     }
   },
@@ -39479,7 +39503,7 @@
     "ParentDeltaId": NULL
   },
   "Skybox": {
-    "Mode": 0L,
+    "Mode": 2L,
     "SolidColor": {
       "R": 0.2F,
       "G": 0.3F,
@@ -39487,18 +39511,18 @@
       "A": 1F
     },
     "GradientTop": {
-      "R": 0.4F,
-      "G": 0.6F,
-      "B": 0.9F,
+      "R": 0.025F,
+      "G": 0.045F,
+      "B": 0.09F,
       "A": 1F
     },
     "GradientBottom": {
-      "R": 0.8F,
-      "G": 0.8F,
-      "B": 0.7F,
+      "R": 0.16F,
+      "G": 0.19F,
+      "B": 0.25F,
       "A": 1F
     },
-    "GradientExponent": 1F,
+    "GradientExponent": 0.85F,
     "CustomMaterial": {
       "AssetID": "00000000-0000-0000-0000-000000000000"
     }

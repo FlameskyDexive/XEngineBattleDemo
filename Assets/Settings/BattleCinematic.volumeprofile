@@ -1,0 +1,54 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Rendering.VolumeProfile, XEngine.Runtime",
+  "Components": {
+    "$id": 2,
+    "$values": [
+      {
+        "$type": "XEngine.Runtime.Rendering.BloomVolumeComponent, XEngine.Runtime",
+        "OverrideIntensity": true,
+        "Intensity": 0.55F,
+        "OverrideThreshold": true,
+        "Threshold": 0.95F,
+        "OverrideIterations": true,
+        "Iterations": 4,
+        "Active": false
+      },
+      {
+        "$type": "XEngine.Runtime.Rendering.TonemapVolumeComponent, XEngine.Runtime",
+        "OverrideType": true,
+        "Type": 3,
+        "OverrideContrast": true,
+        "Contrast": 1.12F,
+        "OverrideSaturation": true,
+        "Saturation": 1.08F,
+        "Active": false
+      },
+      {
+        "$type": "XEngine.Runtime.Rendering.ColorAdjustmentsVolumeComponent, XEngine.Runtime",
+        "OverrideExposure": true,
+        "PostExposure": 0.35F,
+        "OverrideContrast": true,
+        "Contrast": 0.1F,
+        "OverrideSaturation": true,
+        "Saturation": 0.06F,
+        "OverrideTemperature": true,
+        "Temperature": 0.04F,
+        "Active": true
+      },
+      {
+        "$type": "XEngine.Runtime.Rendering.VignetteVolumeComponent, XEngine.Runtime",
+        "OverrideIntensity": true,
+        "Intensity": 0.16F,
+        "OverrideSmoothness": true,
+        "Smoothness": 0.45F,
+        "OverrideRoundness": true,
+        "Roundness": 0.9F,
+        "Active": true
+      }
+    ]
+  },
+  "AssetPath": "Settings/BattleCinematic.volumeprofile",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "Battle Cinematic"
+}

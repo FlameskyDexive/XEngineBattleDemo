@@ -2,7 +2,7 @@
   "$id": 1,
   "$type": "XEngine.Runtime.Resources.Material, XEngine.Runtime",
   "_shader": {
-    "AssetID": "87bedf66-4e8b-0056-bc2e-4f8c7fc22a5a"
+    "AssetID": "24fb7ce8-7a2b-f354-8fb6-cc00130c521a"
   },
   "_properties": {
     "$id": 2,
@@ -12,9 +12,9 @@
         {
           "key": "_Ambient",
           "value": {
-            "R": 0.8F,
-            "G": 0.8F,
-            "B": 0.8F,
+            "R": 0.43F,
+            "G": 0.47F,
+            "B": 0.6F,
             "A": 0F
           }
         },
@@ -48,10 +48,10 @@
         {
           "key": "_RimColor",
           "value": {
-            "R": 1F,
-            "G": 0F,
-            "B": 0F,
-            "A": 1F
+            "R": 0.5F,
+            "G": 0.72F,
+            "B": 1F,
+            "A": 0.32F
           }
         },
         {
@@ -138,11 +138,11 @@
       "entries": [
         {
           "key": "_MainLightMidPoint",
-          "value": 0F
+          "value": -0.1F
         },
         {
           "key": "_MainLightSmoothness",
-          "value": 0.1F
+          "value": 0.14F
         },
         {
           "key": "_ReceiveShadowsEnabled",
@@ -150,15 +150,15 @@
         },
         {
           "key": "_MainShadowsPower",
-          "value": 0.5F
+          "value": 0.62F
         },
         {
           "key": "_ShadowSmoothness",
-          "value": 1F
+          "value": 0.2F
         },
         {
           "key": "_OcclusionPower",
-          "value": 1F
+          "value": 0.35F
         },
         {
           "key": "_AdditionalLightsEnabled",
@@ -198,23 +198,23 @@
         },
         {
           "key": "_RimEnabled",
-          "value": 0F
+          "value": 1F
         },
         {
           "key": "_RimMidPoint",
-          "value": 0.6F
+          "value": 0.62F
         },
         {
           "key": "_RimSmoothness",
-          "value": 0.1F
+          "value": 0.18F
         },
         {
           "key": "_DynamicRemap",
-          "value": 0.5F
+          "value": 0.35F
         },
         {
           "key": "_RimHideOnShadow",
-          "value": 1F
+          "value": 0.35F
         },
         {
           "key": "_MainLightSpecular",
@@ -254,7 +254,7 @@
         },
         {
           "key": "_ShrinkSize",
-          "value": -0.1F
+          "value": 0F
         },
         {
           "key": "_AlphaCutoff",
