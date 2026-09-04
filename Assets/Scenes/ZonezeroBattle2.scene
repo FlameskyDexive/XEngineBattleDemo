@@ -35349,7 +35349,7 @@
             },
             "Name": "",
             "Distance": 8.5F,
-            "PitchDeg": 50L,
+            "PitchDeg": 40L,
             "YawDeg": 0L,
             "FollowSpeed": 8L,
             "TargetHeight": 1.15F,

@@ -147,24 +147,24 @@ public static class BattleTargets
 
 /// <summary>
 /// Shared combat-motor plumbing for the hero controller and ally AI: gravity, grounded movement,
-/// animator clip playback helpers, damage-window querying and the swing/hit VFX pair. Attack VFX =
-/// slash arc at swing start; hit VFX = spark burst + white flash on the victim.
+/// animator clip playback helpers, damage-window querying and the swing/hit VFX pair.
 /// </summary>
 public static class CombatMotor
 {
-    public const float Gravity = -9.8f;
+    private const float MaxMovementDeltaTime = 1f / 30f;
     public const float HitWindowStart = 0.32f;   // normalized time the blade starts counting
     public const float HitWindowEnd = 0.72f;
 
-    public static void ApplyGravity(CharacterController cc)
-    {
-        cc.Move(new Float3(0f, Gravity * Time.DeltaTime, 0f));
-    }
-
     public static void MoveGrounded(CharacterController cc, Float3 direction, float speed)
     {
-        if (Float3.LengthSquared(direction) <= 1e-6f) return;
-        cc.Move(direction * speed * Time.DeltaTime);
+        // The battle actors are root-motion-free and remain on a walkable arena, so locomotion is
+        // intentionally horizontal. CharacterController.Move performs its own ground probe and
+        // slope snap; adding downward velocity to the same sweep can turn a floor contact into a
+        // start-of-cast side hit on mesh floors and freeze the actor. One horizontal solve per
+        // frame also keeps step/snap correction deterministic. Clamp stalls (asset imports,
+        // debugger pauses) so a delayed frame cannot become a visible teleport.
+        float dt = Math.Clamp(Time.DeltaTime, 0f, MaxMovementDeltaTime);
+        cc.Move(direction * speed * dt);
     }
 
     /// <summary>Smoothly turns a body's flat rotation toward a world direction.</summary>
@@ -218,20 +218,33 @@ public static class CombatMotor
         return t is >= HitWindowStart and <= HitWindowEnd;
     }
 
-    /// <summary>Attack VFX once per swing: arc slash originating at the attacker's chest height.</summary>
-    public static void SpawnSwingVfx(GameObject attacker)
+    /// <summary>Normal-chain VFX once per swing.</summary>
+    public static void SpawnNormalSwingVfx(GameObject attacker, int stage)
     {
         Float3 origin = attacker.Transform.Position + new Float3(0f, 1.05f, 0f)
                         + attacker.Transform.Forward * 0.55f;
-        ZonezeroVfx.SlashArc(origin, attacker.Transform.Forward);
+        ZonezeroVfx.NormalSlash(origin, attacker.Transform.Forward, stage);
+    }
+
+    /// <summary>K skill: crossed energy cuts and a contact ring.</summary>
+    public static void SpawnSkillKVfx(GameObject attacker)
+    {
+        Float3 origin = attacker.Transform.Position + new Float3(0f, 1.05f, 0f);
+        ZonezeroVfx.SkillK(origin, attacker.Transform.Forward);
+    }
+
+    /// <summary>L skill: dash streak and oversized finishing cut.</summary>
+    public static void SpawnSkillLVfx(GameObject attacker)
+    {
+        Float3 origin = attacker.Transform.Position + new Float3(0f, 0.18f, 0f);
+        ZonezeroVfx.SkillL(origin, attacker.Transform.Forward);
     }
 
     /// <summary>Hit VFX + hurt bookkeeping on the struck dummy.</summary>
     public static void ApplyHit(GameObject attacker, GameObject victim)
     {
         Float3 chest = victim.Transform.Position + new Float3(0f, 0.9f, 0f);
-        ZonezeroVfx.HitSparks(chest);
-        ZonezeroVfx.HitFlash(victim);
+        ZonezeroVfx.HitSparks(chest, victim.Transform.Position - attacker.Transform.Position);
         if (victim.GetComponent(typeof(IHurt)) is IHurt hurt)
             hurt.OnHit(attacker);
     }

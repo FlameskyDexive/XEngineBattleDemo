@@ -7,6 +7,7 @@ using XEngine.InputSystem;
 using XEngine.Runtime;
 using XEngine.Runtime.Resources;
 using XEngine.Vector;
+using XEngine.Zonezero.Vfx;
 
 namespace XEngine.Zonezero.Combat;
 
@@ -66,6 +67,7 @@ public sealed class HeroCombatController : MonoBehaviour
     private Float3 _lungeDirection;
     private GameObject? _lockedTarget;
     private bool _hitDoneForClip;
+    private WeaponTrailHandle? _weaponTrail;
 
     public bool IsBusy => _action != CombatAction.None;
 
@@ -76,8 +78,12 @@ public sealed class HeroCombatController : MonoBehaviour
 
     public override void Start()
     {
+        ZonezeroVfx.Warmup();
+        _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cc = GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        if (_animator != null)
+            _animator.ApplyRootMotion = false;
         _cameraRig = FindCameraRig();
 
         PlayerInput? input = FindInput();
@@ -100,7 +106,6 @@ public sealed class HeroCombatController : MonoBehaviour
         if (_cc == null || _animator == null) return;
 
         float dt = Time.DeltaTime;
-        CombatMotor.ApplyGravity(_cc);
         TickCooldowns(dt);
 
         bool normalPressed = _skillJ?.Triggered() == true;
@@ -152,15 +157,14 @@ public sealed class HeroCombatController : MonoBehaviour
             _cameraRig = FindCameraRig();
         if (_cameraRig != null)
         {
-            Float3 forward = _cameraRig.Transform.Forward;
-            Float2 flatForward = new(forward.X, forward.Z);
-            float forwardSqr = Float2.LengthSquared(flatForward);
-            if (forwardSqr > 1e-4f)
-            {
-                flatForward /= MathF.Sqrt(forwardSqr);
-                cameraForward = new Float3(flatForward.X, 0f, flatForward.Y);
-                cameraRight = new Float3(-flatForward.Y, 0f, flatForward.X);
-            }
+            // Use the rig's authored heading instead of its instantaneous Transform.Forward.
+            // Follow smoothing makes the camera look slightly sideways while catching up, which
+            // would otherwise rotate the input basis and make pure A/D movement drift in Z.
+            float yaw = _cameraRig.YawDeg * MathF.PI / 180f;
+            float sinYaw = MathF.Sin(yaw);
+            float cosYaw = MathF.Cos(yaw);
+            cameraForward = new Float3(sinYaw, 0f, cosYaw);
+            cameraRight = new Float3(cosYaw, 0f, -sinYaw);
         }
 
         Float3 wish = cameraForward * input.Y + cameraRight * input.X;
@@ -169,8 +173,16 @@ public sealed class HeroCombatController : MonoBehaviour
 
         // Asset streaming can leave the controller temporarily unable to enter Idle/Run. Keep
         // locomotion and visual state atomic so input cannot slide a static-pose character.
-        if (!CombatMotor.Play(_animator!, moving ? "Run" : "Idle", 0.15f)) return;
-        if (!moving) return;
+        if (!CombatMotor.Play(_animator!, moving ? "Run" : "Idle", 0.15f))
+        {
+            CombatMotor.MoveGrounded(_cc!, Float3.Zero, 0f);
+            return;
+        }
+        if (!moving)
+        {
+            CombatMotor.MoveGrounded(_cc!, Float3.Zero, 0f);
+            return;
+        }
 
         wish /= Math.Max(MathF.Sqrt(wishSqr), 1e-4f);
         CombatMotor.TurnToward(Transform, wish, TurnSpeedDeg, Time.DeltaTime);
@@ -180,10 +192,15 @@ public sealed class HeroCombatController : MonoBehaviour
     [HotPath]
     private void CombatTick(float dt)
     {
+        TickWeaponTrail();
         if (_action == CombatAction.SkillL && _lungeRemaining > 0f)
         {
             CombatMotor.MoveGrounded(_cc!, _lungeDirection, SkillLungeSpeed);
             _lungeRemaining -= dt;
+        }
+        else
+        {
+            CombatMotor.MoveGrounded(_cc!, Float3.Zero, 0f);
         }
 
         if (_action is CombatAction.Normal or CombatAction.SkillK or CombatAction.SkillL or CombatAction.SkillIBody)
@@ -219,12 +236,14 @@ public sealed class HeroCombatController : MonoBehaviour
         _normalStage = index + 1;
         _queuedNormalStage = 0;
         _normalCooldown = NormalAttackCooldown;
+        CombatMotor.SpawnNormalSwingVfx(GameObject!, _normalStage);
     }
 
     private void StartSkillK()
     {
         if (!StartClip(CombatAction.SkillK, "Attack_Normal_4")) return;
         _skillKCooldown = SkillKCooldown;
+        CombatMotor.SpawnSkillKVfx(GameObject!);
     }
 
     private void StartSkillL()
@@ -244,12 +263,14 @@ public sealed class HeroCombatController : MonoBehaviour
         _lungeRemaining = SkillLungeDuration;
         _skillLCooldown = SkillLCooldown;
         CombatMotor.TurnToward(Transform, direction, TurnSpeedDeg, 1f);
+        CombatMotor.SpawnSkillLVfx(GameObject!);
     }
 
     private void StartSkillI()
     {
         if (!StartClip(CombatAction.SkillIStart, "BigSkill_Start")) return;
         _skillICooldown = SkillICooldown;
+        ZonezeroVfx.UltimateCharge(Transform.Position);
     }
 
     private void StartSkillIPhase(CombatAction phase, string stateName)
@@ -269,7 +290,7 @@ public sealed class HeroCombatController : MonoBehaviour
         if (!CombatMotor.Play(_animator!, stateName)) return false;
         _action = action;
         if (acquireTarget) AcquireTarget();
-        CombatMotor.SpawnSwingVfx(GameObject!);
+        _weaponTrail?.SetEnabled(false);
         _hitDoneForClip = false;
         return true;
     }
@@ -281,6 +302,16 @@ public sealed class HeroCombatController : MonoBehaviour
         _queuedNormalStage = 0;
         _lungeRemaining = 0f;
         _lockedTarget = null;
+        _weaponTrail?.SetEnabled(false);
+    }
+
+    [HotPath]
+    private void TickWeaponTrail()
+    {
+        bool attacking = _action is CombatAction.Normal or CombatAction.SkillK
+            or CombatAction.SkillL or CombatAction.SkillIBody;
+        float normalizedTime = CombatMotor.NormalizedTime(_animator!);
+        _weaponTrail?.SetEnabled(attacking && normalizedTime is >= 0.20f and <= 0.80f);
     }
 
     [HotPath]

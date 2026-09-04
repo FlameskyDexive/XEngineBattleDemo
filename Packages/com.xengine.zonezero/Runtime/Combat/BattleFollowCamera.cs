@@ -24,7 +24,7 @@ public sealed class BattleFollowCamera : MonoBehaviour
     public float Distance = 8.5f;
 
     /// <summary>Downward viewing angle measured from the horizontal plane.</summary>
-    public float PitchDeg = 50f;
+    public float PitchDeg = 40f;
 
     /// <summary>World-space heading of the camera look direction; zero looks along +Z.</summary>
     public float YawDeg;

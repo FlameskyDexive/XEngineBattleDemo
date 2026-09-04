@@ -56,7 +56,9 @@ public sealed class AllyCombatAI : MonoBehaviour
     private GameObject? _target;
     private bool _damageActive;
     private bool _hitDoneForClip;
+    private bool _movementApplied;
     private uint _randomState;
+    private WeaponTrailHandle? _weaponTrail;
 
     /// <summary>Read-only acceptance telemetry; these properties are not used by the frame loop.</summary>
     public string AiPhase => _phase.ToString();
@@ -69,8 +71,12 @@ public sealed class AllyCombatAI : MonoBehaviour
 
     public override void Start()
     {
+        ZonezeroVfx.Warmup();
+        _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cc = GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        if (_animator != null)
+            _animator.ApplyRootMotion = false;
         uint identifierHash = unchecked((uint)GameObject!.Identifier.GetHashCode());
         _randomState = identifierHash ^ 0x9E3779B9u;
         if (_randomState == 0)
@@ -83,7 +89,7 @@ public sealed class AllyCombatAI : MonoBehaviour
     {
         if (_cc == null || _animator == null) return;
 
-        CombatMotor.ApplyGravity(_cc);
+        _movementApplied = false;
         switch (_phase)
         {
             case Phase.Patrol:
@@ -111,6 +117,9 @@ public sealed class AllyCombatAI : MonoBehaviour
                 RecoverTick();
                 break;
         }
+
+        if (!_movementApplied)
+            CombatMotor.MoveGrounded(_cc, Float3.Zero, 0f);
     }
 
     private void PatrolTick()
@@ -132,6 +141,7 @@ public sealed class AllyCombatAI : MonoBehaviour
         if (!CombatMotor.Play(_animator!, "Run", 0.18f)) return;
         CombatMotor.TurnToward(Transform, direction, TurnSpeedDeg, Time.DeltaTime);
         CombatMotor.MoveGrounded(_cc!, direction, WalkSpeed);
+        _movementApplied = true;
     }
 
     private void IdleTick()
@@ -173,6 +183,7 @@ public sealed class AllyCombatAI : MonoBehaviour
         if (!CombatMotor.Play(_animator!, "Run", 0.15f)) return;
         CombatMotor.TurnToward(Transform, direction, TurnSpeedDeg, Time.DeltaTime);
         CombatMotor.MoveGrounded(_cc!, direction, RunSpeed);
+        _movementApplied = true;
     }
 
     private void BeginCombo()
@@ -189,6 +200,7 @@ public sealed class AllyCombatAI : MonoBehaviour
             return;
         }
 
+        TickWeaponTrail();
         CombatMotor.TurnToward(Transform,
             _target!.Transform.Position - Transform.Position, TurnSpeedDeg * 0.6f, Time.DeltaTime);
         PollDamageWindow();
@@ -262,10 +274,34 @@ public sealed class AllyCombatAI : MonoBehaviour
 
         _damageActive = damageActive;
         _hitDoneForClip = false;
+        _weaponTrail?.SetEnabled(false);
         EnterPhase(phase);
         if (damageActive)
-            CombatMotor.SpawnSwingVfx(GameObject!);
+        {
+            switch (phase)
+            {
+                case Phase.Combo1:
+                    CombatMotor.SpawnNormalSwingVfx(GameObject!, 1);
+                    break;
+                case Phase.Combo2:
+                    CombatMotor.SpawnNormalSwingVfx(GameObject!, 2);
+                    break;
+                case Phase.Combo3:
+                    CombatMotor.SpawnNormalSwingVfx(GameObject!, 3);
+                    break;
+                case Phase.SkillAttack4:
+                    CombatMotor.SpawnSkillKVfx(GameObject!);
+                    break;
+            }
+        }
         return true;
+    }
+
+    [HotPath]
+    private void TickWeaponTrail()
+    {
+        float normalizedTime = CombatMotor.NormalizedTime(_animator!);
+        _weaponTrail?.SetEnabled(_damageActive && normalizedTime is >= 0.20f and <= 0.80f);
     }
 
     private void PollDamageWindow()
@@ -288,6 +324,7 @@ public sealed class AllyCombatAI : MonoBehaviour
     {
         _target = null;
         _damageActive = false;
+        _weaponTrail?.SetEnabled(false);
         _phaseDeadline = Time.TimeSinceStartup + Math.Max(RecoverDuration, 0f);
         EnterPhase(Phase.Recover);
         CombatMotor.Play(_animator!, "Idle", 0.12f);
