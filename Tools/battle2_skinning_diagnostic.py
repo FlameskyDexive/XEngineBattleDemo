@@ -1639,36 +1639,41 @@ def main() -> int:
                     f"{metric['extent']}"
                 )
 
-        by_root: dict[str, list[dict[str, Any]]] = {name: [] for name in HERO_NAMES}
-        for metric in report["metrics"]:
-            if (
-                metric.get("kind") == "animator"
-                and metric.get("root") in by_root
-                and "phase" not in metric
-                and metric.get("clip") not in {"<null>", "<none>"}
-            ):
-                by_root[metric["root"]].append(metric)
-        for root, samples in by_root.items():
-            if len(samples) < 2:
-                continue
-            first = samples[0]
-            same_state = [
-                sample
-                for sample in samples
-                if sample["clip"] == first["clip"]
-                and sample["stateHash"] == first["stateHash"]
-            ]
-            if len(same_state) < 2:
-                continue
-            normalized_times = [sample["normalizedTime"] for sample in same_state]
-            start = same_state[0]["position"]
-            end = same_state[-1]["position"]
-            horizontal_distance = math.hypot(end[0] - start[0], end[2] - start[2])
-            if max(normalized_times) - min(normalized_times) < 0.001 and horizontal_distance > 0.05:
-                report["errors"].append(
-                    f"{root} stalled-animation sliding: state {first['stateHash']} stayed at "
-                    f"normalized times {normalized_times} while moving {horizontal_distance:.3f}m"
-                )
+        # The coarse wall-clock samples can alias a short looping clip at the same normalized
+        # phase (for example Nike's 0.483 s Run sampled roughly three cycles apart). The state
+        # matrix already performs a stronger multi-phase limb-motion check, so do not let this
+        # fallback heuristic turn a verified moving pose into a false stalled-animation failure.
+        if not args.state_matrix:
+            by_root: dict[str, list[dict[str, Any]]] = {name: [] for name in HERO_NAMES}
+            for metric in report["metrics"]:
+                if (
+                    metric.get("kind") == "animator"
+                    and metric.get("root") in by_root
+                    and "phase" not in metric
+                    and metric.get("clip") not in {"<null>", "<none>"}
+                ):
+                    by_root[metric["root"]].append(metric)
+            for root, samples in by_root.items():
+                if len(samples) < 2:
+                    continue
+                first = samples[0]
+                same_state = [
+                    sample
+                    for sample in samples
+                    if sample["clip"] == first["clip"]
+                    and sample["stateHash"] == first["stateHash"]
+                ]
+                if len(same_state) < 2:
+                    continue
+                normalized_times = [sample["normalizedTime"] for sample in same_state]
+                start = same_state[0]["position"]
+                end = same_state[-1]["position"]
+                horizontal_distance = math.hypot(end[0] - start[0], end[2] - start[2])
+                if max(normalized_times) - min(normalized_times) < 0.001 and horizontal_distance > 0.05:
+                    report["errors"].append(
+                        f"{root} stalled-animation sliding: state {first['stateHash']} stayed at "
+                        f"normalized times {normalized_times} while moving {horizontal_distance:.3f}m"
+                    )
         for label in args.visual_failure:
             report["errors"].append(f"human-reviewed visual failure: {label}")
     except Exception as exc:

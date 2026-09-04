@@ -11,17 +11,12 @@ namespace XEngine.Zonezero;
 
 /// <summary>
 /// Feeds the combat scene's FreeLook rig from the player's <c>Look</c> action (pointer/gamepad
-/// deltas), like the reference demo's mouse look. The old M6 acceptance stand-in auto-orbited the
-/// rig at 40°/s, which silently fights the camera-relative run steering — keep the orbit behavior
-/// ONLY as an opt-in fallback when no PlayerInput/Look exists (headless capture rigs).
+/// deltas), like the reference demo's mouse look. When no look action is available the rig remains
+/// fixed so a missing input binding cannot silently rotate the camera-relative movement basis.
 /// </summary>
 [AddComponentMenu("Zonezero/FreeLook Look Driver")]
 public sealed class ZonezeroFreeLookDriver : MonoBehaviour
 {
-    /// <summary>Orbit speed used when no Look action is reachable (demo/headless mode).</summary>
-    public float OrbitSpeedDegreesPerSecond = 40f;
-    public float VerticalBobSpeed = 0.4f;
-
     /// <summary>Mouse-delta yaw scale (degrees per pixel), ZZZ MouseManager feel.</summary>
     public float LookSensitivity = 0.12f;
 
@@ -59,14 +54,12 @@ public sealed class ZonezeroFreeLookDriver : MonoBehaviour
             return;
         }
 
-        // No Look action wired (e.g. headless screenshot rigs): legacy demo orbit.
+        // Missing input is a configuration problem, not permission to move the camera. Keep the
+        // authored axes unchanged and report it once without adding steady-state log/allocation cost.
         if (!_warnedNoInput && Application.IsPlaying)
         {
-            Debug.LogWarning("[Zonezero] FreeLook: no PlayerInput/Look found — falling back to demo orbit.");
+            Debug.LogWarning("[Zonezero] FreeLook: no PlayerInput/Look found — camera remains fixed.");
             _warnedNoInput = true;
         }
-        _freeLook.XAxis.Value += OrbitSpeedDegreesPerSecond * Time.DeltaTime;
-        float yBob = _freeLook.YAxis.Value + VerticalBobSpeed * Time.DeltaTime;
-        _freeLook.YAxis.Value = _freeLook.YAxis.Clamp(yBob);
     }
 }

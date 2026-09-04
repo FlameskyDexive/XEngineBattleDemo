@@ -70,8 +70,12 @@ public sealed class BattleFollowCamera : MonoBehaviour
             self.Position += (desiredPosition - self.Position) * blend;
         }
 
-        Float3 lookAt = targetPosition + new Float3(0f, TargetHeight, 0f) + flatForward * LookAhead;
-        self.Rotation = Quaternion.LookRotation(lookAt - self.Position, Float3.UnitY);
+        // Keep the authored heading truly fixed. Looking from the smoothed position back at the
+        // target feeds follow lag into the camera yaw: a lateral move or teleport can otherwise
+        // swing the view even though YawDeg never changed.
+        Float3 lookDirection = flatForward * (distance + LookAhead)
+            + new Float3(0f, TargetHeight - height, 0f);
+        self.Rotation = Quaternion.LookRotation(lookDirection, Float3.UnitY);
     }
 
     internal static GameObject? FindHero()
