@@ -602,7 +602,7 @@ public static class ZonezeroMenu
     //  Battle Arena v2 — new-design combat sandbox (not a ZZZ port)
     // ================================================================
 
-    /// <summary>GUID of the imported ZZZ .inputactions asset (Player map with Move/SkillJ/SkillK).</summary>
+    /// <summary>GUID of the battle input asset (Player map with Move and SkillJ/K/L/I).</summary>
     internal const string BattleInputActionsGuid = "1f57f6b5-bfad-4bc6-94f7-eaace3868732";
 
     /// <summary>English-directory Corin controller (the healthy copy with resolved motions).</summary>
@@ -717,7 +717,7 @@ public static class ZonezeroMenu
         var rig = camGo.AddComponent<XEngine.Zonezero.Combat.BattleFollowCamera>();
         rig.Target = hero;
 
-        // ── shared input asset (Move WASD + SkillJ J + SkillK K) ──
+        // ── shared input asset (Move WASD + normal J + skills K/L/I) ──
         var inputGo = new GameObject("Battle_Input");
         scene.Add(inputGo);
         var input = inputGo.AddComponent<PlayerInput>();

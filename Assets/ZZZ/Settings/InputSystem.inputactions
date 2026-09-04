@@ -72,6 +72,20 @@
           "id": "b2222222-1111-2222-3333-444444444444",
           "processors": "",
           "interactions": ""
+        },
+        {
+          "name": "SkillL",
+          "type": "Button",
+          "id": "b3333333-1111-2222-3333-444444444444",
+          "processors": "",
+          "interactions": ""
+        },
+        {
+          "name": "SkillI",
+          "type": "Button",
+          "id": "b4444444-1111-2222-3333-444444444444",
+          "processors": "",
+          "interactions": ""
         }
       ],
       "bindings": [
@@ -356,6 +370,24 @@
           "processors": "",
           "groups": "",
           "action": "SkillK"
+        },
+        {
+          "name": null,
+          "id": "c3333333-1111-2222-3333-444444444444",
+          "path": "<Keyboard>/l",
+          "interactions": "",
+          "processors": "",
+          "groups": "",
+          "action": "SkillL"
+        },
+        {
+          "name": null,
+          "id": "c4444444-1111-2222-3333-444444444444",
+          "path": "<Keyboard>/i",
+          "interactions": "",
+          "processors": "",
+          "groups": "",
+          "action": "SkillI"
         }
       ]
     },

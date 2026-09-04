@@ -1,22 +1,19 @@
 // This file is part of the XEngine Game Engine
 // Licensed under the MIT License. See the LICENSE file in the project root for details.
 
-using XEngine.InputSystem;
 using System;
 
+using XEngine.InputSystem;
 using XEngine.Runtime;
 using XEngine.Runtime.Resources;
-using XEngine.Vector;
 using XEngine.Vector;
 
 namespace XEngine.Zonezero.Combat;
 
 /// <summary>
-/// Player-controlled battle hero (Anbi): camera-relative WASD locomotion plus keyboard skills —
-/// <c>J</c> = single normal attack, <c>K</c> = 3-stage combo with buffered chaining (press once for
-/// stage one, press again during a stage to queue the next, up to the finisher). Movement is locked
-/// while swinging. Damage windows are normalized-time slices with forward-cone target tests; every
-/// swing spawns its slash-arc VFX and every connect spawns sparks + flash on the dummy.
+/// Player-controlled battle hero (Anbi): camera-relative WASD locomotion plus four keyboard
+/// combat actions. J buffers a three-hit normal chain, K is a quick fourth-form skill, L is a
+/// forward lunge skill, and I plays the full big-skill intro/body/outro sequence.
 /// </summary>
 [AddComponentMenu("Zonezero/Battle Hero Controller")]
 public sealed class HeroCombatController : MonoBehaviour
@@ -25,165 +22,278 @@ public sealed class HeroCombatController : MonoBehaviour
     public float TurnSpeedDeg = 540f;
     public float AttackRange = 2.0f;
     public float AttackHalfAngle = 65f;
-    public float NormalAttackCooldown = 0.5f;
+    public float NormalAttackCooldown = 0.18f;
+    public float SkillKCooldown = 1.25f;
+    public float SkillLCooldown = 2.25f;
+    public float SkillICooldown = 7f;
+    public float SkillLungeSpeed = 7.5f;
+    public float SkillLungeDuration = 0.38f;
+
+    private enum CombatAction
+    {
+        None,
+        Normal,
+        SkillK,
+        SkillL,
+        SkillIStart,
+        SkillIBody,
+        SkillIEnd,
+    }
+
+    private static readonly string[] s_normalClips =
+    {
+        "Attack_Normal_1",
+        "Attack_Normal_2",
+        "Attack_Normal_3",
+    };
 
     private CharacterController? _cc;
     private Animator? _animator;
+    private BattleFollowCamera? _cameraRig;
     private InputAction? _move;
     private InputAction? _skillJ;
     private InputAction? _skillK;
-
-    /// <summary>Combo stage currently playing or queued start (1..3), 0 when not attacking.</summary>
-    private int _comboStage;
-    /// <summary>Next queued combo stage after the current clip ends (0 = none).</summary>
-    private int _queuedStage;
-
-    private bool _jAttacking;
-    private float _jCooldown;
+    private InputAction? _skillL;
+    private InputAction? _skillI;
+    private CombatAction _action;
+    private int _normalStage;
+    private int _queuedNormalStage;
+    private float _normalCooldown;
+    private float _skillKCooldown;
+    private float _skillLCooldown;
+    private float _skillICooldown;
+    private float _lungeRemaining;
+    private Float3 _lungeDirection;
     private GameObject? _lockedTarget;
-    private static readonly string[] ComboClips = { "Attack_Normal_1", "Attack_Normal_2", "Attack_Normal_3" };
-    public bool IsBusy => _comboStage > 0 || _jAttacking;
+    private bool _hitDoneForClip;
+
+    public bool IsBusy => _action != CombatAction.None;
+
+    /// <summary>Acceptance-test telemetry; never queried by the per-frame path.</summary>
+    public string ActiveAction => _action.ToString();
+
+    public int NormalStage => _normalStage;
 
     public override void Start()
     {
         _cc = GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _cameraRig = FindCameraRig();
+
         PlayerInput? input = FindInput();
-        if (input != null)
+        if (input == null)
         {
-            _move = input.FindAction("Move");
-            _skillJ = input.FindAction("SkillJ");
-            _skillK = input.FindAction("SkillK");
+            Debug.LogWarning("[Battle] No PlayerInput in scene — WASD/J/K/L/I disabled.");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("[Battle] No PlayerInput in scene — WASD/JK disabled.");
-        }
+
+        _move = input.FindAction("Move");
+        _skillJ = input.FindAction("SkillJ");
+        _skillK = input.FindAction("SkillK");
+        _skillL = input.FindAction("SkillL");
+        _skillI = input.FindAction("SkillI");
     }
 
+    [HotPath]
     public override void Update()
     {
         if (_cc == null || _animator == null) return;
+
+        float dt = Time.DeltaTime;
         CombatMotor.ApplyGravity(_cc);
-        if (_jCooldown > 0f) _jCooldown -= Time.DeltaTime;
+        TickCooldowns(dt);
 
-        if (_skillJ?.Triggered() == true && !IsBusy && _jCooldown <= 0f)
-        {
-            StartAttack(ComboClips[0]);
-            _jCooldown = NormalAttackCooldown;
-        }
-        else if (_skillK?.Triggered() == true)
-        {
-            // Buffering rule: first press starts stage 1; a press during any later stage queues the
-            // next one so mashing K walks the chain 1→2→3, finishing at three.
-            if (_comboStage == 0 && !_jAttacking)
-                StartCombo(1);
-            else if (_comboStage is >= 1 and < 3)
-                _queuedStage = Math.Max(_queuedStage, _comboStage + 1);
-        }
+        bool normalPressed = _skillJ?.Triggered() == true;
+        bool skillKPressed = _skillK?.Triggered() == true;
+        bool skillLPressed = _skillL?.Triggered() == true;
+        bool skillIPressed = _skillI?.Triggered() == true;
 
-        if (_jAttacking)
+        if (_action == CombatAction.Normal && normalPressed && _normalStage < s_normalClips.Length)
+            _queuedNormalStage = _normalStage + 1;
+
+        if (_action == CombatAction.None)
         {
-            TickDamageWindow();
-            FaceLockedTarget();
-            if (CombatMotor.ClipFinished(_animator))
-                _jAttacking = false;
-            return; // movement locked while swinging
+            if (skillIPressed && _skillICooldown <= 0f)
+                StartSkillI();
+            else if (skillLPressed && _skillLCooldown <= 0f)
+                StartSkillL();
+            else if (skillKPressed && _skillKCooldown <= 0f)
+                StartSkillK();
+            else if (normalPressed && _normalCooldown <= 0f)
+                StartNormal(1);
         }
 
-        if (_comboStage > 0)
+        if (_action != CombatAction.None)
         {
-            TickDamageWindow();
-            FaceLockedTarget();
-            if (CombatMotor.ClipFinished(_animator))
-            {
-                int next = _queuedStage;
-                _queuedStage = 0;
-                if (next > _comboStage && next <= 3)
-                    StartCombo(next);
-                else
-                    EndCombo();
-            }
-            return; // movement locked mid-combo
+            CombatTick(dt);
+            return;
         }
 
         LocomotionTick();
     }
 
-    // ── movement ──────────────────────────────────────────────────────────────
+    [HotPath]
+    private void TickCooldowns(float dt)
+    {
+        if (_normalCooldown > 0f) _normalCooldown -= dt;
+        if (_skillKCooldown > 0f) _skillKCooldown -= dt;
+        if (_skillLCooldown > 0f) _skillLCooldown -= dt;
+        if (_skillICooldown > 0f) _skillICooldown -= dt;
+    }
 
+    [HotPath]
     private void LocomotionTick()
     {
-        Float2 mv = _move?.ReadValue<Float2>() ?? default;
-        BattleFollowCamera? rig = FindCameraRig();
-        Float3 camForward = new(0f, 0f, 1f), camRight = new(1f, 0f, 0f);
-        if (rig != null)
+        Float2 input = _move?.ReadValue<Float2>() ?? default;
+        Float3 cameraForward = Float3.UnitZ;
+        Float3 cameraRight = Float3.UnitX;
+
+        if (_cameraRig == null || !_cameraRig.IsValid())
+            _cameraRig = FindCameraRig();
+        if (_cameraRig != null)
         {
-            Float3 f = rig.Transform.Forward;
-            Float2 ff = new(f.X, f.Z);
-            if (Float2.LengthSquared(ff) > 1e-4f)
+            Float3 forward = _cameraRig.Transform.Forward;
+            Float2 flatForward = new(forward.X, forward.Z);
+            float forwardSqr = Float2.LengthSquared(flatForward);
+            if (forwardSqr > 1e-4f)
             {
-                ff /= MathF.Sqrt(Float2.LengthSquared(ff));
-                camForward = new Float3(ff.X, 0f, ff.Y);
-                camRight = new Float3(-ff.Y, 0f, ff.X); // right = forward rotated -90° around Y
+                flatForward /= MathF.Sqrt(forwardSqr);
+                cameraForward = new Float3(flatForward.X, 0f, flatForward.Y);
+                cameraRight = new Float3(-flatForward.Y, 0f, flatForward.X);
             }
         }
-        // No rig found: identity axes keep the controls alive instead of dead-ending.
 
-        Float3 wish = camForward * mv.Y + camRight * mv.X;
-        bool moving = Float3.LengthSquared(wish) > 0.02f;
+        Float3 wish = cameraForward * input.Y + cameraRight * input.X;
+        float wishSqr = Float3.LengthSquared(wish);
+        bool moving = wishSqr > 0.02f;
+
         // Asset streaming can leave the controller temporarily unable to enter Idle/Run. Keep
-        // locomotion and its visual state atomic so input cannot slide a static-pose character.
+        // locomotion and visual state atomic so input cannot slide a static-pose character.
         if (!CombatMotor.Play(_animator!, moving ? "Run" : "Idle", 0.15f)) return;
-        if (moving)
+        if (!moving) return;
+
+        wish /= Math.Max(MathF.Sqrt(wishSqr), 1e-4f);
+        CombatMotor.TurnToward(Transform, wish, TurnSpeedDeg, Time.DeltaTime);
+        CombatMotor.MoveGrounded(_cc!, wish, RunSpeed);
+    }
+
+    [HotPath]
+    private void CombatTick(float dt)
+    {
+        if (_action == CombatAction.SkillL && _lungeRemaining > 0f)
         {
-            wish /= Math.Max(MathF.Sqrt(Float3.LengthSquared(wish)), 1e-4f);
-            CombatMotor.TurnToward(Transform, wish, TurnSpeedDeg, Time.DeltaTime);
-            CombatMotor.MoveGrounded(_cc!, wish, RunSpeed);
+            CombatMotor.MoveGrounded(_cc!, _lungeDirection, SkillLungeSpeed);
+            _lungeRemaining -= dt;
+        }
+
+        if (_action is CombatAction.Normal or CombatAction.SkillK or CombatAction.SkillL or CombatAction.SkillIBody)
+            TickDamageWindow();
+        FaceLockedTarget();
+
+        if (!CombatMotor.ClipFinished(_animator!)) return;
+
+        switch (_action)
+        {
+            case CombatAction.Normal:
+                if (_queuedNormalStage > _normalStage && _queuedNormalStage <= s_normalClips.Length)
+                    StartNormal(_queuedNormalStage);
+                else
+                    EndAction();
+                break;
+            case CombatAction.SkillIStart:
+                StartSkillIPhase(CombatAction.SkillIBody, "BigSkill");
+                break;
+            case CombatAction.SkillIBody:
+                StartSkillIPhase(CombatAction.SkillIEnd, "BigSkill_End");
+                break;
+            default:
+                EndAction();
+                break;
         }
     }
 
-    // ── attacks ───────────────────────────────────────────────────────────────
-
-    private void StartAttack(string clip)
+    private void StartNormal(int stage)
     {
-        if (!CombatMotor.Play(_animator!, clip)) return;
-        _jAttacking = true;
-        AcquireTarget();
-        CombatMotor.SpawnSwingVfx(GameObject!);
-        _hitVfxDone = false;
+        int index = Math.Clamp(stage - 1, 0, s_normalClips.Length - 1);
+        if (!StartClip(CombatAction.Normal, s_normalClips[index])) return;
+        _normalStage = index + 1;
+        _queuedNormalStage = 0;
+        _normalCooldown = NormalAttackCooldown;
     }
 
-    private void StartCombo(int stage)
+    private void StartSkillK()
     {
-        _comboStage = stage;
-        _queuedStage = 0;
-        if (!CombatMotor.Play(_animator!, ComboClips[Math.Min(stage, ComboClips.Length) - 1]))
+        if (!StartClip(CombatAction.SkillK, "Attack_Normal_4")) return;
+        _skillKCooldown = SkillKCooldown;
+    }
+
+    private void StartSkillL()
+    {
+        AcquireTarget();
+        Float3 direction = Transform.Forward;
+        if (_lockedTarget != null && !_lockedTarget.IsDisposed)
+            direction = _lockedTarget.Transform.Position - Transform.Position;
+        float flatSqr = direction.X * direction.X + direction.Z * direction.Z;
+        if (flatSqr > 1e-4f)
+            direction = new Float3(direction.X / MathF.Sqrt(flatSqr), 0f, direction.Z / MathF.Sqrt(flatSqr));
+        else
+            direction = Float3.UnitZ;
+
+        if (!StartClip(CombatAction.SkillL, "Evade_Front", acquireTarget: false)) return;
+        _lungeDirection = direction;
+        _lungeRemaining = SkillLungeDuration;
+        _skillLCooldown = SkillLCooldown;
+        CombatMotor.TurnToward(Transform, direction, TurnSpeedDeg, 1f);
+    }
+
+    private void StartSkillI()
+    {
+        if (!StartClip(CombatAction.SkillIStart, "BigSkill_Start")) return;
+        _skillICooldown = SkillICooldown;
+    }
+
+    private void StartSkillIPhase(CombatAction phase, string stateName)
+    {
+        if (!StartClip(phase, stateName, acquireTarget: false))
         {
-            EndCombo();
+            EndAction();
             return;
         }
-        AcquireTarget();
-        CombatMotor.SpawnSwingVfx(GameObject!);
-        _hitVfxDone = false;
+
+        if (phase == CombatAction.SkillIBody)
+            XEngine.Zonezero.Vfx.ZonezeroVfx.BigSkillBurst(Transform.Position + new Float3(0f, 0.9f, 0f));
     }
 
-    private void EndCombo() => _comboStage = 0;
+    private bool StartClip(CombatAction action, string stateName, bool acquireTarget = true)
+    {
+        if (!CombatMotor.Play(_animator!, stateName)) return false;
+        _action = action;
+        if (acquireTarget) AcquireTarget();
+        CombatMotor.SpawnSwingVfx(GameObject!);
+        _hitDoneForClip = false;
+        return true;
+    }
 
+    private void EndAction()
+    {
+        _action = CombatAction.None;
+        _normalStage = 0;
+        _queuedNormalStage = 0;
+        _lungeRemaining = 0f;
+        _lockedTarget = null;
+    }
+
+    [HotPath]
     private void TickDamageWindow()
     {
-        if (!CombatMotor.InHitWindow(_animator!) || _hitVfxDone) return;
+        if (_hitDoneForClip || !CombatMotor.InHitWindow(_animator!)) return;
         GameObject? victim = FindVictimInCone();
         if (victim == null) return;
-        _hitVfxDone = true;
+        _hitDoneForClip = true;
         CombatMotor.ApplyHit(GameObject!, victim);
     }
 
-    private void AcquireTarget()
-    {
-        _lockedTarget = BattleTargets.FindNearest(Transform.Position, 12f);
-    }
-
+    [HotPath]
     private void FaceLockedTarget()
     {
         if (_lockedTarget == null || _lockedTarget.IsDisposed) return;
@@ -191,39 +301,47 @@ public sealed class HeroCombatController : MonoBehaviour
             _lockedTarget.Transform.Position - Transform.Position, TurnSpeedDeg * 0.8f, Time.DeltaTime);
     }
 
+    private void AcquireTarget()
+    {
+        _lockedTarget = BattleTargets.FindNearest(Transform.Position, 12f);
+    }
+
+    [HotPath]
     private GameObject? FindVictimInCone()
     {
-        // Locked target first, then any enemy inside the cone.
         if (_lockedTarget != null && !_lockedTarget.IsDisposed &&
             CombatMotor.InAttackCone(GameObject!, _lockedTarget, AttackRange, AttackHalfAngle))
             return _lockedTarget;
+
         GameObject? nearest = BattleTargets.FindNearest(Transform.Position, AttackRange + 4f);
-        if (nearest != null && CombatMotor.InAttackCone(GameObject!, nearest, AttackRange, AttackHalfAngle))
-            return nearest;
-        return null;
+        return nearest != null && CombatMotor.InAttackCone(GameObject!, nearest, AttackRange, AttackHalfAngle)
+            ? nearest
+            : null;
     }
-
-    private bool _hitVfxDone;
-
-    // ── scene lookups ─────────────────────────────────────────────────────────
 
     internal static PlayerInput? FindInput()
     {
         Scene? scene = Scene.Current;
         if (scene == null) return null;
         foreach (GameObject root in scene.RootObjects)
-            if (root.GetComponent<PlayerInput>() != null && root.EnabledInHierarchy)
-                return root.GetComponent<PlayerInput>();
+        {
+            PlayerInput? input = root.GetComponent<PlayerInput>();
+            if (input != null && root.EnabledInHierarchy)
+                return input;
+        }
         return null;
     }
 
-    private BattleFollowCamera? FindCameraRig()
+    private static BattleFollowCamera? FindCameraRig()
     {
         Scene? scene = Scene.Current;
         if (scene == null) return null;
         foreach (GameObject root in scene.RootObjects)
-            if (root.GetComponent<BattleFollowCamera>() != null && root.EnabledInHierarchy)
-                return root.GetComponent<BattleFollowCamera>();
+        {
+            BattleFollowCamera? rig = root.GetComponent<BattleFollowCamera>();
+            if (rig != null && root.EnabledInHierarchy)
+                return rig;
+        }
         return null;
     }
 }
