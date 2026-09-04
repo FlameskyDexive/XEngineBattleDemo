@@ -35280,6 +35280,28 @@
             "AssetPath": "",
             "AssetID": "00000000-0000-0000-0000-000000000000",
             "Name": "NewAudioListener"
+          },
+          {
+            "$type": "XEngine.Zonezero.Combat.BattleFollowCamera, XEngine.Zonezero.Runtime",
+            "_identifier": {
+              "$t": "g",
+              "$v": "db2f4732-afd6-4669-899e-22f19b7571c2"
+            },
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": {
+              "$t": "g",
+              "$v": "00000000-0000-0000-0000-000000000000"
+            },
+            "Name": "",
+            "Distance": 8.5F,
+            "PitchDeg": 50L,
+            "YawDeg": 0L,
+            "FollowSpeed": 8L,
+            "TargetHeight": 1.15F,
+            "LookAhead": 0.75F
           }
         ],
         "Children": [
@@ -38567,6 +38589,10 @@
       },
       {
         "$t": "g",
+        "$v": "db2f4732-afd6-4669-899e-22f19b7571c2"
+      },
+      {
+        "$t": "g",
         "$v": "44a273e4-ce61-4c44-875d-bfb5a9d2e5e8"
       }
     ]
@@ -39335,8 +39361,8 @@
       37,
       38,
       39,
-      41,
-      42
+      42,
+      43
     ]
   },
   "Fog": {

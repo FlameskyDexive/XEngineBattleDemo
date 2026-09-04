@@ -701,13 +701,13 @@ public static class ZonezeroMenu
         SpawnDummy(backend, scene, "Dummy_B", new Float3(0f, 0f, 5.2f));
         SpawnDummy(backend, scene, "Dummy_C", new Float3(2.6f, 0f, 3.9f));
 
-        // ── fixed-angle follow camera on the hero ──
+        // ── fixed-heading 2.5D follow camera on the hero ──
         var templateCam = FindRoot(scene, "Main Camera");
         if (templateCam != null) templateCam.Enabled = false;
         var camGo = new GameObject("BattleCamera");
         scene.Add(camGo);
-        camGo.Transform.Position = hero.Transform.Position - Float3.UnitZ * 6f
-                                  + new Float3(0f, 6f * MathF.Tan(40f * MathF.PI / 180f) + 0.8f, 0f);
+        camGo.Transform.Position = hero.Transform.Position - Float3.UnitZ * 8.5f
+                                  + new Float3(0f, 8.5f * MathF.Tan(50f * MathF.PI / 180f), 0f);
         camGo.Transform.Forward = Float3.UnitZ;
         var cam = camGo.AddComponent<Camera>();
         cam.FieldOfView = 46f;
@@ -716,6 +716,8 @@ public static class ZonezeroMenu
         camGo.AddComponent<AudioListener>();
         var rig = camGo.AddComponent<XEngine.Zonezero.Combat.BattleFollowCamera>();
         rig.Target = hero;
+        rig.Distance = 8.5f;
+        rig.PitchDeg = 50f;
 
         // ── shared input asset (Move WASD + normal J + skills K/L/I) ──
         var inputGo = new GameObject("Battle_Input");
