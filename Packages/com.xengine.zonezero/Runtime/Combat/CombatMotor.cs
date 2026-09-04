@@ -148,11 +148,12 @@ public static class CombatMotor
     {
         if (animator == null || !animator.HasState(stateName)) return false;
 
-        // Re-issuing the state that is already playing restarts its clip at frame zero; a per-frame
-        // locomotion caller would therefore freeze idle/run on their first pose forever. Skip when
-        // the FSM is already on this exact state and fully faded in.
+        // Re-issuing the state that is already current restarts its clip at frame zero and replaces
+        // its fade. Locomotion asks every frame, so this guard must also hold while the destination
+        // is fading in; otherwise the transition asymptotically restarts forever and the actor
+        // moves while visibly frozen on the first/static pose.
         var rt = animator.Runtime;
-        if (rt != null && rt.CurrentStateIndex >= 0 && !rt.IsInTransition
+        if (rt != null && rt.CurrentStateIndex >= 0
             && rt.Constant.States[rt.CurrentStateIndex].NameHash == AnimationNameHash.Hash(stateName))
             return true;
 

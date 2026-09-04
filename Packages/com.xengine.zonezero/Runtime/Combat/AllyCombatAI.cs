@@ -104,9 +104,15 @@ public sealed class AllyCombatAI : MonoBehaviour
         }
 
         Float3 dir = new(flat.X / MathF.Sqrt(Float2.LengthSquared(flat)), 0f, flat.Y / MathF.Sqrt(Float2.LengthSquared(flat)));
+        // These production controllers currently expose Idle/Run but no Walk. Prefer Walk when a
+        // future controller supplies it, otherwise animate patrol with Run at the lower WalkSpeed.
+        // If neither state is available yet, clips are still streaming: keep body and pose atomic
+        // instead of visibly sliding the actor in its static pose.
+        Animator animator = _animator!;
+        string locomotionState = animator.HasState("Walk") ? "Walk" : "Run";
+        if (!CombatMotor.Play(animator, locomotionState, 0.18f)) return;
         CombatMotor.TurnToward(Transform, dir, TurnSpeedDeg, Time.DeltaTime);
         CombatMotor.MoveGrounded(_cc!, dir, WalkSpeed);
-        CombatMotor.Play(_animator, "Walk", 0.18f);
 
         // Spawned far from a dummy still triggers aggression once in range.
         if (_target != null && Float3.LengthSquared(_target.Transform.Position - Transform.Position) < AggroRange * AggroRange)
@@ -131,9 +137,9 @@ public sealed class AllyCombatAI : MonoBehaviour
 
         Float3 dir = delta / Math.Max(dist, 1e-4f);
         dir = new Float3(dir.X, 0f, dir.Z);
+        if (!CombatMotor.Play(_animator!, "Run", 0.15f)) return;
         CombatMotor.TurnToward(Transform, dir, TurnSpeedDeg, Time.DeltaTime);
         CombatMotor.MoveGrounded(_cc!, dir, RunSpeed);
-        CombatMotor.Play(_animator, "Run", 0.15f);
     }
 
     // ── attack program ────────────────────────────────────────────────────────

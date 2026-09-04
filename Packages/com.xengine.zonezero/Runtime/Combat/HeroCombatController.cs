@@ -132,14 +132,15 @@ public sealed class HeroCombatController : MonoBehaviour
 
         Float3 wish = camForward * mv.Y + camRight * mv.X;
         bool moving = Float3.LengthSquared(wish) > 0.02f;
+        // Asset streaming can leave the controller temporarily unable to enter Idle/Run. Keep
+        // locomotion and its visual state atomic so input cannot slide a static-pose character.
+        if (!CombatMotor.Play(_animator!, moving ? "Run" : "Idle", 0.15f)) return;
         if (moving)
         {
             wish /= Math.Max(MathF.Sqrt(Float3.LengthSquared(wish)), 1e-4f);
             CombatMotor.TurnToward(Transform, wish, TurnSpeedDeg, Time.DeltaTime);
             CombatMotor.MoveGrounded(_cc!, wish, RunSpeed);
         }
-
-        CombatMotor.Play(_animator, moving ? "Run" : "Idle", 0.15f);
     }
 
     // ── attacks ───────────────────────────────────────────────────────────────
