@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See the LICENSE file in the project root for details.
 
 using System;
+using System.Runtime.CompilerServices;
 
 using XEngine.Animation;
 using XEngine.Runtime;
@@ -155,6 +156,44 @@ public static class CombatMotor
     public const float HitWindowStart = 0.32f;   // normalized time the blade starts counting
     public const float HitWindowEnd = 0.72f;
 
+    /// <summary>
+    /// The imported battle avatars face -Z. Adapt their complete visual hierarchy to the +Z
+    /// gameplay convention once, outside the animation binding so clip root channels cannot
+    /// overwrite the correction or retarget it into the individual bones.
+    /// </summary>
+    internal static void ConfigureVisualForward(Animator animator)
+    {
+        if (animator.SkeletonRoot != null) return;
+
+        GameObject actor = animator.GameObject!;
+        GameObject? model = null;
+        for (int i = 0; i < actor.Children.Count; i++)
+        {
+            GameObject candidate = actor.Children[i];
+            if (!ContainsSkinnedRenderer(candidate)) continue;
+            model = candidate;
+            break;
+        }
+        if (model == null) return;
+
+        bool wasEnabled = animator.Enabled;
+        animator.Enabled = false;
+        var visual = new GameObject("BattleVisual");
+        visual.SetParent(actor, worldPositionStays: false);
+        model.SetParent(visual, worldPositionStays: false);
+        animator.SkeletonRoot = visual.Transform;
+        visual.Transform.LocalRotation = new Quaternion(0f, 1f, 0f, 0f);
+        animator.Enabled = wasEnabled;
+    }
+
+    private static bool ContainsSkinnedRenderer(GameObject root)
+    {
+        if (root.GetComponent<SkinnedMeshRenderer>() != null) return true;
+        for (int i = 0; i < root.Children.Count; i++)
+            if (ContainsSkinnedRenderer(root.Children[i])) return true;
+        return false;
+    }
+
     public static void MoveGrounded(CharacterController cc, Float3 direction, float speed)
     {
         // The battle actors are root-motion-free and remain on a walkable arena, so locomotion is
@@ -163,8 +202,21 @@ public static class CombatMotor
         // start-of-cast side hit on mesh floors and freeze the actor. One horizontal solve per
         // frame also keeps step/snap correction deterministic. Clamp stalls (asset imports,
         // debugger pauses) so a delayed frame cannot become a visible teleport.
-        float dt = Math.Clamp(Time.DeltaTime, 0f, MaxMovementDeltaTime);
-        cc.Move(direction * speed * dt);
+        float dt = ClampMovementDeltaTime(Time.DeltaTime);
+        MoveGrounded(cc, direction, speed, dt);
+    }
+
+    [HotPath]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static float ClampMovementDeltaTime(float deltaTime)
+        => Math.Clamp(deltaTime, 0f, MaxMovementDeltaTime);
+
+    /// <summary>Moves for an explicitly consumed duration, used by finite timed movement.</summary>
+    [HotPath]
+    internal static void MoveGrounded(
+        CharacterController cc, Float3 direction, float speed, float stepSeconds)
+    {
+        cc.Move(direction * speed * Math.Max(stepSeconds, 0f));
     }
 
     /// <summary>Smoothly turns a body's flat rotation toward a world direction.</summary>

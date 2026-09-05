@@ -30,17 +30,6 @@ public sealed class HeroCombatController : MonoBehaviour
     public float SkillLungeSpeed = 7.5f;
     public float SkillLungeDuration = 0.38f;
 
-    private enum CombatAction
-    {
-        None,
-        Normal,
-        SkillK,
-        SkillL,
-        SkillIStart,
-        SkillIBody,
-        SkillIEnd,
-    }
-
     private static readonly string[] s_normalClips =
     {
         "Attack_Normal_1",
@@ -78,12 +67,15 @@ public sealed class HeroCombatController : MonoBehaviour
 
     public override void Start()
     {
-        ZonezeroVfx.Warmup();
-        _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cc = GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         if (_animator != null)
+        {
             _animator.ApplyRootMotion = false;
+            CombatMotor.ConfigureVisualForward(_animator);
+        }
+        ZonezeroVfx.Warmup();
+        _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cameraRig = FindCameraRig();
 
         PlayerInput? input = FindInput();
@@ -99,6 +91,9 @@ public sealed class HeroCombatController : MonoBehaviour
         _skillL = input.FindAction("SkillL");
         _skillI = input.FindAction("SkillI");
     }
+
+    // Disabling a hero interrupts its action. Re-enabling must not resume an old dash or combo.
+    public override void OnDisable() => EndAction();
 
     [HotPath]
     public override void Update()
@@ -193,10 +188,12 @@ public sealed class HeroCombatController : MonoBehaviour
     private void CombatTick(float dt)
     {
         TickWeaponTrail();
-        if (_action == CombatAction.SkillL && _lungeRemaining > 0f)
+        float lungeStepSeconds = CombatLungeMotion.ConsumeStepSeconds(
+            _action, dt, ref _lungeRemaining);
+        if (lungeStepSeconds > 0f)
         {
-            CombatMotor.MoveGrounded(_cc!, _lungeDirection, SkillLungeSpeed);
-            _lungeRemaining -= dt;
+            CombatMotor.MoveGrounded(
+                _cc!, _lungeDirection, SkillLungeSpeed, lungeStepSeconds);
         }
         else
         {
@@ -205,9 +202,17 @@ public sealed class HeroCombatController : MonoBehaviour
 
         if (_action is CombatAction.Normal or CombatAction.SkillK or CombatAction.SkillL or CombatAction.SkillIBody)
             TickDamageWindow();
-        FaceLockedTarget();
+        // The lunge direction is fixed when cast. Turning back toward a target we just passed
+        // makes the actor visibly slide backwards while the controller still moves forwards.
+        // Keep that heading through the tail frame; targeting resumes after movement is done.
+        if (lungeStepSeconds <= 0f)
+            FaceLockedTarget();
 
         if (!CombatMotor.ClipFinished(_animator!)) return;
+        // A delayed frame can finish the visual clip while movement time was deliberately capped
+        // to avoid teleporting. Keep the action alive until the same capped steps consume the full
+        // authored lunge duration, otherwise stalls permanently shorten the configured distance.
+        if (_action == CombatAction.SkillL && _lungeRemaining > 0f) return;
 
         switch (_action)
         {

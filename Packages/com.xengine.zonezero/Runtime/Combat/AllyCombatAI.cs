@@ -71,12 +71,15 @@ public sealed class AllyCombatAI : MonoBehaviour
 
     public override void Start()
     {
-        ZonezeroVfx.Warmup();
-        _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cc = GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         if (_animator != null)
+        {
             _animator.ApplyRootMotion = false;
+            CombatMotor.ConfigureVisualForward(_animator);
+        }
+        ZonezeroVfx.Warmup();
+        _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         uint identifierHash = unchecked((uint)GameObject!.Identifier.GetHashCode());
         _randomState = identifierHash ^ 0x9E3779B9u;
         if (_randomState == 0)
