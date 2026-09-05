@@ -339,7 +339,7 @@ Pass "Toon"
 				if (_IsFace > 0.5) {
 					vec3 sphereDir = (objectPos + vec3(_FaceX.z, _FaceY.z, _FaceZ.z))
 					               * vec3(_FaceX.y, _FaceY.y, _FaceZ.y);
-					vec3 faceN = normalize(TransformDirection(normalize(sphereDir)));
+					vec3 faceN = normalize(mat3(xengine_ObjectToWorld) * normalize(sphereDir));
 					n = normalize(mix(n, faceN, clamp(vec3(_FaceX.x, _FaceY.x, _FaceZ.x), 0.0, 1.0)));
 				}
 
