@@ -59,6 +59,9 @@ public sealed class AllyCombatAI : MonoBehaviour
     private bool _movementApplied;
     private uint _randomState;
     private WeaponTrailHandle? _weaponTrail;
+    private bool _rootMotionActive;
+    private float _previousActionTime;
+    private CombatRootMotion _rootMotion;
 
     /// <summary>Read-only acceptance telemetry; these properties are not used by the frame loop.</summary>
     public string AiPhase => _phase.ToString();
@@ -68,6 +71,36 @@ public sealed class AllyCombatAI : MonoBehaviour
     public int CompletedCombos { get; private set; }
     public int CompletedSkills { get; private set; }
     public int SuccessfulHits { get; private set; }
+    public Float3 RootMotionRequestedDelta => _rootMotion.RequestedDelta;
+    public Float3 RootMotionAppliedDelta => _rootMotion.AppliedDelta;
+    public float RootMotionRequestedDistance => _rootMotion.RequestedDistance;
+    public float RootMotionAppliedDistance => _rootMotion.AppliedDistance;
+    public int RootMotionSteps => _rootMotion.Steps;
+
+    public override void OnEnable() => _rootMotionActive = true;
+
+    public override void OnDisable()
+    {
+        _rootMotionActive = false;
+        _target = null;
+        _damageActive = false;
+        _hitDoneForClip = false;
+        _previousActionTime = 0f;
+        _phase = Phase.Patrol;
+        _weaponTrail?.SetEnabled(false);
+        _rootMotion.ClearFrame();
+    }
+
+    public override void OnDispose()
+    {
+        OnDisable();
+        if (_animator != null && !_animator.IsDisposed)
+        {
+            _animator.ApplyRootMotion = false;
+            _animator.OnAnimatorMove -= ApplyAnimationMotion;
+        }
+        base.OnDispose();
+    }
 
     public override void Start()
     {
@@ -75,9 +108,11 @@ public sealed class AllyCombatAI : MonoBehaviour
         _animator = GetComponent<Animator>();
         if (_animator != null)
         {
-            _animator.ApplyRootMotion = false;
             CombatMotor.ConfigureVisualForward(_animator);
+            CombatMotor.ConfigureRootMotion(_animator);
+            _animator.OnAnimatorMove += ApplyAnimationMotion;
         }
+        _rootMotionActive = true;
         ZonezeroVfx.Warmup();
         _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         uint identifierHash = unchecked((uint)GameObject!.Identifier.GetHashCode());
@@ -91,6 +126,7 @@ public sealed class AllyCombatAI : MonoBehaviour
     public override void Update()
     {
         if (_cc == null || _animator == null) return;
+        _rootMotion.ClearFrame();
 
         _movementApplied = false;
         switch (_phase)
@@ -121,7 +157,8 @@ public sealed class AllyCombatAI : MonoBehaviour
                 break;
         }
 
-        if (!_movementApplied)
+        // Attack motion and grounded probing happen once in the Animator callback.
+        if (!_movementApplied && !IsAttackPhase())
             CombatMotor.MoveGrounded(_cc, Float3.Zero, 0f);
     }
 
@@ -203,10 +240,6 @@ public sealed class AllyCombatAI : MonoBehaviour
             return;
         }
 
-        TickWeaponTrail();
-        CombatMotor.TurnToward(Transform,
-            _target!.Transform.Position - Transform.Position, TurnSpeedDeg * 0.6f, Time.DeltaTime);
-        PollDamageWindow();
         if (!CombatMotor.ClipFinished(_animator!)) return;
 
         switch (_phase)
@@ -277,6 +310,12 @@ public sealed class AllyCombatAI : MonoBehaviour
 
         _damageActive = damageActive;
         _hitDoneForClip = false;
+        _previousActionTime = 0f;
+        // Acquire heading at the beginning of each action. Preserve it across the normal chain
+        // and ultimate phases so crossing the dummy never bends authored travel back toward it.
+        if ((phase is Phase.Combo1 or Phase.SkillAttack4 or Phase.SkillStart) && TargetAlive())
+            CombatMotor.TurnToward(Transform,
+                _target!.Transform.Position - Transform.Position, TurnSpeedDeg, 1f);
         _weaponTrail?.SetEnabled(false);
         EnterPhase(phase);
         if (damageActive)
@@ -307,10 +346,29 @@ public sealed class AllyCombatAI : MonoBehaviour
         _weaponTrail?.SetEnabled(_damageActive && normalizedTime is >= 0.20f and <= 0.80f);
     }
 
-    private void PollDamageWindow()
+    [HotPath]
+    private bool IsAttackPhase()
+        => _phase is Phase.Combo1 or Phase.Combo2 or Phase.Combo3 or Phase.SkillAttack4
+            or Phase.SkillStart or Phase.SkillBody or Phase.SkillEnd;
+
+    [HotPath]
+    private void ApplyAnimationMotion(Float3 bodyDelta, Quaternion rotationDelta)
     {
-        if (!_damageActive || _hitDoneForClip || !CombatMotor.InHitWindow(_animator!)) return;
-        if (!CombatMotor.InAttackCone(GameObject!, _target!, AttackRange + 0.4f, AttackHalfAngle)) return;
+        if (!_rootMotionActive || !Enabled || !IsAttackPhase() || !TargetAlive() || _cc == null || _animator == null)
+            return;
+        Float3 before = Transform.Position;
+        _rootMotion.Apply(_cc, bodyDelta);
+        TickWeaponTrail();
+        float time = CombatMotor.NormalizedTime(_animator);
+        PollDamageWindow(before, _previousActionTime, time);
+        _previousActionTime = time;
+    }
+
+    private void PollDamageWindow(Float3 previousPosition, float previousTime, float time)
+    {
+        if (!_damageActive || _hitDoneForClip || !CombatMotor.TryGetHitSweep(previousPosition, Transform.Position,
+                previousTime, time, out Float3 start, out Float3 end)) return;
+        if (!CombatMotor.InAttackSweep(GameObject!, _target!, start, end, AttackRange + 0.4f, AttackHalfAngle)) return;
 
         _hitDoneForClip = true;
         SuccessfulHits++;
@@ -327,6 +385,7 @@ public sealed class AllyCombatAI : MonoBehaviour
     {
         _target = null;
         _damageActive = false;
+        _previousActionTime = 0f;
         _weaponTrail?.SetEnabled(false);
         _phaseDeadline = Time.TimeSinceStartup + Math.Max(RecoverDuration, 0f);
         EnterPhase(Phase.Recover);

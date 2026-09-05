@@ -15,7 +15,7 @@ public sealed class HeroCombatControllerTests
     {
         var hero = new HeroCombatController();
         SetField(hero, "_action", (CombatAction)actionValue);
-        SetField(hero, "_lungeRemaining", 0.2f);
+        SetField(hero, "_rootMotionActive", true);
         SetField(hero, "_normalStage", 1);
         SetField(hero, "_queuedNormalStage", 2);
 
@@ -23,12 +23,12 @@ public sealed class HeroCombatControllerTests
 
         Assert.False(hero.IsBusy);
         Assert.Equal(0, hero.NormalStage);
-        Assert.Equal(0f, GetField<float>(hero, "_lungeRemaining"));
+        Assert.False(GetField<bool>(hero, "_rootMotionActive"));
         Assert.Equal(0, GetField<int>(hero, "_queuedNormalStage"));
         // Enabling does not revive the action or its remaining displacement.
         hero.OnEnable();
         Assert.False(hero.IsBusy);
-        Assert.Equal(0f, GetField<float>(hero, "_lungeRemaining"));
+        Assert.True(GetField<bool>(hero, "_rootMotionActive"));
     }
 
     private static void SetField<T>(HeroCombatController hero, string name, T value)

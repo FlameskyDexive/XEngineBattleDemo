@@ -194,10 +194,20 @@ public static class CombatMotor
         return false;
     }
 
+    internal static void ConfigureRootMotion(Animator animator)
+    {
+        // Advance the animation and its displacement on the same bounded clock. Clipping only
+        // the capsule delta would discard authored travel while the pose jumps ahead after a stall.
+        animator.MaximumDeltaTime = MaxMovementDeltaTime;
+        animator.RootMotionPlanar = true;
+        animator.ApplyRootMotionRotation = false;
+        animator.ApplyRootMotion = true;
+    }
+
     public static void MoveGrounded(CharacterController cc, Float3 direction, float speed)
     {
-        // The battle actors are root-motion-free and remain on a walkable arena, so locomotion is
-        // intentionally horizontal. CharacterController.Move performs its own ground probe and
+        // Manual locomotion remains horizontal. Combat consumes animation distances through
+        // CombatRootMotion instead. CharacterController.Move performs its own ground probe and
         // slope snap; adding downward velocity to the same sweep can turn a floor contact into a
         // start-of-cast side hit on mesh floors and freeze the actor. One horizontal solve per
         // frame also keeps step/snap correction deterministic. Clamp stalls (asset imports,
@@ -270,6 +280,32 @@ public static class CombatMotor
         return t is >= HitWindowStart and <= HitWindowEnd;
     }
 
+    /// <summary>Clips the moved segment to the part of this frame inside the hit window.</summary>
+    [HotPath]
+    internal static bool TryGetHitSweep(Float3 previousPosition, Float3 position,
+        float previousTime, float time, out Float3 start, out Float3 end)
+        => TryGetHitSweep(previousPosition, position, previousTime, time,
+            HitWindowStart, HitWindowEnd, out start, out end);
+
+    [HotPath]
+    internal static bool TryGetHitSweep(Float3 previousPosition, Float3 position,
+        float previousTime, float time, float windowStart, float windowEnd,
+        out Float3 start, out Float3 end)
+    {
+        start = previousPosition;
+        end = position;
+        if (time < windowStart || previousTime > windowEnd || time < previousTime || windowEnd < windowStart)
+            return false;
+        float span = time - previousTime;
+        if (span > 1e-6f)
+        {
+            Float3 delta = position - previousPosition;
+            start += delta * Math.Clamp((windowStart - previousTime) / span, 0f, 1f);
+            end = previousPosition + delta * Math.Clamp((windowEnd - previousTime) / span, 0f, 1f);
+        }
+        return true;
+    }
+
     /// <summary>Normal-chain VFX once per swing.</summary>
     public static void SpawnNormalSwingVfx(GameObject attacker, int stage)
     {
@@ -304,14 +340,54 @@ public static class CombatMotor
     /// <summary>Forward-cone overlap test used instead of trigger colliders — the skinned weapon
     /// meshes have no colliders, and range/angle read better than physics shape approximations.</summary>
     public static bool InAttackCone(GameObject attacker, GameObject victim, float range, float halfAngleDeg)
+        => InAttackSweep(attacker, victim, attacker.Transform.Position, attacker.Transform.Position,
+            range, halfAngleDeg);
+
+    /// <summary>The attack cone swept along the capsule's actual movement, including a crossed target.</summary>
+    [HotPath]
+    internal static bool InAttackSweep(GameObject attacker, GameObject victim,
+        Float3 start, Float3 end, float range, float halfAngleDeg)
     {
-        Float3 toVictim = victim.Transform.Position - attacker.Transform.Position;
-        Float2 flat = new(toVictim.X, toVictim.Z);
-        if (Float2.LengthSquared(flat) > range * range) return false;
         Float3 forward = attacker.Transform.Forward;
         Float2 fwd = new(forward.X, forward.Z);
-        if (Float2.LengthSquared(fwd) < 1e-5f) return false;
-        float dot = (flat.X * fwd.X + flat.Y * fwd.Y) / (MathF.Sqrt(Float2.LengthSquared(flat)) * MathF.Sqrt(Float2.LengthSquared(fwd)));
-        return dot >= MathF.Cos(halfAngleDeg * MathF.PI / 180f);
+        float forwardSqr = Float2.LengthSquared(fwd);
+        if (forwardSqr < 1e-5f) return false;
+        fwd /= MathF.Sqrt(forwardSqr);
+        float cosine = MathF.Cos(halfAngleDeg * MathF.PI / 180f);
+        Float3 victimPosition = victim.Transform.Position;
+        Float2 offset = new(victimPosition.X - start.X, victimPosition.Z - start.Z);
+        Float2 segment = new(end.X - start.X, end.Z - start.Z);
+        float segmentSqr = Float2.LengthSquared(segment);
+        float distanceSqr = Float2.LengthSquared(offset);
+        float radiusSqr = range * range;
+        if (segmentSqr <= 1e-8f)
+            return distanceSqr <= radiusSqr && InFlatCone(offset, fwd, cosine);
+
+        // Restrict the swept origins to those within attack range of the target.
+        float along = Float2.Dot(offset, segment);
+        float discriminant = along * along - segmentSqr * (distanceSqr - radiusSqr);
+        if (discriminant < 0f) return false;
+        float root = MathF.Sqrt(discriminant);
+        float lower = Math.Max(0f, (along - root) / segmentSqr);
+        float upper = Math.Min(1f, (along + root) / segmentSqr);
+        if (lower > upper) return false;
+        if (InFlatCone(offset - segment * lower, fwd, cosine)
+            || InFlatCone(offset - segment * upper, fwd, cosine)) return true;
+
+        // The forward-angle cosine has at most one interior extremum on this segment.
+        // Checking it also covers sideways movement where the closest point is outside the cone.
+        float toward = Float2.Dot(offset, fwd);
+        float travel = Float2.Dot(segment, fwd);
+        float denominator = travel * along - toward * segmentSqr;
+        if (MathF.Abs(denominator) <= 1e-8f) return false;
+        float peak = (travel * distanceSqr - toward * along) / denominator;
+        return peak >= lower && peak <= upper && InFlatCone(offset - segment * peak, fwd, cosine);
+    }
+
+    [HotPath]
+    private static bool InFlatCone(Float2 offset, Float2 forward, float cosine)
+    {
+        float square = Float2.LengthSquared(offset);
+        return square <= 1e-8f || Float2.Dot(offset, forward) >= cosine * MathF.Sqrt(square);
     }
 }

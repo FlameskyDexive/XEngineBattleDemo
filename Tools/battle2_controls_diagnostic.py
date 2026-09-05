@@ -721,9 +721,9 @@ var lungeRemainingField = controller.GetType().GetField("_lungeRemaining", insta
 var lungeDirectionField = controller.GetType().GetField("_lungeDirection", instanceNonPublic);
 var lungeSpeedField = controller.GetType().GetField("SkillLungeSpeed", instancePublic);
 var lungeDurationField = controller.GetType().GetField("SkillLungeDuration", instancePublic);
-if (lastVelocityField == null || actionProperty == null || lockedTargetField == null
-    || lungeRemainingField == null || lungeDirectionField == null || lungeSpeedField == null
-    || lungeDurationField == null)
+// Timed-lunge fields are optional: the Root Motion controller has retired that motor.
+// The legacy analyser still validates its numerical lunge contract when explicitly used.
+if (lastVelocityField == null || actionProperty == null || lockedTargetField == null)
     return "ERROR|required action reflection contract missing";
 XEngine.Vector.Transform? travelBone = null;
 string travelBonePath = "<missing>";
@@ -2389,6 +2389,8 @@ def _analyse_actor_state(
     actor: str, state: str, frames: list[dict[str, Any]],
     *, stationary_root: bool = True, require_full_state: bool = True,
     controlled_evaluation: bool = False,
+    expected_root_motion: bool = False,
+    planar_root_motion: bool = False,
 ) -> tuple[dict[str, Any], list[str]]:
     observed = [frame for frame in frames if frame["stateObserved"]]
     failures: list[str] = []
@@ -2427,6 +2429,12 @@ def _analyse_actor_state(
         failures.append(f"{scope}: engine frame IDs do not advance strictly")
 
     baseline = observed[0]
+    # Planar extraction intentionally preserves authored jumps. Keep the original full-vector
+    # checks for in-place playback, and check horizontal detachment in planar Root Motion mode.
+    def reference_excursion(left: list[float], right: list[float]) -> float:
+        if planar_root_motion:
+            return math.hypot(left[0] - right[0], left[2] - right[2])
+        return _distance3(left, right)
     normalized_values = [frame["normalizedTime"] for frame in observed]
     if not all(math.isfinite(value) for value in normalized_values):
         failures.append(f"{scope}: non-finite normalized animation time")
@@ -2472,13 +2480,13 @@ def _analyse_actor_state(
         )
         max_bip_reference_excursion = max(
             max_bip_reference_excursion,
-            _distance3(
+            reference_excursion(
                 frame["bip001LocalPosition"], frame["bip001ReferenceLocalPosition"]
             ),
         )
         max_pelvis_reference_excursion = max(
             max_pelvis_reference_excursion,
-            _distance3(
+            reference_excursion(
                 frame["pelvisLocalPosition"], frame["pelvisReferenceLocalPosition"]
             ),
         )
@@ -2492,7 +2500,7 @@ def _analyse_actor_state(
         )
         max_bounds_relative_excursion = max(
             max_bounds_relative_excursion,
-            _distance3(bounds_relative, baseline_bounds_relative),
+            reference_excursion(bounds_relative, baseline_bounds_relative),
         )
         max_bounds_extent = max(max_bounds_extent, *frame["primaryBodyBoundsSize"])
         if any(size <= 1e-5 for size in frame["primaryBodyBoundsSize"]):
@@ -2532,8 +2540,8 @@ def _analyse_actor_state(
                 f"{scope}: frame {frame['frame']} is missing core pose bones {missing_pose}"
             )
 
-    if any(frame["applyRootMotion"] for frame in observed):
-        failures.append(f"{scope}: Animator.ApplyRootMotion became true")
+    if any(frame["applyRootMotion"] != expected_root_motion for frame in observed):
+        failures.append(f"{scope}: Animator.ApplyRootMotion did not remain {expected_root_motion}")
     if require_full_state and normalized_advance < THRESHOLDS["poseNormalisedAdvanceMin"]:
         failures.append(
             f"{scope}: normalized time advanced only {normalized_advance:.6f}; "
@@ -2646,6 +2654,7 @@ def _analyse_actor_state(
         "maxBip001WorldDistanceFromActor": max_bip_world_distance,
         "maxPelvisWorldDistanceFromActor": max_pelvis_world_distance,
         "maxBip001LocalReferenceExcursion": max_bip_reference_excursion,
+        "relativeExcursionAxes": "XZ (authored vertical animation preserved)" if planar_root_motion else "XYZ",
         "maxPelvisLocalReferenceExcursion": max_pelvis_reference_excursion,
         "maxPrimaryBodyBoundsWorldOffset": max_bounds_world_offset,
         "maxPrimaryBodyBoundsRelativeExcursion": max_bounds_relative_excursion,
@@ -2867,7 +2876,8 @@ return "STARTED|" + storageKey;
 '''
 
 
-def _run_natural_observer(client: EditorMcp, frames: int, timeout: float, output: Path) -> dict[str, Any]:
+def _run_natural_observer(client: EditorMcp, frames: int, timeout: float, output: Path,
+                          *, expected_root_motion: bool = False, planar_root_motion: bool = False) -> dict[str, Any]:
     """Observe authored Hero/Ally logic without changing input, controllers, transforms or playback."""
     storage_key = f"battle2-natural-{time.time_ns()}"
     code = (NATURAL_OBSERVER_TEMPLATE.replace("__STORAGE_KEY__", storage_key)
@@ -2937,7 +2947,8 @@ def _run_natural_observer(client: EditorMcp, frames: int, timeout: float, output
             for state, state_frames in state_groups.items():
                 metrics, failures = _analyse_actor_state(
                     f"natural/{actor}", state, state_frames,
-                    stationary_root=False, require_full_state=False)
+                    stationary_root=False, require_full_state=False,
+                    expected_root_motion=expected_root_motion, planar_root_motion=planar_root_motion)
                 state_metrics[state] = metrics
                 actor_failures.extend(failures)
             result["actors"][actor] = {"frames": actor_frames, "states": state_metrics,
@@ -3264,6 +3275,7 @@ def _run_action_probe(
                 frames.sort(key=lambda frame: frame["frame"])
                 if not frames:
                     raise RuntimeError(f"{key} action coroutine returned no frame samples")
+                (output / f"action-{key}-samples.txt").write_text(last, encoding="utf-8")
                 if capture_errors:
                     raise RuntimeError(
                         f"{key} capture failures: {'; '.join(capture_errors)}"
@@ -3745,7 +3757,7 @@ def _analyse_locomotion_facing(
 
 
 def _analyse_production_locomotion(
-    key: str, samples: list[dict[str, Any]]
+    key: str, samples: list[dict[str, Any]], *, expected_root_motion: bool = False
 ) -> tuple[dict[str, Any], list[str]]:
     if len(samples) < 2:
         raise ValueError(f"{key}: production locomotion yielded fewer than two samples")
@@ -4013,7 +4025,7 @@ def _analyse_production_locomotion(
         )
     pose_metrics, pose_failures = _analyse_actor_state(
         f"production/{key}", "Run", [sample["visual"] for sample in moving],
-        stationary_root=False, require_full_state=False)
+        stationary_root=False, require_full_state=False, expected_root_motion=expected_root_motion)
     metrics["productionVisualPose"] = pose_metrics
     failures.extend(pose_failures)
     facing_metrics, facing_failures = _analyse_locomotion_facing(key, samples, expected)
@@ -4354,6 +4366,24 @@ def _self_test() -> int:
 
     baseline = visual_frames()
     require(not _analyse_actor_state("fixture", "Run", baseline)[1], "valid animated actor passes")
+    root_motion_fixture = copy.deepcopy(baseline)
+    for frame in root_motion_fixture:
+        frame["applyRootMotion"] = True
+        frame["bip001LocalPosition"][1] += 2.0
+    require(not _analyse_actor_state("fixture", "Run", root_motion_fixture,
+                                    expected_root_motion=True, planar_root_motion=True)[1],
+            "planar Root Motion explicitly preserves authored vertical bone motion")
+    require(bool(_analyse_actor_state("fixture", "Run", root_motion_fixture,
+                                     expected_root_motion=True)[1]),
+            "vertical exemption does not change the default in-place bounds policy")
+    broken_root_motion = copy.deepcopy(root_motion_fixture)
+    broken_root_motion[2]["bip001LocalPosition"][0] += 6.0
+    require(bool(_analyse_actor_state("fixture", "Run", broken_root_motion,
+                                     expected_root_motion=True, planar_root_motion=True)[1]),
+            "planar Root Motion still rejects horizontal skeleton detachment")
+    require(bool(_analyse_actor_state("fixture", "Run", baseline,
+                                     expected_root_motion=True, planar_root_motion=True)[1]),
+            "Root Motion acceptance rejects a disabled extraction flag")
     controlled = copy.deepcopy(baseline)
     for index, frame in enumerate(controlled):
         frame["sampledWhilePaused"] = True

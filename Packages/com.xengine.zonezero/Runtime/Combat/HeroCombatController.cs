@@ -27,8 +27,8 @@ public sealed class HeroCombatController : MonoBehaviour
     public float SkillKCooldown = 1.25f;
     public float SkillLCooldown = 2.25f;
     public float SkillICooldown = 7f;
-    public float SkillLungeSpeed = 7.5f;
-    public float SkillLungeDuration = 0.38f;
+    public float SkillLHitWindowStart = 0.04f;
+    public float SkillLHitWindowEnd = 0.40f;
 
     private static readonly string[] s_normalClips =
     {
@@ -52,8 +52,9 @@ public sealed class HeroCombatController : MonoBehaviour
     private float _skillKCooldown;
     private float _skillLCooldown;
     private float _skillICooldown;
-    private float _lungeRemaining;
-    private Float3 _lungeDirection;
+    private bool _rootMotionActive;
+    private float _previousActionTime;
+    private CombatRootMotion _rootMotion;
     private GameObject? _lockedTarget;
     private bool _hitDoneForClip;
     private WeaponTrailHandle? _weaponTrail;
@@ -64,6 +65,14 @@ public sealed class HeroCombatController : MonoBehaviour
     public string ActiveAction => _action.ToString();
 
     public int NormalStage => _normalStage;
+    public Float3 RootMotionRequestedDelta => _rootMotion.RequestedDelta;
+    public Float3 RootMotionAppliedDelta => _rootMotion.AppliedDelta;
+    public float RootMotionRequestedDistance => _rootMotion.RequestedDistance;
+    public float RootMotionAppliedDistance => _rootMotion.AppliedDistance;
+    public int RootMotionSteps => _rootMotion.Steps;
+    public int SuccessfulHits { get; private set; }
+
+    public override void OnEnable() => _rootMotionActive = true;
 
     public override void Start()
     {
@@ -71,9 +80,11 @@ public sealed class HeroCombatController : MonoBehaviour
         _animator = GetComponent<Animator>();
         if (_animator != null)
         {
-            _animator.ApplyRootMotion = false;
             CombatMotor.ConfigureVisualForward(_animator);
+            CombatMotor.ConfigureRootMotion(_animator);
+            _animator.OnAnimatorMove += ApplyAnimationMotion;
         }
+        _rootMotionActive = true;
         ZonezeroVfx.Warmup();
         _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cameraRig = FindCameraRig();
@@ -93,12 +104,29 @@ public sealed class HeroCombatController : MonoBehaviour
     }
 
     // Disabling a hero interrupts its action. Re-enabling must not resume an old dash or combo.
-    public override void OnDisable() => EndAction();
+    public override void OnDisable()
+    {
+        _rootMotionActive = false;
+        EndAction();
+        _rootMotion.ClearFrame();
+    }
+
+    public override void OnDispose()
+    {
+        OnDisable();
+        if (_animator != null && !_animator.IsDisposed)
+        {
+            _animator.ApplyRootMotion = false;
+            _animator.OnAnimatorMove -= ApplyAnimationMotion;
+        }
+        base.OnDispose();
+    }
 
     [HotPath]
     public override void Update()
     {
         if (_cc == null || _animator == null) return;
+        _rootMotion.ClearFrame();
 
         float dt = Time.DeltaTime;
         TickCooldowns(dt);
@@ -125,7 +153,7 @@ public sealed class HeroCombatController : MonoBehaviour
 
         if (_action != CombatAction.None)
         {
-            CombatTick(dt);
+            CombatTick();
             return;
         }
 
@@ -185,34 +213,11 @@ public sealed class HeroCombatController : MonoBehaviour
     }
 
     [HotPath]
-    private void CombatTick(float dt)
+    private void CombatTick()
     {
-        TickWeaponTrail();
-        float lungeStepSeconds = CombatLungeMotion.ConsumeStepSeconds(
-            _action, dt, ref _lungeRemaining);
-        if (lungeStepSeconds > 0f)
-        {
-            CombatMotor.MoveGrounded(
-                _cc!, _lungeDirection, SkillLungeSpeed, lungeStepSeconds);
-        }
-        else
-        {
-            CombatMotor.MoveGrounded(_cc!, Float3.Zero, 0f);
-        }
-
-        if (_action is CombatAction.Normal or CombatAction.SkillK or CombatAction.SkillL or CombatAction.SkillIBody)
-            TickDamageWindow();
-        // The lunge direction is fixed when cast. Turning back toward a target we just passed
-        // makes the actor visibly slide backwards while the controller still moves forwards.
-        // Keep that heading through the tail frame; targeting resumes after movement is done.
-        if (lungeStepSeconds <= 0f)
-            FaceLockedTarget();
-
+        // Animation owns skill travel. Its LateUpdate callback moves once through the capsule,
+        // then evaluates the hit window at the moved position. Heading stays fixed for the clip.
         if (!CombatMotor.ClipFinished(_animator!)) return;
-        // A delayed frame can finish the visual clip while movement time was deliberately capped
-        // to avoid teleporting. Keep the action alive until the same capped steps consume the full
-        // authored lunge duration, otherwise stalls permanently shorten the configured distance.
-        if (_action == CombatAction.SkillL && _lungeRemaining > 0f) return;
 
         switch (_action)
         {
@@ -253,21 +258,8 @@ public sealed class HeroCombatController : MonoBehaviour
 
     private void StartSkillL()
     {
-        AcquireTarget();
-        Float3 direction = Transform.Forward;
-        if (_lockedTarget != null && !_lockedTarget.IsDisposed)
-            direction = _lockedTarget.Transform.Position - Transform.Position;
-        float flatSqr = direction.X * direction.X + direction.Z * direction.Z;
-        if (flatSqr > 1e-4f)
-            direction = new Float3(direction.X / MathF.Sqrt(flatSqr), 0f, direction.Z / MathF.Sqrt(flatSqr));
-        else
-            direction = Float3.UnitZ;
-
-        if (!StartClip(CombatAction.SkillL, "Evade_Front", acquireTarget: false)) return;
-        _lungeDirection = direction;
-        _lungeRemaining = SkillLungeDuration;
+        if (!StartClip(CombatAction.SkillL, "Evade_Front")) return;
         _skillLCooldown = SkillLCooldown;
-        CombatMotor.TurnToward(Transform, direction, TurnSpeedDeg, 1f);
         CombatMotor.SpawnSkillLVfx(GameObject!);
     }
 
@@ -294,7 +286,14 @@ public sealed class HeroCombatController : MonoBehaviour
     {
         if (!CombatMotor.Play(_animator!, stateName)) return false;
         _action = action;
-        if (acquireTarget) AcquireTarget();
+        if (acquireTarget)
+        {
+            AcquireTarget();
+            if (_lockedTarget != null && !_lockedTarget.IsDisposed)
+                CombatMotor.TurnToward(Transform,
+                    _lockedTarget.Transform.Position - Transform.Position, TurnSpeedDeg, 1f);
+        }
+        _previousActionTime = 0f;
         _weaponTrail?.SetEnabled(false);
         _hitDoneForClip = false;
         return true;
@@ -305,7 +304,7 @@ public sealed class HeroCombatController : MonoBehaviour
         _action = CombatAction.None;
         _normalStage = 0;
         _queuedNormalStage = 0;
-        _lungeRemaining = 0f;
+        _previousActionTime = 0f;
         _lockedTarget = null;
         _weaponTrail?.SetEnabled(false);
     }
@@ -316,25 +315,41 @@ public sealed class HeroCombatController : MonoBehaviour
         bool attacking = _action is CombatAction.Normal or CombatAction.SkillK
             or CombatAction.SkillL or CombatAction.SkillIBody;
         float normalizedTime = CombatMotor.NormalizedTime(_animator!);
-        _weaponTrail?.SetEnabled(attacking && normalizedTime is >= 0.20f and <= 0.80f);
+        bool trailWindow = _action == CombatAction.SkillL
+            ? normalizedTime >= SkillLHitWindowStart && normalizedTime <= SkillLHitWindowEnd
+            : normalizedTime is >= 0.20f and <= 0.80f;
+        _weaponTrail?.SetEnabled(attacking && trailWindow);
     }
 
     [HotPath]
-    private void TickDamageWindow()
+    private void ApplyAnimationMotion(Float3 bodyDelta, Quaternion rotationDelta)
     {
-        if (_hitDoneForClip || !CombatMotor.InHitWindow(_animator!)) return;
-        GameObject? victim = FindVictimInCone();
+        if (!_rootMotionActive || !Enabled || _action == CombatAction.None || _cc == null || _animator == null)
+            return;
+
+        Float3 before = Transform.Position;
+        _rootMotion.Apply(_cc, bodyDelta);
+        TickWeaponTrail();
+        float time = CombatMotor.NormalizedTime(_animator);
+        if (_action is CombatAction.Normal or CombatAction.SkillK or CombatAction.SkillL or CombatAction.SkillIBody)
+            TickDamageWindow(before, _previousActionTime, time);
+        _previousActionTime = time;
+    }
+
+    [HotPath]
+    private void TickDamageWindow(Float3 previousPosition, float previousTime, float time)
+    {
+        // Evade_Front carries its dash in the opening fifth of the clip. Opening L's damage
+        // alongside that movement lets the swept capsule strike a target as it passes through.
+        float windowStart = _action == CombatAction.SkillL ? SkillLHitWindowStart : CombatMotor.HitWindowStart;
+        float windowEnd = _action == CombatAction.SkillL ? SkillLHitWindowEnd : CombatMotor.HitWindowEnd;
+        if (_hitDoneForClip || !CombatMotor.TryGetHitSweep(previousPosition, Transform.Position,
+                previousTime, time, windowStart, windowEnd, out Float3 start, out Float3 end)) return;
+        GameObject? victim = FindVictimInCone(start, end);
         if (victim == null) return;
         _hitDoneForClip = true;
+        SuccessfulHits++;
         CombatMotor.ApplyHit(GameObject!, victim);
-    }
-
-    [HotPath]
-    private void FaceLockedTarget()
-    {
-        if (_lockedTarget == null || _lockedTarget.IsDisposed) return;
-        CombatMotor.TurnToward(Transform,
-            _lockedTarget.Transform.Position - Transform.Position, TurnSpeedDeg * 0.8f, Time.DeltaTime);
     }
 
     private void AcquireTarget()
@@ -343,14 +358,14 @@ public sealed class HeroCombatController : MonoBehaviour
     }
 
     [HotPath]
-    private GameObject? FindVictimInCone()
+    private GameObject? FindVictimInCone(Float3 start, Float3 end)
     {
         if (_lockedTarget != null && !_lockedTarget.IsDisposed &&
-            CombatMotor.InAttackCone(GameObject!, _lockedTarget, AttackRange, AttackHalfAngle))
+            CombatMotor.InAttackSweep(GameObject!, _lockedTarget, start, end, AttackRange, AttackHalfAngle))
             return _lockedTarget;
 
         GameObject? nearest = BattleTargets.FindNearest(Transform.Position, AttackRange + 4f);
-        return nearest != null && CombatMotor.InAttackCone(GameObject!, nearest, AttackRange, AttackHalfAngle)
+        return nearest != null && CombatMotor.InAttackSweep(GameObject!, nearest, start, end, AttackRange, AttackHalfAngle)
             ? nearest
             : null;
     }
