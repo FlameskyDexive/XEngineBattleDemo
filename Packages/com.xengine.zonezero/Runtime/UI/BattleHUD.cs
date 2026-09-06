@@ -26,15 +26,17 @@ public sealed class BattleHUD : MonoBehaviour
 {
     private static BattleHUD? _instance;
 
-    // Imported HUD textures (Assets/ZZZ/Arts/UI/HUD) — texture GUIDs from their .meta files.
-    private static readonly Guid JoystickBaseTex = new("fae7722a-3cb2-45f4-8fda-92b5c2691126");
-    private static readonly Guid JoystickThumbTex = new("02bf1031-4aa0-419c-88bc-0ef24c982573");
-    private static readonly Guid AttackTex = new("600db620-4f91-4200-803d-efd65a5092b6");
-    private static readonly Guid SkillKTex = new("f273abf5-09bd-4fae-986b-dd259765019d");
-    private static readonly Guid SkillLTex = new("936b4219-7a15-4c7a-b7e2-b6bdb16ce996");
-    private static readonly Guid SkillITex = new("0744f25a-360c-475e-97dc-86eba738c840");
-    private static readonly Guid RollTex = new("f5dba789-8c56-483b-bfc9-179b51fbcedc");
-    private static readonly Guid CdMaskTex = new("633974b7-dc0d-4888-9828-6ae0e18b029d");
+    // Imported HUD textures (Assets/ZZZ/Arts/UI/HUD) — texture GUIDs from their CURRENT .meta
+    // files (the editor re-assigned GUIDs when the hand-written metas proved unreadable; these
+    // MUST match the .meta or every sprite resolves to null → white squares).
+    private static readonly Guid JoystickBaseTex = new("8e1b6990-e50a-4f1d-94c8-3f0acffb2bc4");
+    private static readonly Guid JoystickThumbTex = new("6e09e608-3d25-4d60-b5f7-fd708e2a68ce");
+    private static readonly Guid AttackTex = new("43c8d3c4-b443-45d8-ab0a-2fa2344a0ee7");
+    private static readonly Guid SkillKTex = new("13d63023-cf32-4061-a2a1-d3275197436c");
+    private static readonly Guid SkillLTex = new("85f259f4-0f50-40b6-a865-a53dce61f0e9");
+    private static readonly Guid SkillITex = new("0fa51ece-b98f-4d49-9f46-ecae3b11998f");
+    private static readonly Guid RollTex = new("91f2f374-7559-46f9-8533-4d551d5860bc");
+    private static readonly Guid CdMaskTex = new("6973055a-2f89-4541-bcb3-bff7ba42817f");
 
     /// <summary>
     /// Sprite sub-asset GUID = SHA256(parentGuid bytes + texture file name)[0..16] — the same
@@ -52,19 +54,54 @@ public sealed class BattleHUD : MonoBehaviour
     }
 
     private static AssetRef<Sprite> SpriteRef(Guid texGuid, string texFileName)
-        => new(SpriteGuid(texGuid, texFileName));
+    {
+        var reference = new AssetRef<Sprite>(SpriteGuid(texGuid, texFileName));
+        // Blocking one-time load: Image bakes its mesh when the Sprite property is assigned, and
+        // the async `.Res` path returns null until streaming completes — the bake would fall back
+        // to the white default and never re-run (white-square bug). These are 8 tiny textures.
+        reference.EnsureLoaded();
+        return reference;
+    }
 
-    /// <summary>Creates the HUD (GameCanvas + joystick + skill cluster) in the current scene.</summary>
+    /// <summary>
+    /// Creates the HUD (EventSystem + GameCanvas + joystick + skill cluster) in the current scene.
+    /// Fail-safe: never throws — returns a dummy instance marked failed so callers don't retry
+    /// every frame (a throwing per-frame retry aborts HeroCombatController's input polling).
+    /// </summary>
     public static BattleHUD EnsureCreated()
     {
         if (_instance is { IsDisposed: false } existing) return existing;
 
-        var go = new GameObject("BattleHUD");
-        go.AddComponent<GameCanvas>();
-        go.AddComponent<BattleHUD>();
-        Runtime.Resources.Scene.Current?.Add(go);
-        _instance = go.GetComponent<BattleHUD>();
-        return _instance;
+        var hud = new BattleHUD();
+        try
+        {
+            // UI pointer events require a scene EventSystem with an input module.
+            if (Runtime.Resources.Scene.Current != null)
+            {
+                bool hasEventSystem = false;
+                foreach (GameObject root in Runtime.Resources.Scene.Current.RootObjects)
+                    if (root.GetComponent<EventSystem>() != null) { hasEventSystem = true; break; }
+                if (!hasEventSystem)
+                {
+                    var esGo = new GameObject("UIEventSystem");
+                    esGo.AddComponent<EventSystem>();
+                    esGo.AddComponent<StandaloneInputModule>();
+                    Runtime.Resources.Scene.Current.Add(esGo);
+                }
+            }
+
+            var go = new GameObject("BattleHUD");
+            go.AddComponent<GameCanvas>();
+            go.AddComponent<BattleHUD>();
+            Runtime.Resources.Scene.Current?.Add(go);
+            hud = go.GetComponent<BattleHUD>()!;
+        }
+        catch (Exception ex)
+        {
+            Runtime.Debug.LogError($"[BattleHUD] creation failed — HUD disabled: {ex.Message}\n{ex.StackTrace}");
+            hud._buildFailed = true;
+        }
+        return hud;
     }
 
     private Joystick? _joystick;
@@ -77,6 +114,9 @@ public sealed class BattleHUD : MonoBehaviour
     // Scene.Load before the asset DB finishes importing new textures, so sprite GUID
     // resolution fails → white squares. By Update time all assets are resident.
     private bool _needsBuild = true;
+    // Set when construction threw — stops the per-frame retry (each retry would abort
+    // this component's Update; better to run input-less than dead).
+    private bool _buildFailed;
 
     public Joystick? Stick => _joystick;
     public SkillButton? AttackButton => _attackButton;
@@ -165,12 +205,23 @@ public sealed class BattleHUD : MonoBehaviour
 
     public override void Update()
     {
+        if (_buildFailed) return;
+
         // Deferred visual construction: the asset DB must finish importing new textures before
         // sprite GUID resolution succeeds (OnAddedToScene fires during Scene.Load, too early).
         if (_needsBuild)
         {
             _needsBuild = false;
-            BuildChildren();
+            try
+            {
+                BuildChildren();
+            }
+            catch (Exception ex)
+            {
+                _buildFailed = true;
+                Runtime.Debug.LogError($"[BattleHUD] build failed — HUD disabled: {ex.Message}\n{ex.StackTrace}");
+                return;
+            }
             return;
         }
 

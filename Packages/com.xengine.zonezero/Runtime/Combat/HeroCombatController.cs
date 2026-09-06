@@ -46,6 +46,7 @@ public sealed class HeroCombatController : MonoBehaviour
     private InputAction? _skillL;
     private InputAction? _skillI;
     private UI.BattleHUD? _hud;
+    private bool _hudCreationAttempted;
     private CombatAction _action;
     private int _normalStage;
     private int _queuedNormalStage;
@@ -130,9 +131,12 @@ public sealed class HeroCombatController : MonoBehaviour
         _rootMotion.ClearFrame();
 
         // Touch HUD: created lazily on the first play tick so keyboard-only sessions and
-        // headless runs never pay for it. Joystick/buttons inject through the input bridge.
-        if (_hud == null)
+        // headless runs never pay for it. One-shot — EnsureCreated itself is fail-safe and
+        // returns a failed-marker instance on error, so a broken HUD can never abort this
+        // Update loop (which would kill keyboard polling every frame).
+        if (_hud == null && !_hudCreationAttempted)
         {
+            _hudCreationAttempted = true;
             _hud = UI.BattleHUD.EnsureCreated();
         }
 
