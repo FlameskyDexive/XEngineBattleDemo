@@ -16,7 +16,7 @@
   "SkillLHitWindowEnd": 0.40F,
   "Damage": 10,
   "NormalAttackVfxPaths": {
-    "$values": [
+    "array": [
       "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks.prefab"
     ]
   },

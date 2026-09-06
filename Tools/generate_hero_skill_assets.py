@@ -65,7 +65,7 @@ def hero_fields(hero_id, normal_paths, skill_k, skill_l, charge, burst, hit):
         "HitWindowStart": "0.32F", "HitWindowEnd": "0.72F",
         "SkillLHitWindowStart": "0.04F", "SkillLHitWindowEnd": "0.40F",
         "Damage": 10,
-        "NormalAttackVfxPaths": {"$values": [RPG + p + ".prefab" for p in normal_paths]},
+        "NormalAttackVfxPaths": {"array": [RPG + p + ".prefab" for p in normal_paths]},
         "SkillKVfxPath": RPG + skill_k + ".prefab",
         "SkillLVfxPath": RPG + skill_l + ".prefab",
         "SkillIChargeVfxPath": RPG + charge + ".prefab",

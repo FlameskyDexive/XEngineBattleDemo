@@ -16,7 +16,7 @@
   "SkillLHitWindowEnd": 0.40F,
   "Damage": 10,
   "NormalAttackVfxPaths": {
-    "$values": [
+    "array": [
       "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Flower_slash.prefab"
     ]
   },
