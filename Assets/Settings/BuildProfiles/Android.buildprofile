@@ -1,0 +1,79 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Editor.Build.Profiles.BuildProfile, XEngine.Editor",
+  "PipelineId": "xengine.android",
+  "PlatformSettings": {
+    "$id": 2,
+    "$type": "XEngine.Editor.Projects.Build.AndroidBuildProfile, XEngine.Editor",
+    "TargetAbis": {
+      "$id": 3,
+      "$values": [
+        "arm64-v8a"
+      ]
+    },
+    "OutputMode": 1L,
+    "ManagedStripping": 0L,
+    "ApplicationId": "com.xengine.zonezero",
+    "VersionCode": 1,
+    "MinSdkVersion": 24,
+    "TargetSdkVersion": 36,
+    "ScreenOrientation": 2L,
+    "ResizableActivity": true,
+    "AdditionalPermissions": {
+      "$id": 4,
+      "$values": [
+
+      ]
+    },
+    "MaxPackageSizeMiB": 0,
+    "MaxManagedSizeMiB": 0,
+    "MaxNativeSizeMiB": 0,
+    "MaxAssetSizeMiB": 0,
+    "MaxShaderSizeMiB": 0,
+    "TextureFormat": 0L,
+    "TextureMaxSize": 2048,
+    "TextureCompressionQuality": 50,
+    "DeploymentDeviceSerial": "",
+    "ApprovedShaderVariantTracePath": "",
+    "ScriptingDefineSymbols": {
+      "$id": 5,
+      "$values": [
+
+      ]
+    }
+  },
+  "OverrideScenes": true,
+  "Scenes": {
+    "$id": 6,
+    "$values": [
+      {
+        "Path": "Assets/Scenes/ZonezeroBattle2.scene",
+        "SceneGuid": "76d512dc-cec1-47de-97a9-feea960878fe",
+        "Enabled": true
+      }
+    ]
+  },
+  "OverrideOutputDirectory": false,
+  "OutputDirectory": "Builds",
+  "OverrideConfiguration": false,
+  "Configuration": 1L,
+  "OverridePackaging": false,
+  "PackagingMode": 1L,
+  "AssetMode": 1L,
+  "MaxPakSizeMB": 2048,
+  "SettingOverrides": {
+    "$id": 7,
+    "$values": [
+
+    ]
+  },
+  "AssetImportOverrides": {
+    "$id": 8,
+    "Enabled": false,
+    "MaxTextureSize": 0,
+    "ForceUncompressed": false
+  },
+  "AssetPath": "Settings/BuildProfiles/Android.buildprofile",
+  "AssetID": "b26cd898-5d51-468b-bded-3c527b265881",
+  "Name": "Android"
+}
