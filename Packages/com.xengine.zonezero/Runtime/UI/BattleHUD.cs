@@ -73,6 +73,10 @@ public sealed class BattleHUD : MonoBehaviour
     private SkillButton? _skillLButton;
     private SkillButton? _skillIButton;
     private HeroCombatController? _combat;
+    // Defer visual construction to the first Update tick: OnAddedToScene fires during
+    // Scene.Load before the asset DB finishes importing new textures, so sprite GUID
+    // resolution fails → white squares. By Update time all assets are resident.
+    private bool _needsBuild = true;
 
     public Joystick? Stick => _joystick;
     public SkillButton? AttackButton => _attackButton;
@@ -82,8 +86,8 @@ public sealed class BattleHUD : MonoBehaviour
 
     public override void OnAddedToScene()
     {
-        BuildChildren();
         _instance = this;
+        _needsBuild = true;
     }
 
     private void BuildChildren()
@@ -161,6 +165,15 @@ public sealed class BattleHUD : MonoBehaviour
 
     public override void Update()
     {
+        // Deferred visual construction: the asset DB must finish importing new textures before
+        // sprite GUID resolution succeeds (OnAddedToScene fires during Scene.Load, too early).
+        if (_needsBuild)
+        {
+            _needsBuild = false;
+            BuildChildren();
+            return;
+        }
+
         _combat ??= FindCombat();
         if (_combat == null) return;
 

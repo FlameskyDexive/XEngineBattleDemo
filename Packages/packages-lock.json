@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "resolverVersion": "xengine-package-resolver/1",
   "manifestHash": "89a9a381de23903e61cb6575ddb00df3435a4d9a9d346a7857e19315325567c8",
-  "generatedAtUtc": "2026-09-06T07:36:52.0375250Z",
+  "generatedAtUtc": "2026-09-06T08:36:16.4836771Z",
   "packages": [
     {
       "name": "com.xengine.2d.common",
@@ -34,7 +34,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.cinemachine",
       "resolvedPath": "Library/PackageCache/com.xengine.cinemachine@0.1.0",
-      "contentHash": "fd01fe9ccf705527e17f23b89e8e75b332062ac1dad174c11d03711345c2d07e",
+      "contentHash": "e8057d0519c5a89ab260b826da931e48979a1385b6ed0f542f9516e6e984ba36",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -45,7 +45,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.inputsystem",
       "resolvedPath": "Library/PackageCache/com.xengine.inputsystem@0.1.0",
-      "contentHash": "ca09a36f6bd10fa7d15341ca8611355df0da2bb65660f1cb885a43ef596618c9",
+      "contentHash": "978d3c21bb29fba4e02b23e9feb408e1188d56c40b010b1f703b5bc4083783bd",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -56,7 +56,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.magicacloth2",
       "resolvedPath": "Library/PackageCache/com.xengine.magicacloth2@0.1.0",
-      "contentHash": "da9547051f4cc809b4ada0a2bb5fdb124aedcdfc614fc77d04ec61958cbfbd8a",
+      "contentHash": "9bee52c419b96f13a8243c2ae771471a4b712c2220c2dfc0bab89c1d70a986a0",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -66,7 +66,7 @@
       "source": "builtin",
       "logicalRoot": "Packages/com.xengine.probuilder",
       "resolvedPath": "Library/PackageCache/com.xengine.probuilder@0.1.0",
-      "contentHash": "053501ec4878cef101f6163e080c71044ccd30ecff9991578994dff1e7616cf7",
+      "contentHash": "7c8f459ea4e5e637f15331a5ddd955709c0d756953d6420eaef90588e67b36fe",
       "dependencies": {},
       "dependencyClosure": []
     },
