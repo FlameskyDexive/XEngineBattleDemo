@@ -1,0 +1,117 @@
+// This file is part of the XEngine Game Engine
+// Licensed under the MIT License. See the LICENSE file in the project root for details.
+
+using System.Collections.Generic;
+
+using XEngine.Runtime;
+
+namespace XEngine.Zonezero.Config;
+
+/// <summary>
+/// Per-hero combat numbers and effect assignments, authored as a data asset so designers can
+/// tune them in the inspector without touching code. Field defaults equal the values that were
+/// previously hardcoded on HeroCombatController/CombatMotor — a missing or partial config keeps
+/// the demo behaving exactly like before. Effect paths address rpgvfx package prefabs
+/// ("Packages/com.xengine.rpgvfx/Assets/Prefabs/&lt;name&gt;.prefab"); an empty path falls back
+/// to the procedural ZonezeroVfx effect for that slot.
+/// </summary>
+[CreateAssetMenu("Zonezero/Hero Skill Config", Order = 10)]
+public sealed class HeroSkillConfig : ScriptableObject
+{
+    public string HeroId = "";
+
+    // ---- movement / combat numbers (defaults = pre-config hardcoded values) ----
+    [Tooltip("Run speed in m/s.")]
+    public float RunSpeed = 4.6f;
+    [Tooltip("Turn speed in deg/s.")]
+    public float TurnSpeedDeg = 540f;
+    [Tooltip("Melee hit-test distance in m.")]
+    public float AttackRange = 2.0f;
+    [Tooltip("Melee hit-test half-angle in deg.")]
+    public float AttackHalfAngleDeg = 65f;
+
+    public float NormalAttackCooldown = 0.18f;
+    public float SkillKCooldown = 1.25f;
+    public float SkillLCooldown = 2.25f;
+    public float SkillICooldown = 7f;
+
+    [Tooltip("Normalized clip-time window where normal-attack swings can connect.")]
+    public float HitWindowStart = 0.32f;
+    public float HitWindowEnd = 0.72f;
+    [Tooltip("Normalized clip-time window where the L-skill strike connects.")]
+    public float SkillLHitWindowStart = 0.04f;
+    public float SkillLHitWindowEnd = 0.40f;
+
+    [Tooltip("Reserved for a future damage system (hits currently only count).")]
+    public int Damage = 10;
+
+    // ---- effect assignments (empty = procedural ZonezeroVfx fallback) ----
+    [Tooltip("One path per normal-combo stage; stages beyond the array reuse the last entry.")]
+    public string[] NormalAttackVfxPaths = System.Array.Empty<string>();
+    public string SkillKVfxPath = "";
+    public string SkillLVfxPath = "";
+    [Tooltip("Ultimate charge loop (looping prefab — recycled after VfxLifetime).")]
+    public string SkillIChargeVfxPath = "";
+    public string SkillIBurstVfxPath = "";
+    [Tooltip("Effect played on the victim when this hero lands a hit.")]
+    public string HitVfxPath = "";
+
+    [Tooltip("Uniform scale applied to every spawned effect for this hero.")]
+    public float VfxScale = 1f;
+    [Tooltip("Seconds before a spawned effect instance is recycled (looping prefabs need this).")]
+    public float VfxLifetime = 4f;
+
+    /// <summary>Path for a combo stage, clamped to the array (empty when unconfigured).</summary>
+    public string NormalAttackVfxPath(int stage)
+    {
+        if (NormalAttackVfxPaths is not { Length: > 0 }) return "";
+        int index = System.Math.Clamp(stage, 0, NormalAttackVfxPaths.Length - 1);
+        return NormalAttackVfxPaths[index] ?? "";
+    }
+}
+
+/// <summary>
+/// Registry that maps hero ids to their <see cref="HeroSkillConfig"/>. One library asset lives
+/// at Assets/Resources/Zonezero/HeroSkillLibrary.asset and is loaded at runtime through
+/// <see cref="GameResources"/> (see <see cref="HeroSkillLibrary.LoadDefault"/>).
+/// </summary>
+[CreateAssetMenu("Zonezero/Hero Skill Library", Order = 11)]
+public sealed class HeroSkillLibrary : ScriptableObject
+{
+    public List<HeroSkillConfig> Heroes = new();
+
+    private static HeroSkillLibrary? _default;
+    private static bool _defaultResolved;
+
+    public HeroSkillConfig? Find(string heroId)
+    {
+        if (string.IsNullOrEmpty(heroId)) return null;
+        for (int i = 0; i < Heroes.Count; i++)
+        {
+            var hero = Heroes[i];
+            if (hero is not null && string.Equals(hero.HeroId, heroId, System.StringComparison.OrdinalIgnoreCase))
+                return hero;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Loads the project's library from Resources ("Zonezero/HeroSkillLibrary"). The result is
+    /// cached; returns null (and keeps returning null only until a successful load) when the
+    /// asset is absent so unconfigured projects pay one lookup and keep the procedural fallback.
+    /// </summary>
+    public static HeroSkillLibrary? LoadDefault()
+    {
+        if (_defaultResolved) return _default;
+        _default = GameResources.Load<HeroSkillLibrary>("Zonezero/HeroSkillLibrary");
+        _defaultResolved = _default is not null;
+        return _default;
+    }
+
+    /// <summary>Test/reset hook — clears the cached default library.</summary>
+    public static void ResetCache()
+    {
+        _default = null;
+        _defaultResolved = false;
+    }
+}
