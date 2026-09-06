@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See the LICENSE file in the project root for details.
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -26,17 +27,43 @@ public sealed class BattleHUD : MonoBehaviour
 {
     private static BattleHUD? _instance;
 
-    // Imported HUD textures (Assets/ZZZ/Arts/UI/HUD) — texture GUIDs from their CURRENT .meta
-    // files (the editor re-assigned GUIDs when the hand-written metas proved unreadable; these
-    // MUST match the .meta or every sprite resolves to null → white squares).
-    private static readonly Guid JoystickBaseTex = new("8e1b6990-e50a-4f1d-94c8-3f0acffb2bc4");
-    private static readonly Guid JoystickThumbTex = new("6e09e608-3d25-4d60-b5f7-fd708e2a68ce");
-    private static readonly Guid AttackTex = new("43c8d3c4-b443-45d8-ab0a-2fa2344a0ee7");
-    private static readonly Guid SkillKTex = new("13d63023-cf32-4061-a2a1-d3275197436c");
-    private static readonly Guid SkillLTex = new("85f259f4-0f50-40b6-a865-a53dce61f0e9");
-    private static readonly Guid SkillITex = new("0fa51ece-b98f-4d49-9f46-ecae3b11998f");
-    private static readonly Guid RollTex = new("91f2f374-7559-46f9-8533-4d551d5860bc");
-    private static readonly Guid CdMaskTex = new("6973055a-2f89-4541-bcb3-bff7ba42817f");
+    // HUD texture files under Assets/ZZZ/Arts/UI/HUD. Resolved by ASSET PATH at runtime (via
+    // the backend's GetEntry(path) reflection hook) — never by hardcoded GUIDs: each machine
+    // that imports the textures fresh assigns its own GUIDs, so baked-in values white-out.
+    private const string HudAssetsRoot = "Assets/ZZZ/Arts/UI/HUD/";
+    private const string JoystickBaseFile = "joystick_base.png";
+    private const string JoystickThumbFile = "joystick_thumb.png";
+    private const string AttackFile = "btn_attack.png";
+    private const string SkillKFile = "btn_skill_k.png";
+    private const string SkillLFile = "btn_skill_l.png";
+    private const string SkillIFile = "btn_skill_i.png";
+    private const string RollFile = "btn_roll.png";
+    private const string CdMaskFile = "cd_mask.png";
+
+    // path → texture GUID, resolved once per session (reflection: EditorAssetBackend.GetEntry).
+    private static readonly Dictionary<string, Guid> s_texGuidByPath = new();
+
+    /// <summary>Texture GUID for a HUD asset path; caches. Guid.Empty when unresolvable.</summary>
+    private static Guid TexGuid(string fileName)
+    {
+        string path = HudAssetsRoot + fileName;
+        if (s_texGuidByPath.TryGetValue(path, out Guid cached)) return cached;
+
+        Guid resolved = Guid.Empty;
+        try
+        {
+            var backend = AssetDatabase.Current;
+            var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
+            if (getEntry != null && getEntry.Invoke(backend, new object[] { path }) is { } entry)
+            {
+                var guidProp = entry.GetType().GetProperty("Guid");
+                if (guidProp?.GetValue(entry) is Guid g) resolved = g;
+            }
+        }
+        catch { /* best-effort: unresolved paths fall back to plain-colored UI */ }
+        s_texGuidByPath[path] = resolved;
+        return resolved;
+    }
 
     /// <summary>
     /// Sprite sub-asset GUID = SHA256(parentGuid bytes + texture file name)[0..16] — the same
@@ -53,9 +80,13 @@ public sealed class BattleHUD : MonoBehaviour
         return new Guid(hash.AsSpan(0, 16));
     }
 
-    private static AssetRef<Sprite> SpriteRef(Guid texGuid, string texFileName)
+    private static AssetRef<Sprite> SpriteRef(string fileName)
     {
-        var reference = new AssetRef<Sprite>(SpriteGuid(texGuid, texFileName));
+        string nameWithoutExt = fileName[..fileName.LastIndexOf('.')];
+        Guid texGuid = TexGuid(fileName);
+        var reference = texGuid == Guid.Empty
+            ? new AssetRef<Sprite>()
+            : new AssetRef<Sprite>(SpriteGuid(texGuid, nameWithoutExt));
         // Blocking one-time load: Image bakes its mesh when the Sprite property is assigned, and
         // the async `.Res` path returns null until streaming completes — the bake would fall back
         // to the white default and never re-run (white-square bug). These are 8 tiny textures.
@@ -142,26 +173,26 @@ public sealed class BattleHUD : MonoBehaviour
         zoneRect.AnchoredPosition = Float2.Zero;
         _joystick = zoneGo.AddComponent<Joystick>();
         _joystick.BaseRect = CreateImageChild(zoneGo, "JoystickBase", 220f,
-            SpriteRef(JoystickBaseTex, "joystick_base"), new Color(1f, 1f, 1f, 0.5f));
+            SpriteRef(JoystickBaseFile), new Color(1f, 1f, 1f, 0.5f));
         _joystick.ThumbRect = CreateImageChild(zoneGo, "JoystickThumb", 95f,
-            SpriteRef(JoystickThumbTex, "joystick_thumb"), new Color(1f, 1f, 1f, 0.85f));
+            SpriteRef(JoystickThumbFile), new Color(1f, 1f, 1f, 0.85f));
         _joystick.OnChanged += BattleTouchInputBridge.SetMove;
         _joystick.OnReleased += BattleTouchInputBridge.ReleaseMove;
 
         // Right bottom: skill cluster (offsets from the bottom-right corner).
         _attackButton = CreateSkillButton("AttackJ", 130f, new Float2(-95f, 70f),
-            AttackTex, "btn_attack", "J", slot: 0);
+            AttackFile, "J", slot: 0);
         _skillKButton = CreateSkillButton("SkillK", 92f, new Float2(-235f, 70f),
-            SkillKTex, "btn_skill_k", "K", slot: 1);
+            SkillKFile, "K", slot: 1);
         _skillLButton = CreateSkillButton("SkillL", 92f, new Float2(-150f, 195f),
-            SkillLTex, "btn_skill_l", "L", slot: 2);
+            SkillLFile, "L", slot: 2);
         _skillIButton = CreateSkillButton("SkillI", 105f, new Float2(-285f, 230f),
-            SkillITex, "btn_skill_i", "I", slot: 3);
+            SkillIFile, "I", slot: 3);
     }
 
     private SkillButton CreateSkillButton(
         string name, float size, Float2 offset,
-        Guid texGuid, string texName, string keyLabel, int slot)
+        string iconFile, string keyLabel, int slot)
     {
         var go = new GameObject(name);
         go.SetParent(GameObject, worldPositionStays: false);
@@ -172,9 +203,9 @@ public sealed class BattleHUD : MonoBehaviour
         rect.SizeDelta = new Float2(size, size);
         rect.AnchoredPosition = offset;
 
-        AssetRef<Sprite> cdSprite = SpriteRef(CdMaskTex, "cd_mask");
+        AssetRef<Sprite> cdSprite = SpriteRef(CdMaskFile);
         var button = go.AddComponent<SkillButton>();
-        button.BuildVisuals(size, cdSprite, SpriteRef(texGuid, texName), cdSprite, keyLabel);
+        button.BuildVisuals(size, cdSprite, SpriteRef(iconFile), cdSprite, keyLabel);
         button.Pressed += () => BattleTouchInputBridge.TapSkill(slot);
         go.AddComponent<CanvasRenderer>();
         return button;
