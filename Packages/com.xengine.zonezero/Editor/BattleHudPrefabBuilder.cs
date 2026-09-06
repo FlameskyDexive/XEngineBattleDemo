@@ -51,8 +51,9 @@ public static class BattleHudPrefabBuilder
         zoneRect.SizeDelta = Float2.Zero;
         zoneRect.AnchoredPosition = Float2.Zero;
         var joystick = zone.AddComponent<Joystick>();
-        joystick.BaseRect = ImageChild(zone, "Base", 220f, Hud("joystick_base.png"), 0.55f);
-        joystick.ThumbRect = ImageChild(zone, "Thumb", 95f, Hud("joystick_thumb.png"), 0.9f);
+        // Top-left (0,1) anchors: Joystick maps canvas-design pointer offsets 1:1.
+        joystick.BaseRect = ImageChild(zone, "Base", 220f, Hud("joystick_base.png"), 0.55f, topLeft: true);
+        joystick.ThumbRect = ImageChild(zone, "Thumb", 95f, Hud("joystick_thumb.png"), 0.9f, topLeft: true);
 
         // ── Right bottom: skill cluster (slot 0..3 = J/K/L/I) ──
         SkillButton(root, "AttackJ", 130f, new Float2(-95f, 70f), Hud("btn_attack.png"), "J");
@@ -86,13 +87,14 @@ public static class BattleHudPrefabBuilder
         return null;
     }
 
-    private static RectTransform ImageChild(GameObject parent, string name, float sizePx, Sprite? sprite, float alpha)
+    private static RectTransform ImageChild(GameObject parent, string name, float sizePx, Sprite? sprite, float alpha, bool topLeft = false)
     {
         var go = new GameObject(name);
         go.SetParent(parent, worldPositionStays: false);
         var rect = go.EnsureRectTransform();
-        rect.AnchorMin = new Float2(0.5f, 0.5f);
-        rect.AnchorMax = new Float2(0.5f, 0.5f);
+        Float2 anchor = topLeft ? new Float2(0f, 1f) : new Float2(0.5f, 0.5f);
+        rect.AnchorMin = anchor;
+        rect.AnchorMax = anchor;
         rect.Pivot = new Float2(0.5f, 0.5f);
         rect.SizeDelta = new Float2(sizePx, sizePx);
         rect.AnchoredPosition = Float2.Zero;

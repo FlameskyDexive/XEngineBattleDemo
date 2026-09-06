@@ -195,9 +195,9 @@ public sealed class BattleHUD : MonoBehaviour
         zoneRect.AnchoredPosition = Float2.Zero;
         _joystick = zoneGo.AddComponent<Joystick>();
         _joystick.BaseRect = CreateImageChild(zoneGo, "JoystickBase", 220f,
-            SpriteRef(JoystickBaseFile), new Color(1f, 1f, 1f, 0.5f));
+            SpriteRef(JoystickBaseFile), new Color(1f, 1f, 1f, 0.5f), topLeft: true);
         _joystick.ThumbRect = CreateImageChild(zoneGo, "JoystickThumb", 95f,
-            SpriteRef(JoystickThumbFile), new Color(1f, 1f, 1f, 0.85f));
+            SpriteRef(JoystickThumbFile), new Color(1f, 1f, 1f, 0.85f), topLeft: true);
         _joystick.OnChanged += BattleTouchInputBridge.SetMove;
         _joystick.OnReleased += BattleTouchInputBridge.ReleaseMove;
 
@@ -234,13 +234,14 @@ public sealed class BattleHUD : MonoBehaviour
     }
 
     private static RectTransform CreateImageChild(
-        GameObject parent, string name, float size, AssetRef<Sprite>? sprite, Color color)
+        GameObject parent, string name, float size, AssetRef<Sprite>? sprite, Color color, bool topLeft = false)
     {
         var go = new GameObject(name);
         go.SetParent(parent, worldPositionStays: false);
         var rect = go.EnsureRectTransform();
-        rect.AnchorMin = new Float2(0.5f, 0.5f);
-        rect.AnchorMax = new Float2(0.5f, 0.5f);
+        Float2 anchor = topLeft ? new Float2(0f, 1f) : new Float2(0.5f, 0.5f);
+        rect.AnchorMin = anchor;
+        rect.AnchorMax = anchor;
         rect.Pivot = new Float2(0.5f, 0.5f);
         rect.SizeDelta = new Float2(size, size);
         rect.AnchoredPosition = Float2.Zero;
