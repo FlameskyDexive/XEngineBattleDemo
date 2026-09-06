@@ -7,7 +7,8 @@
     "XEngine.InputSystem.Runtime",
     "XEngine.InputSystem.Editor",
     "XEngine.ProBuilder.Runtime",
-    "XEngine.Cinemachine.Runtime"
+    "XEngine.Cinemachine.Runtime",
+    "XEngine.XGUI.Runtime"
   ],
   "includePlatforms": [
     "Editor"

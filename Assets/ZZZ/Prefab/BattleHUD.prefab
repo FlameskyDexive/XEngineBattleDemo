@@ -1,0 +1,3177 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.GameObject, XEngine.Runtime",
+  "Name": "BattleHUD",
+  "AssetPath": "",
+  "Identifier": "12fe3f07-ac33-45a5-9f54-138dbf701f70",
+  "Static": 0B,
+  "Enabled": 1B,
+  "EnabledInHierarchy": 1B,
+  "TagIndex": 0,
+  "LayerIndex": 0,
+  "HideFlags": 0,
+  "Transform": {
+    "$id": 2,
+    "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+    "_localPosition": {
+      "X": 0F,
+      "Y": 0F,
+      "Z": 0F
+    },
+    "_localScale": {
+      "X": 1F,
+      "Y": 1F,
+      "Z": 1F
+    },
+    "_localRotation": {
+      "X": 0F,
+      "Y": 0F,
+      "Z": 0F,
+      "W": 1F
+    }
+  },
+  "Components": [
+    {
+      "$id": 3,
+      "$type": "XEngine.Runtime.GameCanvas, XEngine.Runtime",
+      "_renderMode": 0L,
+      "_scaleFactor": 1F,
+      "_pixelPerfect": false,
+      "_renderCamera": NULL,
+      "_targetRotationDegrees": 0,
+      "_sortOrder": 0,
+      "_uiScaleMode": 0L,
+      "_referenceResolution": {
+        "X": 1280F,
+        "Y": 720F
+      },
+      "_matchWidthOrHeight": 0.5F,
+      "_screenMatchMode": 0L,
+      "_identifier": "5615bdc3-4ed1-4688-9364-f381f5ac7c27",
+      "_enabled": true,
+      "_enabledInHierarchy": true,
+      "HideFlags": 0L,
+      "AssetPath": "",
+      "AssetID": "00000000-0000-0000-0000-000000000000",
+      "Name": "NewGameCanvas"
+    },
+    {
+      "$id": 4,
+      "$type": "XEngine.Zonezero.UI.BattleHUD, XEngine.Zonezero.Runtime",
+      "_identifier": "cc0fe591-1509-4d30-865a-c02cf8b400e6",
+      "_enabled": true,
+      "_enabledInHierarchy": true,
+      "HideFlags": 0L,
+      "AssetPath": "",
+      "AssetID": "00000000-0000-0000-0000-000000000000",
+      "Name": "NewBattleHUD"
+    }
+  ],
+  "Children": [
+    {
+      "$id": 5,
+      "Name": "JoystickZone",
+      "AssetPath": "",
+      "Identifier": "ff0ecf33-de06-4058-a5cd-c7f7975137c0",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 6,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F
+        },
+        "_localScale": {
+          "X": 1F,
+          "Y": 1F,
+          "Z": 1F
+        },
+        "_localRotation": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F,
+          "W": 1F
+        }
+      },
+      "Components": [
+        {
+          "$id": 7,
+          "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+          "_anchorMin": {
+            "X": 0F,
+            "Y": 0F
+          },
+          "_anchorMax": {
+            "X": 0.5F,
+            "Y": 1F
+          },
+          "_pivot": {
+            "X": 0.5F,
+            "Y": 0.5F
+          },
+          "_sizeDelta": {
+            "X": 0F,
+            "Y": 0F
+          },
+          "_anchoredPosition": {
+            "X": 0F,
+            "Y": 0F
+          },
+          "_identifier": "fdceb316-422b-4702-92a5-905dd273ebec",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewRectTransform"
+        },
+        {
+          "$id": 8,
+          "$type": "XEngine.Runtime.UI.Joystick, XEngine.XGUI.Runtime",
+          "DeadZone": 0.12F,
+          "DynamicOrigin": true,
+          "MaxDragFraction": 0.22F,
+          "BaseRect": {
+            "$id": 9,
+            "_anchorMin": {
+              "X": 0.5F,
+              "Y": 0.5F
+            },
+            "_anchorMax": {
+              "X": 0.5F,
+              "Y": 0.5F
+            },
+            "_pivot": {
+              "X": 0.5F,
+              "Y": 0.5F
+            },
+            "_sizeDelta": {
+              "X": 220F,
+              "Y": 220F
+            },
+            "_anchoredPosition": {
+              "X": 0F,
+              "Y": 0F
+            },
+            "_identifier": "f7dc14b2-cb3f-4618-98cb-febb69e8189d",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": "NewRectTransform"
+          },
+          "ThumbRect": {
+            "$id": 10,
+            "_anchorMin": {
+              "X": 0.5F,
+              "Y": 0.5F
+            },
+            "_anchorMax": {
+              "X": 0.5F,
+              "Y": 0.5F
+            },
+            "_pivot": {
+              "X": 0.5F,
+              "Y": 0.5F
+            },
+            "_sizeDelta": {
+              "X": 95F,
+              "Y": 95F
+            },
+            "_anchoredPosition": {
+              "X": 0F,
+              "Y": 0F
+            },
+            "_identifier": "38afac95-74cf-4f7f-bdd0-2f65d3eda973",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": "NewRectTransform"
+          },
+          "_identifier": "7c129a1e-f194-45d9-99e5-6761a0527f09",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewJoystick"
+        }
+      ],
+      "Children": [
+        {
+          "$id": 11,
+          "Name": "Base",
+          "AssetPath": "",
+          "Identifier": "b9ac4f91-f4d2-44e3-9adf-f8aeccbb13d5",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 12,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 9,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime"
+            },
+            {
+              "$id": 13,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "4dc97b16-a77c-450e-be5b-dc849d617a4d",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 14,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "f66704c9-cd9c-759c-c49d-9a0a4d2ed4b8"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.55F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "90ed34ba-8b20-43d0-8a51-aa15a4ba447e",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            },
+            {
+              "$id": 15,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "8299e078-23e6-4fcc-9eab-b8dc812c69ae",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 16,
+          "Name": "Thumb",
+          "AssetPath": "",
+          "Identifier": "cf10ab0d-b504-41ae-9275-56d207673e8b",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 17,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 10,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime"
+            },
+            {
+              "$id": 18,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "71a941b3-a68f-4202-a95b-f22ff599cb9b",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 19,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "f66704c9-cd9c-759c-c49d-9a0a4d2ed4b8"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.9F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "4be6396d-dc97-45ab-9dcc-e7a16ed55213",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            },
+            {
+              "$id": 20,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "e8ae26ce-3213-4666-876d-eb13bcfff8e0",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            }
+          ],
+          "Children": [
+
+          ]
+        }
+      ]
+    },
+    {
+      "$id": 21,
+      "Name": "AttackJ",
+      "AssetPath": "",
+      "Identifier": "3de38252-0b47-4d15-b3a6-17255c65beab",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 22,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F
+        },
+        "_localScale": {
+          "X": 1F,
+          "Y": 1F,
+          "Z": 1F
+        },
+        "_localRotation": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F,
+          "W": 1F
+        }
+      },
+      "Components": [
+        {
+          "$id": 23,
+          "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+          "_anchorMin": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_anchorMax": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_pivot": {
+            "X": 0.5F,
+            "Y": 0.5F
+          },
+          "_sizeDelta": {
+            "X": 130F,
+            "Y": 130F
+          },
+          "_anchoredPosition": {
+            "X": -95F,
+            "Y": 70F
+          },
+          "_identifier": "99cf2442-0d63-4f2f-bf15-ec498fa866c1",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewRectTransform"
+        },
+        {
+          "$id": 24,
+          "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+          "_identifier": "4e2ae2c0-d1f6-4832-8a9f-0d7a72b126ca",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewCanvasRenderer"
+        },
+        {
+          "$id": 25,
+          "$type": "XEngine.Zonezero.UI.SkillButton, XEngine.Zonezero.Runtime",
+          "_identifier": "d292e5b1-44a2-413e-8f5b-f87ea4f66b6c",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewSkillButton"
+        }
+      ],
+      "Children": [
+        {
+          "$id": 26,
+          "Name": "Background",
+          "AssetPath": "",
+          "Identifier": "279c90ce-5149-4ef5-b847-d07bcb70af68",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 27,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 28,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 130F,
+                "Y": 130F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "fa3e4b2f-b5a4-4794-9127-6e9edf346324",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 29,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "fae73f9e-9f9d-4f85-a8e8-01f336b95a61",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 30,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.9F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "8500cc31-80f5-4abd-af89-86dc4a84d75f",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 31,
+          "Name": "Icon",
+          "AssetPath": "",
+          "Identifier": "755f7517-db1c-4b4b-b96b-46358f171924",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 32,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 33,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 93.600006F,
+                "Y": 93.600006F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "b8195de7-2d9f-4990-8aa9-46bbaa0cc00d",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 34,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "4bacd0aa-fcb2-45a1-a48d-f3774b1439b3",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 35,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "d1523471-dafc-4d42-9131-91f2f775e179",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 36,
+          "Name": "CdMask",
+          "AssetPath": "",
+          "Identifier": "bcf36ad3-916b-48a2-ba5d-fc7a14302008",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 37,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 38,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 130F,
+                "Y": 130F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "0a3df92e-9c0d-4e7d-949b-b26315652502",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 39,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "46596d65-8e2b-493e-95ef-f19121fa8592",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 40,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 0F,
+              "_fillClockwise": true,
+              "_color": {
+                "R": 0F,
+                "G": 0F,
+                "B": 0F,
+                "A": 0.65F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "8293600c-5926-4682-9724-7ff0f4d70aa0",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 41,
+          "Name": "CdLabel",
+          "AssetPath": "",
+          "Identifier": "4cf59615-ea36-4d87-8507-cb2d79899d70",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 42,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 43,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 130F,
+                "Y": 130F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "c1ca3c7c-8dcf-47f9-a958-9f5ad51c0e7c",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 44,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "97dfa597-eadc-49ef-bdbd-f590ae196c13",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 45,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_text": "",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "1127f927-88fb-4115-8e2c-bbdeda91e877",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 46,
+          "Name": "KeyLabel",
+          "AssetPath": "",
+          "Identifier": "03ab436f-2aaa-41ac-8d7f-281835cbdc30",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 47,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 48,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 52F,
+                "Y": 52F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": -65F
+              },
+              "_identifier": "e8552b7c-2a37-44d2-9874-77884624c55c",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 49,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "dad9ec8f-7259-4754-bc55-b361b2b23cd6",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 50,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.8F
+              },
+              "_text": "J",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "51ab28ae-d39e-4613-b4d9-e312f809813b",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        }
+      ]
+    },
+    {
+      "$id": 51,
+      "Name": "SkillK",
+      "AssetPath": "",
+      "Identifier": "5d0ad80d-2025-478f-b026-c2836579e146",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 52,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F
+        },
+        "_localScale": {
+          "X": 1F,
+          "Y": 1F,
+          "Z": 1F
+        },
+        "_localRotation": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F,
+          "W": 1F
+        }
+      },
+      "Components": [
+        {
+          "$id": 53,
+          "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+          "_anchorMin": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_anchorMax": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_pivot": {
+            "X": 0.5F,
+            "Y": 0.5F
+          },
+          "_sizeDelta": {
+            "X": 92F,
+            "Y": 92F
+          },
+          "_anchoredPosition": {
+            "X": -235F,
+            "Y": 70F
+          },
+          "_identifier": "c6297003-e84f-444f-a528-7bfd49b9c6e7",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewRectTransform"
+        },
+        {
+          "$id": 54,
+          "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+          "_identifier": "0c05e0b7-0d7f-4c85-953d-85fa21999cd1",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewCanvasRenderer"
+        },
+        {
+          "$id": 55,
+          "$type": "XEngine.Zonezero.UI.SkillButton, XEngine.Zonezero.Runtime",
+          "_identifier": "999d74c4-78f2-4536-b88d-5168e3c25a5c",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewSkillButton"
+        }
+      ],
+      "Children": [
+        {
+          "$id": 56,
+          "Name": "Background",
+          "AssetPath": "",
+          "Identifier": "d2bf98d4-930b-4598-8a06-fe60cf3557a4",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 57,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 58,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 92F,
+                "Y": 92F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "8a748218-140c-44fd-b7db-599e50cb6173",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 59,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "85e19947-2cbc-471c-a709-ff590ec8e4d7",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 60,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.9F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "e4d6021b-0eca-4f14-bbf2-f00a20812b3c",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 61,
+          "Name": "Icon",
+          "AssetPath": "",
+          "Identifier": "69838dde-c523-41ca-ba9a-bdda7629fb83",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 62,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 63,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 66.240005F,
+                "Y": 66.240005F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "89cfd03d-decb-46cb-b40d-d4328f5574ea",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 64,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "5fdf2792-a0cb-4ef5-8b76-abcdbb81f5d9",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 65,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "e577aa4a-d760-48c7-801e-f5b84b39ff2b",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 66,
+          "Name": "CdMask",
+          "AssetPath": "",
+          "Identifier": "3415afe8-9083-478b-a8db-a03ac6e37d87",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 67,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 68,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 92F,
+                "Y": 92F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "a37b21ba-8645-436a-ba6a-82c49ae4687e",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 69,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "9bbed978-17a8-42ab-90e9-1a92d13a7eb0",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 70,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 0F,
+              "_fillClockwise": true,
+              "_color": {
+                "R": 0F,
+                "G": 0F,
+                "B": 0F,
+                "A": 0.65F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "ef2ee893-609e-4a50-86f1-10ae274f6eea",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 71,
+          "Name": "CdLabel",
+          "AssetPath": "",
+          "Identifier": "2b751d34-530b-4df3-9c49-bcb99d5c519f",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 72,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 73,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 92F,
+                "Y": 92F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "d2a4ee88-ffc7-4173-9a27-cce136efdc91",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 74,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "9d215fb2-5c84-4993-b223-033c8146545e",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 75,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_text": "",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "3a6d5309-4190-4190-9d4e-b31b76c48bc9",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 76,
+          "Name": "KeyLabel",
+          "AssetPath": "",
+          "Identifier": "0fdf4782-68c6-4bd3-bd92-1884b833532a",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 77,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 78,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 36.8F,
+                "Y": 36.8F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": -46F
+              },
+              "_identifier": "e44cb5b9-9d78-44b9-8020-85ec200e17f8",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 79,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "8835e02b-2dce-43df-a7a7-2551124c5f04",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 80,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.8F
+              },
+              "_text": "K",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "ce3a6bb9-5835-4478-9cb5-f4236f23f8c5",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        }
+      ]
+    },
+    {
+      "$id": 81,
+      "Name": "SkillL",
+      "AssetPath": "",
+      "Identifier": "aa35aad8-b7bf-4c7a-aa6c-ddf441d477cd",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 82,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F
+        },
+        "_localScale": {
+          "X": 1F,
+          "Y": 1F,
+          "Z": 1F
+        },
+        "_localRotation": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F,
+          "W": 1F
+        }
+      },
+      "Components": [
+        {
+          "$id": 83,
+          "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+          "_anchorMin": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_anchorMax": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_pivot": {
+            "X": 0.5F,
+            "Y": 0.5F
+          },
+          "_sizeDelta": {
+            "X": 92F,
+            "Y": 92F
+          },
+          "_anchoredPosition": {
+            "X": -150F,
+            "Y": 195F
+          },
+          "_identifier": "eb6cce9a-5ee9-4138-a930-c233f8ee4071",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewRectTransform"
+        },
+        {
+          "$id": 84,
+          "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+          "_identifier": "c0101883-2071-4336-b26d-acc0dc58b4b7",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewCanvasRenderer"
+        },
+        {
+          "$id": 85,
+          "$type": "XEngine.Zonezero.UI.SkillButton, XEngine.Zonezero.Runtime",
+          "_identifier": "c26bad62-267e-4883-b024-60ebb4afe1f7",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewSkillButton"
+        }
+      ],
+      "Children": [
+        {
+          "$id": 86,
+          "Name": "Background",
+          "AssetPath": "",
+          "Identifier": "2abd0305-cd4f-4a4e-94fd-3549b46e2860",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 87,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 88,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 92F,
+                "Y": 92F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "8828773f-adc9-4ee1-82a4-d9a761af42ef",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 89,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "4e090df4-92fc-45c7-aff3-6778d4ae7860",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 90,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.9F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "139284f4-4643-4d30-8418-9a74a62e4d9c",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 91,
+          "Name": "Icon",
+          "AssetPath": "",
+          "Identifier": "7498ef9c-99c4-47d1-8e2d-80ec40940a6f",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 92,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 93,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 66.240005F,
+                "Y": 66.240005F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "02949a08-e390-4c26-bc89-e51d339cd755",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 94,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "a287a3d4-f5c2-43da-bbad-bd9f5fa077a5",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 95,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "65fd21b1-9b5f-4956-89ad-247e15eb009a",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 96,
+          "Name": "CdMask",
+          "AssetPath": "",
+          "Identifier": "b526a417-2e46-4e8e-8048-6b1d9afb6143",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 97,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 98,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 92F,
+                "Y": 92F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "7d7c7cf1-7925-4729-92ad-c2d3a5b7b554",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 99,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "2a4f8182-00c6-4148-a1c7-e97f5e4db3e2",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 100,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 0F,
+              "_fillClockwise": true,
+              "_color": {
+                "R": 0F,
+                "G": 0F,
+                "B": 0F,
+                "A": 0.65F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "27baac46-cf53-4b1c-afb6-ef7597137f5c",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 101,
+          "Name": "CdLabel",
+          "AssetPath": "",
+          "Identifier": "1a35848f-d889-4ddf-88e6-e0ae87b1954c",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 102,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 103,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 92F,
+                "Y": 92F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "a40c2ee4-636a-4047-a1ad-3ffb47324fff",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 104,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "fee0fb70-dd25-46db-8ea3-5d9c7ab9f9a5",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 105,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_text": "",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "a52d3e91-6364-49d3-a3a3-2f92555dde5e",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 106,
+          "Name": "KeyLabel",
+          "AssetPath": "",
+          "Identifier": "bd27065c-0ed0-4ac8-af53-d9c5ffa6e79f",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 107,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 108,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 36.8F,
+                "Y": 36.8F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": -46F
+              },
+              "_identifier": "ae1f1a00-2890-41e3-92b7-fdab7942cea7",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 109,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "d5c23447-f4c6-4deb-ba8d-a3b3c2e1e48d",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 110,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.8F
+              },
+              "_text": "L",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "26a07d1e-94fb-4511-a3ee-043e02871b87",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        }
+      ]
+    },
+    {
+      "$id": 111,
+      "Name": "SkillI",
+      "AssetPath": "",
+      "Identifier": "788e3e0c-eade-4343-a09a-055667b3535f",
+      "Static": 0B,
+      "Enabled": 1B,
+      "EnabledInHierarchy": 1B,
+      "TagIndex": 0,
+      "LayerIndex": 0,
+      "HideFlags": 0,
+      "Transform": {
+        "$id": 112,
+        "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+        "_localPosition": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F
+        },
+        "_localScale": {
+          "X": 1F,
+          "Y": 1F,
+          "Z": 1F
+        },
+        "_localRotation": {
+          "X": 0F,
+          "Y": 0F,
+          "Z": 0F,
+          "W": 1F
+        }
+      },
+      "Components": [
+        {
+          "$id": 113,
+          "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+          "_anchorMin": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_anchorMax": {
+            "X": 1F,
+            "Y": 0F
+          },
+          "_pivot": {
+            "X": 0.5F,
+            "Y": 0.5F
+          },
+          "_sizeDelta": {
+            "X": 105F,
+            "Y": 105F
+          },
+          "_anchoredPosition": {
+            "X": -285F,
+            "Y": 230F
+          },
+          "_identifier": "5ffc00ca-9229-4264-a111-8fdd096041e3",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewRectTransform"
+        },
+        {
+          "$id": 114,
+          "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+          "_identifier": "30a0b861-1a65-4d5a-b3e2-3b973c7ad130",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewCanvasRenderer"
+        },
+        {
+          "$id": 115,
+          "$type": "XEngine.Zonezero.UI.SkillButton, XEngine.Zonezero.Runtime",
+          "_identifier": "3e36f820-0e5b-40c0-b2fa-b4e226adef4c",
+          "_enabled": true,
+          "_enabledInHierarchy": true,
+          "HideFlags": 0L,
+          "AssetPath": "",
+          "AssetID": "00000000-0000-0000-0000-000000000000",
+          "Name": "NewSkillButton"
+        }
+      ],
+      "Children": [
+        {
+          "$id": 116,
+          "Name": "Background",
+          "AssetPath": "",
+          "Identifier": "14eb4c93-b88e-4bf7-ae60-fc0495f4400a",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 117,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 118,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 105F,
+                "Y": 105F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "48b0d9b0-cd6b-4691-ac9d-16ef412abb67",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 119,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "9228dac5-e478-4820-9859-5512ead6d499",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 120,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.9F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "5f9605eb-1ead-4fe7-9997-34206da97557",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 121,
+          "Name": "Icon",
+          "AssetPath": "",
+          "Identifier": "02f08186-5f4d-408f-b18b-1db16d14ea29",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 122,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 123,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 75.600006F,
+                "Y": 75.600006F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "05995384-11b8-4d8c-848c-c9b114c36882",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 124,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "83315b23-b5ea-4e4d-bb1e-66aaf4e5e1ac",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 125,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 1F,
+              "_fillClockwise": false,
+              "_color": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "a70bfc8a-9f21-42c4-9b69-0683a8042438",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 126,
+          "Name": "CdMask",
+          "AssetPath": "",
+          "Identifier": "e2fc4636-55a2-4b32-be00-1aebee785eb3",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 127,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 128,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 105F,
+                "Y": 105F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "a0c7fcc5-0029-4420-b67c-1c0350c3dac0",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 129,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "3da01c8a-8856-463e-9512-304fccae2acb",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 130,
+              "$type": "XEngine.Runtime.UI.Image, XEngine.XGUI.Runtime",
+              "_sprite": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_preserveAspect": false,
+              "_type": 1L,
+              "_pixelsPerUnitMultiplier": 1F,
+              "_fillMethod": 4L,
+              "_fillOrigin": 0,
+              "_fillAmount": 0F,
+              "_fillClockwise": true,
+              "_color": {
+                "R": 0F,
+                "G": 0F,
+                "B": 0F,
+                "A": 0.65F
+              },
+              "_raycastTarget": true,
+              "_raycastPadding": {
+                "X": 0F,
+                "Y": 0F,
+                "Z": 0F,
+                "W": 0F
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "488551c4-a258-4747-a5fd-580317805a7d",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewImage"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 131,
+          "Name": "CdLabel",
+          "AssetPath": "",
+          "Identifier": "4f214eb9-bfb0-48d1-8199-303868c95234",
+          "Static": 0B,
+          "Enabled": 0B,
+          "EnabledInHierarchy": 0B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 132,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 133,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 105F,
+                "Y": 105F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "_identifier": "f744bd29-c8a4-4523-b7f0-49bd4cb743a1",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 134,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "47f2c936-87e7-44a8-9d39-1ac5d6d2d0dd",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 135,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 1F
+              },
+              "_text": "",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "c926ef88-fb6d-402c-82ae-64f30a2ea1d3",
+              "_enabled": true,
+              "_enabledInHierarchy": false,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        },
+        {
+          "$id": 136,
+          "Name": "KeyLabel",
+          "AssetPath": "",
+          "Identifier": "8aa55609-17a1-4475-876e-707282505231",
+          "Static": 0B,
+          "Enabled": 1B,
+          "EnabledInHierarchy": 1B,
+          "TagIndex": 0,
+          "LayerIndex": 0,
+          "HideFlags": 0,
+          "Transform": {
+            "$id": 137,
+            "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+            "_localPosition": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F
+            },
+            "_localScale": {
+              "X": 1F,
+              "Y": 1F,
+              "Z": 1F
+            },
+            "_localRotation": {
+              "X": 0F,
+              "Y": 0F,
+              "Z": 0F,
+              "W": 1F
+            }
+          },
+          "Components": [
+            {
+              "$id": 138,
+              "$type": "XEngine.Vector.RectTransform, XEngine.Runtime",
+              "_anchorMin": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_anchorMax": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_pivot": {
+                "X": 0.5F,
+                "Y": 0.5F
+              },
+              "_sizeDelta": {
+                "X": 42F,
+                "Y": 42F
+              },
+              "_anchoredPosition": {
+                "X": 0F,
+                "Y": -52.5F
+              },
+              "_identifier": "f92c5fe1-027e-4055-ab56-810847bffa1b",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewRectTransform"
+            },
+            {
+              "$id": 139,
+              "$type": "XEngine.Runtime.UI.CanvasRenderer, XEngine.Runtime",
+              "_identifier": "d7c18074-c9d7-48ae-8dc1-5314a8239844",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewCanvasRenderer"
+            },
+            {
+              "$id": 140,
+              "$type": "XEngine.Runtime.UI.Text, XEngine.XGUI.Runtime",
+              "_font": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_italicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_boldItalicFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_monoFont": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_textColor": {
+                "R": 1F,
+                "G": 1F,
+                "B": 1F,
+                "A": 0.8F
+              },
+              "_text": "I",
+              "_alignment": 48L,
+              "_size": 20,
+              "_horizontalOverflow": 0L,
+              "_verticalOverflow": 0L,
+              "_bestFit": false,
+              "_bestFitMinSize": 10,
+              "_bestFitMaxSize": 40,
+              "_quality": 32L,
+              "_richText": false,
+              "_spriteAsset": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_material": {
+                "AssetID": "00000000-0000-0000-0000-000000000000"
+              },
+              "_identifier": "b93770da-9467-43fc-a523-6a19a064aabc",
+              "_enabled": true,
+              "_enabledInHierarchy": true,
+              "HideFlags": 0L,
+              "AssetPath": "",
+              "AssetID": "00000000-0000-0000-0000-000000000000",
+              "Name": "NewText"
+            }
+          ],
+          "Children": [
+
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -95,20 +95,19 @@ public sealed class BattleHUD : MonoBehaviour
         try
         {
             // UI pointer events require a scene EventSystem with an input module.
-            if (Runtime.Resources.Scene.Current != null)
+            EnsureEventSystem();
+
+            // Preferred path: the machine-local HUD prefab (built once via
+            // "Zonezero/Rebuild Battle HUD Prefab" — its serialized sprite AssetRefs carry
+            // THIS machine's GUIDs, so every Image resolves its art natively).
+            var hudGo = TryInstantiateHudPrefab();
+            if (hudGo != null)
             {
-                bool hasEventSystem = false;
-                foreach (GameObject root in Runtime.Resources.Scene.Current.RootObjects)
-                    if (root.GetComponent<EventSystem>() != null) { hasEventSystem = true; break; }
-                if (!hasEventSystem)
-                {
-                    var esGo = new GameObject("UIEventSystem");
-                    esGo.AddComponent<EventSystem>();
-                    esGo.AddComponent<StandaloneInputModule>();
-                    Runtime.Resources.Scene.Current.Add(esGo);
-                }
+                var fromPrefab = hudGo.GetComponent<BattleHUD>();
+                if (fromPrefab != null) return fromPrefab;
             }
 
+            // Fallback: procedural build (plain tinted quads when sprite resolution fails).
             var go = new GameObject("BattleHUD");
             go.AddComponent<GameCanvas>();
             go.AddComponent<BattleHUD>();
@@ -121,6 +120,41 @@ public sealed class BattleHUD : MonoBehaviour
             hud._buildFailed = true;
         }
         return hud;
+    }
+
+    private static void EnsureEventSystem()
+    {
+        var scene = Runtime.Resources.Scene.Current;
+        if (scene == null) return;
+        foreach (GameObject root in scene.RootObjects)
+            if (root.GetComponent<EventSystem>() != null) return;
+        var esGo = new GameObject("UIEventSystem");
+        esGo.AddComponent<EventSystem>();
+        esGo.AddComponent<StandaloneInputModule>();
+        scene.Add(esGo);
+    }
+
+    private static GameObject? TryInstantiateHudPrefab()
+    {
+        try
+        {
+            var backend = AssetDatabase.Current;
+            var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
+            var entry = getEntry?.Invoke(backend, new object[] { "ZZZ/Prefab/BattleHUD.prefab" });
+            if (entry == null) return null; // prefab not built on this machine — procedural fallback
+            var guid = (Guid?)entry.GetType().GetField("Guid")?.GetValue(entry);
+            if (guid is not { } prefabGuid || prefabGuid == Guid.Empty) return null;
+            if (AssetDatabase.Get(prefabGuid) is not PrefabAsset prefab) return null;
+            var instance = prefab.Instantiate();
+            if (instance == null) return null;
+            instance.Name = "BattleHUD";
+            Runtime.Resources.Scene.Current?.Add(instance);
+            return instance;
+        }
+        catch
+        {
+            return null; // any backend mismatch → procedural fallback
+        }
     }
 
     private Joystick? _joystick;
@@ -226,14 +260,15 @@ public sealed class BattleHUD : MonoBehaviour
     {
         if (_buildFailed) return;
 
-        // Deferred visual construction: the asset DB must finish importing new textures before
-        // sprite GUID resolution succeeds (OnAddedToScene fires during Scene.Load, too early).
+        // First tick: wire up. Prefab instances (built by BattleHudPrefabBuilder) already carry
+        // their visuals + sprites — only event subscriptions are dynamic (they don't serialize).
+        // A bare component falls back to building plain procedural visuals.
         if (_needsBuild)
         {
             _needsBuild = false;
             try
             {
-                BuildChildren();
+                BindOrBuild();
             }
             catch (Exception ex)
             {
@@ -251,6 +286,39 @@ public sealed class BattleHUD : MonoBehaviour
         _skillKButton?.SetCooldown(_combat, slot: 1);
         _skillLButton?.SetCooldown(_combat, slot: 2);
         _skillIButton?.SetCooldown(_combat, slot: 3);
+    }
+
+    /// <summary>Prefab instance → bind events to the authored children; bare → build procedural.</summary>
+    private void BindOrBuild()
+    {
+        _joystick = GetComponentInChildren<Joystick>();
+        if (_joystick != null)
+        {
+            // Prefab path: subscribe the input bridge + collect skill buttons by authored name.
+            _joystick.OnChanged += BattleTouchInputBridge.SetMove;
+            _joystick.OnReleased += BattleTouchInputBridge.ReleaseMove;
+            _attackButton = FindButton("AttackJ", slot: 0);
+            _skillKButton = FindButton("SkillK", slot: 1);
+            _skillLButton = FindButton("SkillL", slot: 2);
+            _skillIButton = FindButton("SkillI", slot: 3);
+            return;
+        }
+
+        // Procedural fallback (no prefab on this machine): plain visuals, runtime sprite resolve.
+        BuildChildren();
+    }
+
+    private SkillButton? FindButton(string name, int slot)
+    {
+        foreach (Transform child in GameObject!.Transform.GetChildren())
+        {
+            if (child.GameObject?.Name != name) continue;
+            var button = child.GameObject.GetComponent<SkillButton>();
+            if (button != null)
+                button.Pressed += () => BattleTouchInputBridge.TapSkill(slot);
+            return button;
+        }
+        return null;
     }
 
     private HeroCombatController? FindCombat()
