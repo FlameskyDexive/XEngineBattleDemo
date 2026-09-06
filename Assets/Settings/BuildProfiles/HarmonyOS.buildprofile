@@ -13,7 +13,7 @@
     },
     "TargetApi": 13,
     "OutputMode": 1L,
-    "ApplicationId": "com.xengine.zonezero",
+    "ApplicationId": "com.example.myapplication",
     "VersionCode": 1,
     "SigningReference": "None",
     "RunDeviceId": "",
