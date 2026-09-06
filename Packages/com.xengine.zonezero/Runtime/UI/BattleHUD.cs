@@ -3,8 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 
 using XEngine.Runtime;
 using XEngine.Runtime.Resources;
@@ -40,58 +38,48 @@ public sealed class BattleHUD : MonoBehaviour
     private const string RollFile = "btn_roll.png";
     private const string CdMaskFile = "cd_mask.png";
 
-    // path → texture GUID, resolved once per session (reflection: EditorAssetBackend.GetEntry).
-    private static readonly Dictionary<string, Guid> s_texGuidByPath = new();
+    // path → sprite AssetRef, resolved once per session via the editor backend's asset entry
+    // (path → texture entry → its Sprite sub-asset GUID — enumerated directly, no derivation
+    // formula, so it works whatever GUIDs the local importer assigned).
+    private static readonly Dictionary<string, AssetRef<Sprite>?> s_spriteByPath = new();
 
-    /// <summary>Texture GUID for a HUD asset path; caches. Guid.Empty when unresolvable.</summary>
-    private static Guid TexGuid(string fileName)
+    private static AssetRef<Sprite>? SpriteRef(string fileName)
     {
         string path = HudAssetsRoot + fileName;
-        if (s_texGuidByPath.TryGetValue(path, out Guid cached)) return cached;
+        if (s_spriteByPath.TryGetValue(path, out AssetRef<Sprite>? cached)) return cached;
 
-        Guid resolved = Guid.Empty;
+        AssetRef<Sprite>? resolved = null;
         try
         {
             var backend = AssetDatabase.Current;
             var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
-            if (getEntry != null && getEntry.Invoke(backend, new object[] { path }) is { } entry)
+            if (getEntry?.Invoke(backend, new object[] { path }) is { } entry)
             {
-                var guidProp = entry.GetType().GetProperty("Guid");
-                if (guidProp?.GetValue(entry) is Guid g) resolved = g;
+                var subAssets = entry.GetType().GetField("SubAssets")?.GetValue(entry) as System.Array;
+                if (subAssets != null)
+                {
+                    foreach (object? sub in subAssets)
+                    {
+                        if (sub == null) continue;
+                        var typeName = sub.GetType().GetField("TypeName")?.GetValue(sub) as string;
+                        if (typeName == null || !typeName.Contains("Sprite")) continue;
+                        if (sub.GetType().GetField("Guid")?.GetValue(sub) is Guid spriteGuid)
+                        {
+                            // Blocking one-time load: Image bakes its mesh when the Sprite property
+                            // is assigned; the async `.Res` path returns null until streaming
+                            // completes and the bake would stick white (white-square bug).
+                            var reference = new AssetRef<Sprite>(spriteGuid);
+                            reference.EnsureLoaded();
+                            resolved = reference;
+                            break;
+                        }
+                    }
+                }
             }
         }
         catch { /* best-effort: unresolved paths fall back to plain-colored UI */ }
-        s_texGuidByPath[path] = resolved;
+        s_spriteByPath[path] = resolved;
         return resolved;
-    }
-
-    /// <summary>
-    /// Sprite sub-asset GUID = SHA256(parentGuid bytes + texture file name)[0..16] — the same
-    /// derivation as the editor's sub-asset registration (AssetEntry.DeriveSubAssetGuid).
-    /// </summary>
-    private static Guid SpriteGuid(Guid texGuid, string texFileName)
-    {
-        byte[] parentBytes = texGuid.ToByteArray();
-        byte[] nameBytes = Encoding.UTF8.GetBytes(texFileName);
-        byte[] combined = new byte[parentBytes.Length + nameBytes.Length];
-        parentBytes.CopyTo(combined, 0);
-        nameBytes.CopyTo(combined, parentBytes.Length);
-        byte[] hash = SHA256.HashData(combined);
-        return new Guid(hash.AsSpan(0, 16));
-    }
-
-    private static AssetRef<Sprite> SpriteRef(string fileName)
-    {
-        string nameWithoutExt = fileName[..fileName.LastIndexOf('.')];
-        Guid texGuid = TexGuid(fileName);
-        var reference = texGuid == Guid.Empty
-            ? new AssetRef<Sprite>()
-            : new AssetRef<Sprite>(SpriteGuid(texGuid, nameWithoutExt));
-        // Blocking one-time load: Image bakes its mesh when the Sprite property is assigned, and
-        // the async `.Res` path returns null until streaming completes — the bake would fall back
-        // to the white default and never re-run (white-square bug). These are 8 tiny textures.
-        reference.EnsureLoaded();
-        return reference;
     }
 
     /// <summary>
@@ -203,7 +191,7 @@ public sealed class BattleHUD : MonoBehaviour
         rect.SizeDelta = new Float2(size, size);
         rect.AnchoredPosition = offset;
 
-        AssetRef<Sprite> cdSprite = SpriteRef(CdMaskFile);
+        AssetRef<Sprite>? cdSprite = SpriteRef(CdMaskFile);
         var button = go.AddComponent<SkillButton>();
         button.BuildVisuals(size, cdSprite, SpriteRef(iconFile), cdSprite, keyLabel);
         button.Pressed += () => BattleTouchInputBridge.TapSkill(slot);
@@ -212,7 +200,7 @@ public sealed class BattleHUD : MonoBehaviour
     }
 
     private static RectTransform CreateImageChild(
-        GameObject parent, string name, float size, AssetRef<Sprite> sprite, Color color)
+        GameObject parent, string name, float size, AssetRef<Sprite>? sprite, Color color)
     {
         var go = new GameObject(name);
         go.SetParent(parent, worldPositionStays: false);
@@ -223,7 +211,7 @@ public sealed class BattleHUD : MonoBehaviour
         rect.SizeDelta = new Float2(size, size);
         rect.AnchoredPosition = Float2.Zero;
         var image = go.AddComponent<Image>();
-        image.Sprite = sprite;
+        if (sprite is { } resolved) image.Sprite = resolved;
         image.Color = color;
         go.AddComponent<CanvasRenderer>();
         return rect;

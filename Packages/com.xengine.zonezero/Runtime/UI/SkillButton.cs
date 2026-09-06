@@ -23,6 +23,10 @@ public sealed class SkillButton : UIBehaviour, IPointerDownHandler
     /// <summary>Visuals are child Image/Text nodes; the zone itself draws nothing.</summary>
     public override void GenerateMesh(UIMeshBuilder builder, in UIContext context) { }
 
+    /// <summary>True: the button rect is a pointer candidate even though the hit geometry lives
+    /// on child Images (events bubble from the hit Graphic up to this handler).</summary>
+    public override bool IsRaycastCandidate => true;
+
     private Image? _icon;
     private Image? _cdMask;
     private Text? _cdLabel;
@@ -33,27 +37,28 @@ public sealed class SkillButton : UIBehaviour, IPointerDownHandler
     public Text? CdLabel => _cdLabel;
     public Text? KeyLabel => _keyLabel;
 
-    /// <summary>Builds the visual children: button bg+icon, cooldown mask, countdown label, key label.</summary>
+    /// <summary>Builds the visual children: button bg+icon, cooldown mask, countdown label, key label.
+    /// Nullable sprite refs fall back to the Image default (tinted quad).</summary>
     public void BuildVisuals(
         float size,
-        AssetRef<Sprite> backgroundSprite,
-        AssetRef<Sprite> iconSprite,
-        AssetRef<Sprite> cdMaskSprite,
+        AssetRef<Sprite>? backgroundSprite,
+        AssetRef<Sprite>? iconSprite,
+        AssetRef<Sprite>? cdMaskSprite,
         string keyLabel)
     {
         var bgRect = CreateChild("Background", size);
         var bgImage = bgRect.GameObject!.AddComponent<Image>();
-        bgImage.Sprite = backgroundSprite;
+        if (backgroundSprite is { } bg) bgImage.Sprite = bg;
         bgImage.Color = new Color(1f, 1f, 1f, 0.9f);
 
         var iconRect = CreateChild("Icon", size * 0.72f);
         _icon = iconRect.GameObject!.AddComponent<Image>();
-        _icon.Sprite = iconSprite;
+        if (iconSprite is { } icon) _icon.Sprite = icon;
         _icon.Color = new Color(1f, 1f, 1f, 1f);
 
         var cdRect = CreateChild("CdMask", size);
         _cdMask = cdRect.GameObject!.AddComponent<Image>();
-        _cdMask.Sprite = cdMaskSprite;
+        if (cdMaskSprite is { } mask) _cdMask.Sprite = mask;
         _cdMask.FillMethod = FillMethod.Radial360;
         _cdMask.FillOrigin = 0;
         _cdMask.FillClockwise = true;
