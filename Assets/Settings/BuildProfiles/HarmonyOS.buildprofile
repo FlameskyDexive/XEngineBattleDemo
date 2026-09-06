@@ -55,8 +55,8 @@
   },
   "AssetImportOverrides": {
     "$id": 7,
-    "Enabled": false,
-    "MaxTextureSize": 0,
+    "Enabled": true,
+    "MaxTextureSize": 1024,
     "ForceUncompressed": false
   },
   "AssetPath": "Settings/BuildProfiles/HarmonyOS.buildprofile",
