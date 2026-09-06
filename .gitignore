@@ -105,3 +105,6 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Imported OpenHarmony SDK Bundle (202MB, machine-local; regenerate via Tools/make-harmonyos-bundle.ps1 + import)
+/ThirdParty/
