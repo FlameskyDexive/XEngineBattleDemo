@@ -1,0 +1,20 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Zonezero.Config.HeroSkillLibrary, XEngine.Zonezero.Runtime",
+  "Heroes": {
+    "$values": [
+      {
+        "AssetID": "89df3b7d-63e0-5855-8daf-452ce2b59197"
+      },
+      {
+        "AssetID": "b930a2d0-0758-5439-9ce4-89c7eb84b56d"
+      },
+      {
+        "AssetID": "f7634618-734c-5f29-b6f5-c917f13d0bed"
+      }
+    ]
+  },
+  "AssetPath": "Resources/Zonezero/HeroSkillLibrary.asset",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "HeroSkillLibrary"
+}

@@ -3,6 +3,7 @@
 
 using System;
 
+using XEngine.Echo;
 using XEngine.InputSystem;
 using XEngine.Runtime;
 using XEngine.Runtime.Resources;
@@ -29,6 +30,15 @@ public sealed class HeroCombatController : MonoBehaviour
     public float SkillICooldown = 7f;
     public float SkillLHitWindowStart = 0.04f;
     public float SkillLHitWindowEnd = 0.40f;
+    /// <summary>Normal-attack hit window (was CombatMotor const; per-hero via HeroSkillConfig).</summary>
+    public float NormalHitWindowStart = CombatMotor.HitWindowStart;
+    public float NormalHitWindowEnd = CombatMotor.HitWindowEnd;
+
+    /// <summary>Explicit hero id for HeroSkillConfig lookup; empty infers from the object name.</summary>
+    [SerializeField] private string _heroId = "";
+
+    /// <summary>Hero id for config lookup (explicit or inferred once).</summary>
+    public string HeroId => _heroId.Length > 0 ? _heroId : (_heroId = CombatMotor.InferHeroIdFromName(GameObject!.Name));
 
     private static readonly string[] s_normalClips =
     {
@@ -90,6 +100,7 @@ public sealed class HeroCombatController : MonoBehaviour
         ZonezeroVfx.Warmup();
         _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
         _cameraRig = FindCameraRig();
+        ApplySkillConfig();
 
         PlayerInput? input = FindInput();
         if (input == null)
@@ -279,6 +290,25 @@ public sealed class HeroCombatController : MonoBehaviour
         CombatMotor.SpawnSkillKVfx(GameObject!);
     }
 
+    /// <summary>Overrides the tuned numbers with the hero's HeroSkillConfig when one exists.</summary>
+    private void ApplySkillConfig()
+    {
+        var config = CombatMotor.ConfigFor(GameObject!);
+        if (config == null) return;
+        RunSpeed = config.RunSpeed;
+        TurnSpeedDeg = config.TurnSpeedDeg;
+        AttackRange = config.AttackRange;
+        AttackHalfAngle = config.AttackHalfAngleDeg;
+        NormalAttackCooldown = config.NormalAttackCooldown;
+        SkillKCooldown = config.SkillKCooldown;
+        SkillLCooldown = config.SkillLCooldown;
+        SkillICooldown = config.SkillICooldown;
+        SkillLHitWindowStart = config.SkillLHitWindowStart;
+        SkillLHitWindowEnd = config.SkillLHitWindowEnd;
+        NormalHitWindowStart = config.HitWindowStart;
+        NormalHitWindowEnd = config.HitWindowEnd;
+    }
+
     private void StartSkillL()
     {
         if (!StartClip(CombatAction.SkillL, "Evade_Front")) return;
@@ -290,7 +320,7 @@ public sealed class HeroCombatController : MonoBehaviour
     {
         if (!StartClip(CombatAction.SkillIStart, "BigSkill_Start")) return;
         _skillICooldown = SkillICooldown;
-        ZonezeroVfx.UltimateCharge(Transform.Position);
+        CombatMotor.SpawnUltimateChargeVfx(GameObject!);
     }
 
     private void StartSkillIPhase(CombatAction phase, string stateName)
@@ -302,7 +332,7 @@ public sealed class HeroCombatController : MonoBehaviour
         }
 
         if (phase == CombatAction.SkillIBody)
-            XEngine.Zonezero.Vfx.ZonezeroVfx.BigSkillBurst(Transform.Position + new Float3(0f, 0.9f, 0f));
+            CombatMotor.SpawnBigSkillBurstVfx(GameObject!);
     }
 
     private bool StartClip(CombatAction action, string stateName, bool acquireTarget = true)
@@ -364,8 +394,8 @@ public sealed class HeroCombatController : MonoBehaviour
     {
         // Evade_Front carries its dash in the opening fifth of the clip. Opening L's damage
         // alongside that movement lets the swept capsule strike a target as it passes through.
-        float windowStart = _action == CombatAction.SkillL ? SkillLHitWindowStart : CombatMotor.HitWindowStart;
-        float windowEnd = _action == CombatAction.SkillL ? SkillLHitWindowEnd : CombatMotor.HitWindowEnd;
+        float windowStart = _action == CombatAction.SkillL ? SkillLHitWindowStart : NormalHitWindowStart;
+        float windowEnd = _action == CombatAction.SkillL ? SkillLHitWindowEnd : NormalHitWindowEnd;
         if (_hitDoneForClip || !CombatMotor.TryGetHitSweep(previousPosition, Transform.Position,
                 previousTime, time, windowStart, windowEnd, out Float3 start, out Float3 end)) return;
         GameObject? victim = FindVictimInCone(start, end);

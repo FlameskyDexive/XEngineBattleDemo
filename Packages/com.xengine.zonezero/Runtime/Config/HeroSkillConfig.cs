@@ -78,7 +78,8 @@ public sealed class HeroSkillConfig : ScriptableObject
 [CreateAssetMenu("Zonezero/Hero Skill Library", Order = 11)]
 public sealed class HeroSkillLibrary : ScriptableObject
 {
-    public List<HeroSkillConfig> Heroes = new();
+    /// <summary>Per-hero configs, referenced by GUID so each stays an individually editable asset.</summary>
+    public List<AssetRef<HeroSkillConfig>> Heroes = new();
 
     private static HeroSkillLibrary? _default;
     private static bool _defaultResolved;
@@ -88,9 +89,14 @@ public sealed class HeroSkillLibrary : ScriptableObject
         if (string.IsNullOrEmpty(heroId)) return null;
         for (int i = 0; i < Heroes.Count; i++)
         {
-            var hero = Heroes[i];
-            if (hero is not null && string.Equals(hero.HeroId, heroId, System.StringComparison.OrdinalIgnoreCase))
-                return hero;
+            // Res is non-blocking under async loading (null until streamed in); a lookup is a
+            // one-shot query, so block — three small config assets resolve in microseconds.
+            // EnsureLoaded populates the shared database cache; the local copy's Res then hits it.
+            var reference = Heroes[i];
+            reference.EnsureLoaded();
+            var config = reference.Res;
+            if (config is not null && string.Equals(config.HeroId, heroId, System.StringComparison.OrdinalIgnoreCase))
+                return config;
         }
         return null;
     }

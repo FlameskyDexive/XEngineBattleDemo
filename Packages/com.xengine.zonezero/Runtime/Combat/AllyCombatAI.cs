@@ -3,6 +3,7 @@
 
 using System;
 
+using XEngine.Echo;
 using XEngine.Runtime;
 using XEngine.Vector;
 using XEngine.Zonezero.Vfx;
@@ -31,6 +32,12 @@ public sealed class AllyCombatAI : MonoBehaviour
     public float IdleDurationMin = 0.55f;
     public float IdleDurationMax = 1.1f;
     public float RecoverDuration = 0.5f;
+
+    /// <summary>Explicit hero id for HeroSkillConfig lookup; empty infers from the object name.</summary>
+    [SerializeField] private string _heroId = "";
+
+    /// <summary>Hero id for config lookup (explicit or inferred once).</summary>
+    public string HeroId => _heroId.Length > 0 ? _heroId : (_heroId = CombatMotor.InferHeroIdFromName(GameObject!.Name));
 
     private enum Phase
     {
@@ -102,6 +109,17 @@ public sealed class AllyCombatAI : MonoBehaviour
         base.OnDispose();
     }
 
+    /// <summary>Overrides shared combat numbers with the hero's HeroSkillConfig when one exists.</summary>
+    private void ApplySkillConfig()
+    {
+        var config = CombatMotor.ConfigFor(GameObject!);
+        if (config == null) return;
+        RunSpeed = config.RunSpeed;
+        TurnSpeedDeg = config.TurnSpeedDeg;
+        AttackRange = config.AttackRange;
+        AttackHalfAngle = config.AttackHalfAngleDeg;
+    }
+
     public override void Start()
     {
         _cc = GetComponent<CharacterController>() ?? AddComponent<CharacterController>();
@@ -115,6 +133,7 @@ public sealed class AllyCombatAI : MonoBehaviour
         _rootMotionActive = true;
         ZonezeroVfx.Warmup();
         _weaponTrail = ZonezeroVfx.AttachWeaponTrail(GameObject!);
+        ApplySkillConfig();
         uint identifierHash = unchecked((uint)GameObject!.Identifier.GetHashCode());
         _randomState = identifierHash ^ 0x9E3779B9u;
         if (_randomState == 0)
@@ -263,7 +282,7 @@ public sealed class AllyCombatAI : MonoBehaviour
                 if (!StartAttackPhase(Phase.SkillBody, "BigSkill", damageActive: true))
                     BeginRecover();
                 else
-                    ZonezeroVfx.BigSkillBurst(Transform.Position + new Float3(0f, 0.9f, 0f));
+                    CombatMotor.SpawnBigSkillBurstVfx(GameObject!);
                 break;
             case Phase.SkillBody:
                 if (!StartAttackPhase(Phase.SkillEnd, "BigSkill_End", damageActive: false))

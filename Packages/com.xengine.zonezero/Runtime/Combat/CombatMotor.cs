@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using XEngine.Animation;
 using XEngine.Runtime;
 using XEngine.Runtime.Resources;
+using XEngine.Zonezero.Config;
 using XEngine.Zonezero.Vfx;
 using XEngine.Vector;
 
@@ -155,6 +156,45 @@ public static class CombatMotor
     private const float MaxMovementDeltaTime = 1f / 30f;
     public const float HitWindowStart = 0.32f;   // normalized time the blade starts counting
     public const float HitWindowEnd = 0.72f;
+
+    // ---- rpgvfx hero-skill config plumbing -------------------------------------------
+    // Config lookup is best-effort: no library asset, unknown hero id, or a failed prefab
+    // resolution all degrade to the previous procedural ZonezeroVfx behavior.
+
+    private static readonly System.Collections.Generic.Dictionary<GameObject, HeroSkillConfig?> s_configCache = new();
+
+    /// <summary>The hero's skill config, or null when unconfigured (procedural fallback).</summary>
+    public static HeroSkillConfig? ConfigFor(GameObject actor)
+    {
+        if (s_configCache.TryGetValue(actor, out var cached)) return cached;
+        string heroId = ResolveHeroId(actor);
+        HeroSkillConfig? config = HeroSkillLibrary.LoadDefault()?.Find(heroId);
+        s_configCache[actor] = config;
+        return config;
+    }
+
+    /// <summary>Explicit HeroId from the controller when set, else inferred from the name.
+    /// Controllers' HeroId properties lazily initialize from <see cref="InferHeroIdFromName"/>
+    /// (NOT from this method) so this lookup can never recurse.</summary>
+    internal static string ResolveHeroId(GameObject actor)
+    {
+        string explicitId = actor.GetComponent<HeroCombatController>()?.HeroId
+                             ?? actor.GetComponent<AllyCombatAI>()?.HeroId
+                             ?? "";
+        return explicitId.Length > 0 ? explicitId : InferHeroIdFromName(actor.Name);
+    }
+
+    /// <summary>Pure name-based hero inference (no component reads — recursion-safe).</summary>
+    public static string InferHeroIdFromName(string name)
+    {
+        if (name.Contains("Corin", StringComparison.OrdinalIgnoreCase)) return "Corin";
+        if (name.Contains("Nike", StringComparison.OrdinalIgnoreCase)
+            || name.Contains("Nostradamus", StringComparison.OrdinalIgnoreCase)) return "Nostradamus";
+        return "Anbi";
+    }
+
+    /// <summary>Test hook — drops cached per-actor configs (e.g. after authoring the library).</summary>
+    public static void InvalidateConfigCache() => s_configCache.Clear();
 
     /// <summary>
     /// The imported battle avatars face -Z. Adapt their complete visual hierarchy to the +Z
@@ -311,6 +351,11 @@ public static class CombatMotor
     {
         Float3 origin = attacker.Transform.Position + new Float3(0f, 1.05f, 0f)
                         + attacker.Transform.Forward * 0.55f;
+        var config = ConfigFor(attacker);
+        string path = config?.NormalAttackVfxPath(stage - 1) ?? "";
+        if (path.Length > 0
+            && RpgVfxSpawner.Spawn(path, origin, attacker.Transform.Forward, config!.VfxScale, config.VfxLifetime) != null)
+            return;
         ZonezeroVfx.NormalSlash(origin, attacker.Transform.Forward, stage);
     }
 
@@ -318,6 +363,10 @@ public static class CombatMotor
     public static void SpawnSkillKVfx(GameObject attacker)
     {
         Float3 origin = attacker.Transform.Position + new Float3(0f, 1.05f, 0f);
+        var config = ConfigFor(attacker);
+        if (config?.SkillKVfxPath.Length > 0
+            && RpgVfxSpawner.Spawn(config.SkillKVfxPath, origin, attacker.Transform.Forward, config.VfxScale, config.VfxLifetime) != null)
+            return;
         ZonezeroVfx.SkillK(origin, attacker.Transform.Forward);
     }
 
@@ -325,14 +374,51 @@ public static class CombatMotor
     public static void SpawnSkillLVfx(GameObject attacker)
     {
         Float3 origin = attacker.Transform.Position + new Float3(0f, 0.18f, 0f);
+        var config = ConfigFor(attacker);
+        if (config?.SkillLVfxPath.Length > 0
+            && RpgVfxSpawner.Spawn(config.SkillLVfxPath, origin, attacker.Transform.Forward, config.VfxScale, config.VfxLifetime) != null)
+            return;
         ZonezeroVfx.SkillL(origin, attacker.Transform.Forward);
+    }
+
+    /// <summary>Ultimate charge loop (skill I start); config path is expected to be looping.</summary>
+    public static void SpawnUltimateChargeVfx(GameObject caster)
+    {
+        var config = ConfigFor(caster);
+        if (config?.SkillIChargeVfxPath.Length > 0
+            && RpgVfxSpawner.Spawn(config.SkillIChargeVfxPath, caster.Transform.Position,
+                caster.Transform.Forward, config.VfxScale, config.VfxLifetime) != null)
+            return;
+        ZonezeroVfx.UltimateCharge(caster.Transform.Position);
+    }
+
+    /// <summary>Ultimate burst (skill I body).</summary>
+    public static void SpawnBigSkillBurstVfx(GameObject caster)
+    {
+        var config = ConfigFor(caster);
+        Float3 origin = caster.Transform.Position + new Float3(0f, 0.9f, 0f);
+        if (config?.SkillIBurstVfxPath.Length > 0
+            && RpgVfxSpawner.Spawn(config.SkillIBurstVfxPath, origin, caster.Transform.Forward,
+                config.VfxScale, config.VfxLifetime) != null)
+            return;
+        ZonezeroVfx.BigSkillBurst(origin);
     }
 
     /// <summary>Hit VFX + hurt bookkeeping on the struck dummy.</summary>
     public static void ApplyHit(GameObject attacker, GameObject victim)
     {
         Float3 chest = victim.Transform.Position + new Float3(0f, 0.9f, 0f);
-        ZonezeroVfx.HitSparks(chest, victim.Transform.Position - attacker.Transform.Position);
+        var config = ConfigFor(attacker);
+        if (config?.HitVfxPath.Length > 0
+            && RpgVfxSpawner.Spawn(config.HitVfxPath, chest,
+                victim.Transform.Position - attacker.Transform.Position, config.VfxScale, config.VfxLifetime) != null)
+        {
+            // rpgvfx hit effect played — skip the procedural sparks.
+        }
+        else
+        {
+            ZonezeroVfx.HitSparks(chest, victim.Transform.Position - attacker.Transform.Position);
+        }
         if (victim.GetComponent(typeof(IHurt)) is IHurt hurt)
             hurt.OnHit(attacker);
     }

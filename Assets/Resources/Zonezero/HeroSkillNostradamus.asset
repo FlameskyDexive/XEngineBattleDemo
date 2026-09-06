@@ -1,0 +1,33 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Zonezero.Config.HeroSkillConfig, XEngine.Zonezero.Runtime",
+  "HeroId": "Nostradamus",
+  "RunSpeed": 4.6F,
+  "TurnSpeedDeg": 540.0F,
+  "AttackRange": 2.0F,
+  "AttackHalfAngleDeg": 65.0F,
+  "NormalAttackCooldown": 0.18F,
+  "SkillKCooldown": 1.25F,
+  "SkillLCooldown": 2.25F,
+  "SkillICooldown": 7.0F,
+  "HitWindowStart": 0.32F,
+  "HitWindowEnd": 0.72F,
+  "SkillLHitWindowStart": 0.04F,
+  "SkillLHitWindowEnd": 0.40F,
+  "Damage": 10,
+  "NormalAttackVfxPaths": {
+    "$values": [
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks.prefab"
+    ]
+  },
+  "SkillKVfxPath": "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Lightning_strike.prefab",
+  "SkillLVfxPath": "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Energy_explosion.prefab",
+  "SkillIChargeVfxPath": "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_10_loop.prefab",
+  "SkillIBurstVfxPath": "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor.prefab",
+  "HitVfxPath": "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_27.prefab",
+  "VfxScale": 1.0F,
+  "VfxLifetime": 4.0F,
+  "AssetPath": "Resources/Zonezero/HeroSkillNostradamus.asset",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "HeroSkillNostradamus"
+}
