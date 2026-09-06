@@ -6,6 +6,8 @@ Variants
     Variant("SKINNED")
     Variant("HAS_BONEINDICES")
     Variant("HAS_BONEWEIGHTS")
+    Variant("SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS")
+    Variant("SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS", "HAS_TANGENTS")
 }
 
 // Cel/toon shading ported from the ZZZ reference project's "YSA Toon/Lit" Unity shader graph

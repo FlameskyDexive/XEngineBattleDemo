@@ -4,7 +4,8 @@
     "XEngine.Runtime",
     "XEngine.Cinemachine.Runtime",
     "XEngine.InputSystem.Runtime",
-    "XEngine.MagicaCloth2.Runtime"
+    "XEngine.MagicaCloth2.Runtime",
+    "XEngine.XGUI.Runtime"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

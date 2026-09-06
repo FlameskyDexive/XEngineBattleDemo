@@ -45,6 +45,7 @@ public sealed class HeroCombatController : MonoBehaviour
     private InputAction? _skillK;
     private InputAction? _skillL;
     private InputAction? _skillI;
+    private UI.BattleHUD? _hud;
     private CombatAction _action;
     private int _normalStage;
     private int _queuedNormalStage;
@@ -128,6 +129,13 @@ public sealed class HeroCombatController : MonoBehaviour
         if (_cc == null || _animator == null) return;
         _rootMotion.ClearFrame();
 
+        // Touch HUD: created lazily on the first play tick so keyboard-only sessions and
+        // headless runs never pay for it. Joystick/buttons inject through the input bridge.
+        if (_hud == null)
+        {
+            _hud = UI.BattleHUD.EnsureCreated();
+        }
+
         float dt = Time.DeltaTime;
         TickCooldowns(dt);
 
@@ -168,6 +176,17 @@ public sealed class HeroCombatController : MonoBehaviour
         if (_skillLCooldown > 0f) _skillLCooldown -= dt;
         if (_skillICooldown > 0f) _skillICooldown -= dt;
     }
+
+    /// <summary>Cooldown readout for HUD buttons: (remaining, total) in seconds; total ≤ 0 = ready.</summary>
+    public (float Remaining, float Total) GetCooldown(int slot) => slot switch
+    {
+        0 => (_normalCooldown, NormalAttackCooldown),
+        1 => (_skillKCooldown, SkillKCooldown),
+        2 => (_skillLCooldown, SkillLCooldown),
+        3 => (_skillICooldown, SkillICooldown),
+        _ => (0f, 0f),
+    };
+
 
     [HotPath]
     private void LocomotionTick()
