@@ -68,6 +68,24 @@ public sealed class HeroSkillConfig : ScriptableObject
         int index = System.Math.Clamp(stage, 0, NormalAttackVfxPaths.Length - 1);
         return NormalAttackVfxPaths[index] ?? "";
     }
+
+    /// <summary>Appends every non-empty effect path on this config to <paramref name="sink"/>.</summary>
+    public void CollectVfxPaths(List<string> sink)
+    {
+        foreach (string path in NormalAttackVfxPaths)
+            if (!string.IsNullOrEmpty(path)) sink.Add(path);
+        AddIfSet(SkillKVfxPath);
+        AddIfSet(SkillLVfxPath);
+        AddIfSet(SkillIChargeVfxPath);
+        AddIfSet(SkillIBurstVfxPath);
+        AddIfSet(HitVfxPath);
+        return;
+
+        void AddIfSet(string path)
+        {
+            if (!string.IsNullOrEmpty(path)) sink.Add(path);
+        }
+    }
 }
 
 /// <summary>
@@ -112,6 +130,28 @@ public sealed class HeroSkillLibrary : ScriptableObject
         _default = GameResources.Load<HeroSkillLibrary>("Zonezero/HeroSkillLibrary");
         _defaultResolved = _default is not null;
         return _default;
+    }
+
+    /// <summary>
+    /// Every effect path configured across all heroes (duplicates removed) — the warm set for
+    /// <c>RpgVfxSpawner.Warmup</c>. Configs are small; a one-shot blocking resolve is fine here.
+    /// </summary>
+    public List<string> AllVfxPaths()
+    {
+        var paths = new List<string>();
+        var seen = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < Heroes.Count; i++)
+        {
+            var reference = Heroes[i];
+            reference.EnsureLoaded();
+            var config = reference.Res;
+            if (config is null) continue;
+            config.CollectVfxPaths(paths);
+        }
+        var unique = new List<string>(paths.Count);
+        foreach (string path in paths)
+            if (seen.Add(path)) unique.Add(path);
+        return unique;
     }
 
     /// <summary>Test/reset hook — clears the cached default library.</summary>

@@ -50,6 +50,12 @@ public static class ZonezeroVfx
         s_runtime = runtime;
         s_weaponTrailCount = 0;
         scene.Add(root);
+
+        // Prefab-backed effects: request every configured rpgvfx prefab on the background loader
+        // (AB-simulated resolution in the editor) and seed the spawn pool, staggered.
+        Config.HeroSkillLibrary? library = Config.HeroSkillLibrary.LoadDefault();
+        if (library != null)
+            RpgVfxSpawner.Warmup(library.AllVfxPaths());
     }
 
     /// <summary>Attaches one or two cached trails to the animated weapon bones of an actor.</summary>

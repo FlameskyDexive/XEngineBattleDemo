@@ -6,7 +6,43 @@ Packages:
       EnableAddressable: true
       Groups:
         $id: 4
-        $values: []
+        $values:
+          - GroupName: "Combat VFX"
+            GroupDescription: "rpgvfx effect prefabs dynamically spawned in battle (RpgVfxSpawner)"
+            Tags:
+              $id: 6
+              $values: []
+            Collectors:
+              $id: 7
+              $values:
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 9
+                    $values: []
+                  $id: 8
+            $id: 5
+          - GroupName: "Hero Configs"
+            GroupDescription: "Zonezero hero skill configs + library under Resources (GUID-addressed)"
+            Tags:
+              $id: 11
+              $values: []
+            Collectors:
+              $id: 12
+              $values:
+                - CollectPath: "Assets/Resources/Zonezero"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 2
+                  FilterRule: 0
+                  Tags:
+                    $id: 14
+                    $values: []
+                  $id: 13
+            $id: 10
       $id: 3
 $id: 1
 $type: "XEngine.Editor.AssetBundles.Collector.AssetBundleCollectorSetting, XEngine.Editor"
