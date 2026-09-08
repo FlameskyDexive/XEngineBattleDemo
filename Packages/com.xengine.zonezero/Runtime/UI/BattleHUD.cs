@@ -25,10 +25,14 @@ public sealed class BattleHUD : MonoBehaviour
 {
     private static BattleHUD? _instance;
 
-    // HUD texture files under Assets/ZZZ/Arts/UI/HUD. Resolved by ASSET PATH at runtime (via
+    // HUD texture files under Assets/ZZZ/Arts/UI/HUD. Resolved by the project-relative ASSET
+    // PATH at runtime (via
     // the backend's GetEntry(path) reflection hook) — never by hardcoded GUIDs: each machine
     // that imports the textures fresh assigns its own GUIDs, so baked-in values white-out.
-    private const string HudAssetsRoot = "Assets/ZZZ/Arts/UI/HUD/";
+    // EditorAssetBackend paths are relative to the project's Assets root.  Keeping the
+    // leading `Assets/` here makes GetEntry miss every texture (the backend does not
+    // normalize that prefix), so the procedural fallback silently builds white quads.
+    private const string HudAssetsRoot = "ZZZ/Arts/UI/HUD/";
     private const string JoystickBaseFile = "joystick_base.png";
     private const string JoystickThumbFile = "joystick_thumb.png";
     private const string AttackFile = "btn_attack.png";
@@ -43,9 +47,13 @@ public sealed class BattleHUD : MonoBehaviour
     // formula, so it works whatever GUIDs the local importer assigned).
     private static readonly Dictionary<string, AssetRef<Sprite>?> s_spriteByPath = new();
 
+    /// <summary>Returns the project-relative path used by AssetBackend.GetEntry.</summary>
+    internal static string ResolveHudAssetPath(string fileName)
+        => HudAssetsRoot + fileName.TrimStart('/', '\\');
+
     private static AssetRef<Sprite>? SpriteRef(string fileName)
     {
-        string path = HudAssetsRoot + fileName;
+        string path = ResolveHudAssetPath(fileName);
         if (s_spriteByPath.TryGetValue(path, out AssetRef<Sprite>? cached)) return cached;
 
         AssetRef<Sprite>? resolved = null;
@@ -70,6 +78,15 @@ public sealed class BattleHUD : MonoBehaviour
                             // completes and the bake would stick white (white-square bug).
                             var reference = new AssetRef<Sprite>(spriteGuid);
                             reference.EnsureLoaded();
+
+                            // Image bakes its mesh and material independently.  Loading the
+                            // Sprite alone is not enough when async asset loading is enabled:
+                            // Sprite.Texture.Res can still be null on the first bake, leaving a
+                            // permanent white quad until another dirty pass happens.  Resolve the
+                            // source texture before assigning the reference so both UVs and the
+                            // material texture are valid on the first canvas rebuild.
+                            Sprite? sprite = reference.ResWeak;
+                            sprite?.Texture.EnsureLoaded();
                             resolved = reference;
                             break;
                         }
@@ -78,7 +95,10 @@ public sealed class BattleHUD : MonoBehaviour
             }
         }
         catch { /* best-effort: unresolved paths fall back to plain-colored UI */ }
-        s_spriteByPath[path] = resolved;
+        // A failed lookup is commonly a transient import race.  Do not memoize null and make a
+        // later first-frame repair impossible; successful references are stable for the session.
+        if (resolved is { } ready)
+            s_spriteByPath[path] = ready;
         return resolved;
     }
 
@@ -295,13 +315,21 @@ public sealed class BattleHUD : MonoBehaviour
         _joystick = GetComponentInChildren<Joystick>();
         if (_joystick != null)
         {
-            // Prefab path: subscribe the input bridge + collect skill buttons by authored name.
+            // Prefab path: repair authored visual references as well as subscribing the input
+            // bridge.  Prefabs generated before the local texture import (or copied from another
+            // machine) legitimately contain the default/empty Sprite AssetRefs; leaving them
+            // untouched renders the white placeholder forever.
+            RepairJoystickVisuals(_joystick);
             _joystick.OnChanged += BattleTouchInputBridge.SetMove;
             _joystick.OnReleased += BattleTouchInputBridge.ReleaseMove;
             _attackButton = FindButton("AttackJ", slot: 0);
             _skillKButton = FindButton("SkillK", slot: 1);
             _skillLButton = FindButton("SkillL", slot: 2);
             _skillIButton = FindButton("SkillI", slot: 3);
+            RepairButtonVisuals(_attackButton, AttackFile);
+            RepairButtonVisuals(_skillKButton, SkillKFile);
+            RepairButtonVisuals(_skillLButton, SkillLFile);
+            RepairButtonVisuals(_skillIButton, SkillIFile);
             return;
         }
 
@@ -316,10 +344,41 @@ public sealed class BattleHUD : MonoBehaviour
             if (child.GameObject?.Name != name) continue;
             var button = child.GameObject.GetComponent<SkillButton>();
             if (button != null)
+            {
+                button.BindExistingVisuals();
                 button.Pressed += () => BattleTouchInputBridge.TapSkill(slot);
+            }
             return button;
         }
         return null;
+    }
+
+    private static void RepairJoystickVisuals(Joystick joystick)
+    {
+        RepairImage(joystick.BaseRect?.GameObject?.GetComponent<Image>(), JoystickBaseFile);
+        RepairImage(joystick.ThumbRect?.GameObject?.GetComponent<Image>(), JoystickThumbFile);
+    }
+
+    private static void RepairButtonVisuals(SkillButton? button, string iconFile)
+    {
+        if (button == null) return;
+        RepairImage(button.Icon, iconFile);
+        RepairImage(button.Background, CdMaskFile);
+        RepairImage(button.CdMask, CdMaskFile);
+    }
+
+    private static void RepairImage(Image? image, string fileName)
+    {
+        if (image == null) return;
+        AssetRef<Sprite>? sprite = SpriteRef(fileName);
+        if (sprite is not { } resolved) return;
+
+        image.Sprite = resolved;
+        // AssetRef<Sprite>.EnsureLoaded also resolves the source texture above, but the image
+        // may already have completed its first rebuild while the stale prefab was loading.  Mark
+        // both phases dirty so this repair is effective immediately and remains cheap thereafter.
+        image.SetVerticesDirty();
+        image.SetMaterialDirty();
     }
 
     private HeroCombatController? FindCombat()

@@ -193,6 +193,7 @@ public static class RpgVfxSpawner
         private readonly List<Guid> _activeGuids = new();
         private readonly List<float> _deadlines = new();
         private readonly Queue<Guid> _prewarm = new();
+        private readonly List<ParticleSystemComponent> _pendingRenderAssets = new();
         private int _prewarmedPaths;
         private bool _prewarmLogged;
 
@@ -254,6 +255,33 @@ public static class RpgVfxSpawner
         {
             RecycleExpired();
             ProcessPrewarm();
+            for (int i = _pendingRenderAssets.Count - 1; i >= 0; i--)
+            {
+                var system = _pendingRenderAssets[i];
+                if (system.IsDisposed || PrepareParticleAssets(system))
+                    _pendingRenderAssets.RemoveAt(i);
+            }
+        }
+
+        private bool PrepareParticleAssets(ParticleSystemComponent system)
+        {
+            var scene = GameObject.Scene;
+            system.Material.LockToScene(scene);
+            var material = system.Material.Res;
+            bool ready = material != null && material.PrepareRenderAssets(scene);
+            if (system.RenderMode == ParticleRenderMode.Mesh)
+            {
+                system.RenderMesh.LockToScene(scene);
+                ready &= system.RenderMesh.Res != null;
+            }
+            if (system.Trails.Enabled && system.Trails.TrailMaterial.HasValue)
+            {
+                var trailRef = system.Trails.TrailMaterial.Value;
+                trailRef.LockToScene(scene);
+                var trail = trailRef.Res;
+                ready &= trail != null && trail.PrepareRenderAssets(scene);
+            }
+            return ready;
         }
 
         private void RecycleExpired()
@@ -315,6 +343,8 @@ public static class RpgVfxSpawner
 
                 instance.Enabled = false; // pooled idle until first Take
                 GameObject?.Scene?.Add(instance);
+                foreach (var system in instance.GetComponentsInChildren<ParticleSystemComponent>(true, true))
+                    if (!PrepareParticleAssets(system)) _pendingRenderAssets.Add(system);
                 if (!_pools.TryGetValue(guid, out var pool))
                 {
                     pool = new Stack<GameObject>();
@@ -333,6 +363,7 @@ public static class RpgVfxSpawner
             _activeGuids.Clear();
             _deadlines.Clear();
             _prewarm.Clear();
+            _pendingRenderAssets.Clear();
             _prewarmedPaths = 0;
             _prewarmLogged = false;
             if (ReferenceEquals(Current, this))

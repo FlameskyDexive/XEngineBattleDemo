@@ -69,7 +69,7 @@ public static class BattleHudPrefabBuilder
     }
 
     /// <summary>Resolves a HUD texture's Sprite sub-asset via the LOCAL asset database.</summary>
-    private static Sprite? Hud(string fileName)
+    private static AssetRef<Sprite>? Hud(string fileName)
     {
         var backend = EditorAssetBackend.Instance!;
         var entry = backend.GetEntry(HudRoot + fileName);
@@ -80,14 +80,23 @@ public static class BattleHudPrefabBuilder
         }
         foreach (SubAssetEntry sub in entry.SubAssets)
         {
-            if (AssetDatabase.Get(sub.Guid) is Sprite sprite)
-                return sprite;
+            if (!sub.TypeName.Contains("Sprite", StringComparison.Ordinal)) continue;
+
+            // Keep the machine-local sub-asset GUID even when Get() returns a transiently
+            // unloaded instance.  Serializing a Sprite instance with AssetID == Empty produces
+            // an empty AssetRef in the prefab, which then falls back to a white Image quad.
+            var reference = new AssetRef<Sprite>(sub.Guid);
+            reference.EnsureLoaded();
+            Sprite? sprite = reference.ResWeak;
+            sprite?.Texture.EnsureLoaded();
+            return reference;
         }
         Runtime.Debug.LogError($"[BattleHUD] '{fileName}' has no Sprite sub-asset (TextureImporter sprite mode?).");
         return null;
     }
 
-    private static RectTransform ImageChild(GameObject parent, string name, float sizePx, Sprite? sprite, float alpha, bool topLeft = false)
+    private static RectTransform ImageChild(GameObject parent, string name, float sizePx,
+        AssetRef<Sprite>? sprite, float alpha, bool topLeft = false)
     {
         var go = new GameObject(name);
         go.SetParent(parent, worldPositionStays: false);
@@ -99,14 +108,14 @@ public static class BattleHudPrefabBuilder
         rect.SizeDelta = new Float2(sizePx, sizePx);
         rect.AnchoredPosition = Float2.Zero;
         var image = go.AddComponent<Image>();
-        if (sprite != null) image.Sprite = new AssetRef<Sprite>(sprite);
+        if (sprite is { } resolved) image.Sprite = resolved;
         image.Color = new Color(1f, 1f, 1f, alpha);
         go.AddComponent<CanvasRenderer>();
         return rect;
     }
 
     private static void SkillButton(
-        GameObject root, string name, float size, Float2 offset, Sprite? icon, string key)
+        GameObject root, string name, float size, Float2 offset, AssetRef<Sprite>? icon, string key)
     {
         var go = new GameObject(name);
         go.SetParent(root, worldPositionStays: false);
@@ -119,14 +128,9 @@ public static class BattleHudPrefabBuilder
         go.AddComponent<CanvasRenderer>();
 
         var button = go.AddComponent<SkillButton>();
-        button.BuildVisuals(
-            size,
-            Ref(Hud("cd_mask.png")),
-            Ref(icon),
-            Ref(Hud("cd_mask.png")),
-            key);
+        AssetRef<Sprite>? cdMask = Hud("cd_mask.png");
+        button.BuildVisuals(size, cdMask, icon, cdMask, key);
         button.Pressed += () => BattleTouchInputBridge.TapSkill(key switch { "J" => 0, "K" => 1, "L" => 2, _ => 3 });
     }
 
-    private static AssetRef<Sprite>? Ref(Sprite? sprite) => sprite != null ? new AssetRef<Sprite>(sprite) : null;
 }

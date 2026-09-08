@@ -28,14 +28,44 @@ public sealed class SkillButton : UIBehaviour, IPointerDownHandler
     public override bool IsRaycastCandidate => true;
 
     private Image? _icon;
+    private Image? _background;
     private Image? _cdMask;
     private Text? _cdLabel;
     private Text? _keyLabel;
 
     public Image? Icon => _icon;
+    public Image? Background => _background;
     public Image? CdMask => _cdMask;
     public Text? CdLabel => _cdLabel;
     public Text? KeyLabel => _keyLabel;
+
+    /// <summary>
+    /// Rebinds the non-serialized visual fields from an authored prefab.  SkillButton keeps these
+    /// fields private so a procedural button can hold direct references, but a prefab only stores
+    /// the child Image/Text components; without this pass cooldown updates and runtime sprite
+    /// repair would have no targets.
+    /// </summary>
+    internal void BindExistingVisuals()
+    {
+        foreach (Image image in GameObject.GetComponentsInChildren<Image>(includeSelf: true, includeInactive: true))
+        {
+            switch (image.GameObject?.Name)
+            {
+                case "Background": _background = image; break;
+                case "Icon": _icon = image; break;
+                case "CdMask": _cdMask = image; break;
+            }
+        }
+
+        foreach (Text text in GameObject.GetComponentsInChildren<Text>(includeSelf: true, includeInactive: true))
+        {
+            switch (text.GameObject?.Name)
+            {
+                case "CdLabel": _cdLabel = text; break;
+                case "KeyLabel": _keyLabel = text; break;
+            }
+        }
+    }
 
     /// <summary>Builds the visual children: button bg+icon, cooldown mask, countdown label, key label.
     /// Nullable sprite refs fall back to the Image default (tinted quad).</summary>
@@ -48,6 +78,7 @@ public sealed class SkillButton : UIBehaviour, IPointerDownHandler
     {
         var bgRect = CreateChild("Background", size);
         var bgImage = bgRect.GameObject!.AddComponent<Image>();
+        _background = bgImage;
         if (backgroundSprite is { } bg) bgImage.Sprite = bg;
         bgImage.Color = new Color(1f, 1f, 1f, 0.9f);
 
