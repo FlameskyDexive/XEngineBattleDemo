@@ -111,6 +111,11 @@ public sealed class BattleHUD : MonoBehaviour
     {
         if (_instance is { IsDisposed: false } existing) return existing;
 
+        // Lock the window to portrait until engine-side swapchain pre-rotation lands: with
+        // sensor rotation active the OHOS surface transform flips the Vulkan present (the
+        // scene renders upside down after rotating the device). No-op on desktop.
+        Screen.Orientation = ScreenOrientation.Portrait;
+
         var hud = new BattleHUD();
         try
         {
