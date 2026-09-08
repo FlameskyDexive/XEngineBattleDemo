@@ -3,7 +3,7 @@ Scenes:
   $values: []
 Config: 1
 OutputDirectory: "Builds"
-PackagingMode: 1
+PackagingMode: 2
 AssetMode: 1
 MaxPakSizeMB: 2048
 ActiveProfileGuid: "c3ff63ee-0a0b-4408-a8ee-d4e6cd1aa3e4"

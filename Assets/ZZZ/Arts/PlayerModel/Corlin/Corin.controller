@@ -26,7 +26,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "164dbb3e-c4fb-65db-05ae-5396ac57a300"
+          "AssetID": "5d2ded3b-19d6-4ee8-999f-3393366ce7a7"
         },
         "Motions": {
           "$id": 5,
@@ -42,7 +42,7 @@
           ]
         },
         "PosX": -420F,
-     "PosY": 360F,
+        "PosY": 360F,
         "Behaviours": {
           "$id": 7,
           "$values": [
@@ -65,7 +65,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "b2b0ff40-7870-6e70-3d5e-8b25cf18cdba"
+          "AssetID": "0c9e0315-bed3-4ddc-bd88-2e5f6e25334b"
         },
         "Motions": {
           "$id": 9,
@@ -81,7 +81,7 @@
           ]
         },
         "PosX": 420F,
-      "PosY": 200F,
+        "PosY": 200F,
         "Behaviours": {
           "$id": 11,
           "$values": [
@@ -104,7 +104,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "cd9972ca-c668-dc41-9885-508337ab2832"
+          "AssetID": "460b764b-55b2-4849-9408-ebd62e5d9614"
         },
         "Motions": {
           "$id": 13,
@@ -120,7 +120,7 @@
           ]
         },
         "PosX": -820F,
-     "PosY": -320F,
+        "PosY": -320F,
         "Behaviours": {
           "$id": 15,
           "$values": [
@@ -143,7 +143,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "796f32af-be6e-6597-d904-07c53eb93805"
+          "AssetID": "9ff52789-2e2f-4098-aed9-b4771d4bce41"
         },
         "Motions": {
           "$id": 17,
@@ -159,7 +159,7 @@
           ]
         },
         "PosX": 260F,
-      "PosY": 240F,
+        "PosY": 240F,
         "Behaviours": {
           "$id": 19,
           "$values": [
@@ -182,7 +182,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "cc40c87c-5780-f9b6-555f-156d7dbe708f"
+          "AssetID": "980547ce-5093-414a-ab47-7e0deef86d7d"
         },
         "Motions": {
           "$id": 21,
@@ -198,7 +198,7 @@
           ]
         },
         "PosX": -420F,
-     "PosY": 140F,
+        "PosY": 140F,
         "Behaviours": {
           "$id": 23,
           "$values": [
@@ -221,7 +221,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "0c10f20e-13b5-8ed3-8cd3-b089b01c6d97"
+          "AssetID": "f5ac5597-4e1e-410a-a169-c0e15d1eb65b"
         },
         "Motions": {
           "$id": 25,
@@ -237,7 +237,7 @@
           ]
         },
         "PosX": -820F,
-     "PosY": 160F,
+        "PosY": 160F,
         "Behaviours": {
           "$id": 27,
           "$values": [
@@ -260,7 +260,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "41b0d883-c3d2-43b1-fc59-02c15078b19d"
+          "AssetID": "76e27cdb-220c-4692-bde5-69ec53faac60"
         },
         "Motions": {
           "$id": 29,
@@ -276,7 +276,7 @@
           ]
         },
         "PosX": -180F,
-     "PosY": -300F,
+        "PosY": -300F,
         "Behaviours": {
           "$id": 31,
           "$values": [
@@ -299,7 +299,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "3d8060ef-feb7-6e58-6c50-956202072fb4"
+          "AssetID": "0a394e2e-400b-423f-96d8-7d1af70dec7b"
         },
         "Motions": {
           "$id": 33,
@@ -315,7 +315,7 @@
           ]
         },
         "PosX": 260F,
-      "PosY": 420F,
+        "PosY": 420F,
         "Behaviours": {
           "$id": 35,
           "$values": [
@@ -338,7 +338,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "796f32af-be6e-6597-d904-07c53eb93805"
+          "AssetID": "9ff52789-2e2f-4098-aed9-b4771d4bce41"
         },
         "Motions": {
           "$id": 37,
@@ -377,7 +377,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "85b5df20-a69d-7e61-d4f4-02f426f790c2"
+          "AssetID": "ba17fa37-d4fc-4eca-a1bd-bb18300908c5"
         },
         "Motions": {
           "$id": 41,
@@ -393,7 +393,7 @@
           ]
         },
         "PosX": -180F,
-     "PosY": 140F,
+        "PosY": 140F,
         "Behaviours": {
           "$id": 43,
           "$values": [
@@ -416,7 +416,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "b2b0ff40-7870-6e70-3d5e-8b25cf18cdba"
+          "AssetID": "0c9e0315-bed3-4ddc-bd88-2e5f6e25334b"
         },
         "Motions": {
           "$id": 45,
@@ -432,7 +432,7 @@
           ]
         },
         "PosX": 420F,
-      "PosY": 200F,
+        "PosY": 200F,
         "Behaviours": {
           "$id": 47,
           "$values": [
@@ -455,7 +455,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "b2b0ff40-7870-6e70-3d5e-8b25cf18cdba"
+          "AssetID": "0c9e0315-bed3-4ddc-bd88-2e5f6e25334b"
         },
         "Motions": {
           "$id": 49,
@@ -471,7 +471,7 @@
           ]
         },
         "PosX": 420F,
-      "PosY": 200F,
+        "PosY": 200F,
         "Behaviours": {
           "$id": 51,
           "$values": [
@@ -494,7 +494,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "8f17c4c9-d2a5-784d-6fb6-c90ac64296d7"
+          "AssetID": "8fbba193-5e9c-4132-8c67-0d4755cec401"
         },
         "Motions": {
           "$id": 53,
@@ -510,7 +510,7 @@
           ]
         },
         "PosX": 820F,
-      "PosY": -120F,
+        "PosY": -120F,
         "Behaviours": {
           "$id": 55,
           "$values": [
@@ -519,7 +519,7 @@
         }
       },
       {
-        "$id": 60,
+        "$id": 56,
         "Name": "SwitchIn_Normal",
         "Tag": "",
         "Speed": 1F,
@@ -533,7 +533,46 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "e9923bb2-8fd1-81a4-eeca-3d48eb8c8b7c"
+          "AssetID": "f686be4d-32a3-46fd-afcb-86060efcc6df"
+        },
+        "Motions": {
+          "$id": 57,
+          "$values": [
+
+          ]
+        },
+        "BlendTree": NULL,
+        "TransitionNames": {
+          "$id": 58,
+          "$values": [
+
+          ]
+        },
+        "PosX": 820F,
+        "PosY": -120F,
+        "Behaviours": {
+          "$id": 59,
+          "$values": [
+
+          ]
+        }
+      },
+      {
+        "$id": 60,
+        "Name": "Attack_Normal_1",
+        "Tag": "",
+        "Speed": 1F,
+        "IsLooping": false,
+        "WriteDefaults": true,
+        "Mirror": false,
+        "CycleOffset": 0F,
+        "IKOnFeet": false,
+        "SpeedMultiplierParameter": "",
+        "MirrorParameter": "",
+        "CycleOffsetParameter": "",
+        "TimeParameter": "",
+        "Motion": {
+          "AssetID": "4da7cd65-2c40-46ae-b561-09875f35c17e"
         },
         "Motions": {
           "$id": 61,
@@ -548,8 +587,8 @@
 
           ]
         },
-        "PosX": 820F,
-      "PosY": -120F,
+        "PosX": -420F,
+        "PosY": -300F,
         "Behaviours": {
           "$id": 63,
           "$values": [
@@ -559,7 +598,7 @@
       },
       {
         "$id": 64,
-        "Name": "Attack_Normal_1",
+        "Name": "Attack_Normal_2_End",
         "Tag": "",
         "Speed": 1F,
         "IsLooping": false,
@@ -572,7 +611,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "eb6e5433-8b65-b275-7507-b4c9a32ca5af"
+          "AssetID": "2ba6a664-c414-4102-bd96-a0cb3164fcfd"
         },
         "Motions": {
           "$id": 65,
@@ -587,8 +626,8 @@
 
           ]
         },
-        "PosX": -420F,
-     "PosY": -300F,
+        "PosX": -180F,
+        "PosY": -80F,
         "Behaviours": {
           "$id": 67,
           "$values": [
@@ -598,7 +637,7 @@
       },
       {
         "$id": 68,
-        "Name": "Attack_Normal_2_End",
+        "Name": "Attack_Normal_5_End",
         "Tag": "",
         "Speed": 1F,
         "IsLooping": false,
@@ -611,7 +650,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "9fd5f31d-1df2-d409-4bbd-ab64e9574ee9"
+          "AssetID": "de7b3f84-2006-47ab-95b1-2c623348c57d"
         },
         "Motions": {
           "$id": 69,
@@ -627,7 +666,7 @@
           ]
         },
         "PosX": -180F,
-     "PosY": -80F,
+        "PosY": 580F,
         "Behaviours": {
           "$id": 71,
           "$values": [
@@ -637,10 +676,10 @@
       },
       {
         "$id": 72,
-        "Name": "Attack_Normal_5_End",
+        "Name": "Idle",
         "Tag": "",
         "Speed": 1F,
-        "IsLooping": false,
+        "IsLooping": true,
         "WriteDefaults": true,
         "Mirror": false,
         "CycleOffset": 0F,
@@ -650,7 +689,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "55b4b2fa-d6ad-8168-c662-b3fdb1720b15"
+          "AssetID": "54c5edae-5cb6-4b40-bae0-0a3926704dc9"
         },
         "Motions": {
           "$id": 73,
@@ -665,8 +704,8 @@
 
           ]
         },
-        "PosX": -180F,
-     "PosY": 580F,
+        "PosX": 0F,
+        "PosY": 0F,
         "Behaviours": {
           "$id": 75,
           "$values": [
@@ -676,10 +715,10 @@
       },
       {
         "$id": 76,
-        "Name": "Idle",
+        "Name": "BigSkill",
         "Tag": "",
         "Speed": 1F,
-        "IsLooping": true,
+        "IsLooping": false,
         "WriteDefaults": true,
         "Mirror": false,
         "CycleOffset": 0F,
@@ -689,7 +728,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "fadce3c1-1aad-8c4a-0f3d-3c2d556e6760"
+          "AssetID": "4e337605-21af-429d-8844-1f1ed63c5e98"
         },
         "Motions": {
           "$id": 77,
@@ -704,8 +743,8 @@
 
           ]
         },
-        "PosX": 0F,
-        "PosY": 0F,
+        "PosX": -820F,
+        "PosY": -80F,
         "Behaviours": {
           "$id": 79,
           "$values": [
@@ -715,7 +754,7 @@
       },
       {
         "$id": 80,
-        "Name": "BigSkill",
+        "Name": "Attack_Normal_4_End",
         "Tag": "",
         "Speed": 1F,
         "IsLooping": false,
@@ -728,7 +767,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "15317026-e3ef-f071-3997-57f3f5009837"
+          "AssetID": "6b2ba652-824e-4601-aa43-f733407f2d09"
         },
         "Motions": {
           "$id": 81,
@@ -743,8 +782,8 @@
 
           ]
         },
-        "PosX": -820F,
-     "PosY": -80F,
+        "PosX": -180F,
+        "PosY": 360F,
         "Behaviours": {
           "$id": 83,
           "$values": [
@@ -754,7 +793,7 @@
       },
       {
         "$id": 84,
-        "Name": "Attack_Normal_4_End",
+        "Name": "Attack_Normal_5",
         "Tag": "",
         "Speed": 1F,
         "IsLooping": false,
@@ -767,7 +806,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "8fe18295-733f-5bac-3c8f-885e71e1d8d2"
+          "AssetID": "4a728d2b-98c1-41fb-a444-1b5c65427ff4"
         },
         "Motions": {
           "$id": 85,
@@ -782,8 +821,8 @@
 
           ]
         },
-        "PosX": -180F,
-     "PosY": 360F,
+        "PosX": -420F,
+        "PosY": 580F,
         "Behaviours": {
           "$id": 87,
           "$values": [
@@ -793,10 +832,10 @@
       },
       {
         "$id": 88,
-        "Name": "Attack_Normal_5",
+        "Name": "Run",
         "Tag": "",
         "Speed": 1F,
-        "IsLooping": false,
+        "IsLooping": true,
         "WriteDefaults": true,
         "Mirror": false,
         "CycleOffset": 0F,
@@ -806,7 +845,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "397f1952-7027-acde-a78b-561e1b657832"
+          "AssetID": "633cc7c4-50d8-4d25-a80e-e0921efc6342"
         },
         "Motions": {
           "$id": 89,
@@ -821,8 +860,8 @@
 
           ]
         },
-        "PosX": -420F,
-     "PosY": 580F,
+        "PosX": 420F,
+        "PosY": 0F,
         "Behaviours": {
           "$id": 91,
           "$values": [
@@ -832,10 +871,10 @@
       },
       {
         "$id": 92,
-        "Name": "Run",
+        "Name": "TurnBack",
         "Tag": "",
         "Speed": 1F,
-        "IsLooping": true,
+        "IsLooping": false,
         "WriteDefaults": true,
         "Mirror": false,
         "CycleOffset": 0F,
@@ -845,7 +884,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "858a7564-912e-cce5-4051-faab575d7692"
+          "AssetID": "bfff7646-6754-4072-ac8f-04a11baff9fb"
         },
         "Motions": {
           "$id": 93,
@@ -861,7 +900,7 @@
           ]
         },
         "PosX": 420F,
-      "PosY": 0F,
+        "PosY": -200F,
         "Behaviours": {
           "$id": 95,
           "$values": [
@@ -871,7 +910,7 @@
       },
       {
         "$id": 96,
-        "Name": "TurnBack",
+        "Name": "Evade_Back",
         "Tag": "",
         "Speed": 1F,
         "IsLooping": false,
@@ -884,7 +923,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "1d4dc8a1-7e89-a114-8cb6-b5a6478dc74a"
+          "AssetID": "0a394e2e-400b-423f-96d8-7d1af70dec7b"
         },
         "Motions": {
           "$id": 97,
@@ -899,8 +938,8 @@
 
           ]
         },
-        "PosX": 420F,
-      "PosY": -200F,
+        "PosX": 0F,
+        "PosY": 420F,
         "Behaviours": {
           "$id": 99,
           "$values": [
@@ -910,7 +949,7 @@
       },
       {
         "$id": 100,
-        "Name": "Evade_Back",
+        "Name": "Attack_Normal_2",
         "Tag": "",
         "Speed": 1F,
         "IsLooping": false,
@@ -923,7 +962,7 @@
         "CycleOffsetParameter": "",
         "TimeParameter": "",
         "Motion": {
-          "AssetID": "3d8060ef-feb7-6e58-6c50-956202072fb4"
+          "AssetID": "eb4f88c4-dafe-4e8e-9c1e-8a0411725b59"
         },
         "Motions": {
           "$id": 101,
@@ -938,49 +977,10 @@
 
           ]
         },
-        "PosX": 0F,
-        "PosY": 420F,
+        "PosX": -420F,
+        "PosY": -80F,
         "Behaviours": {
           "$id": 103,
-          "$values": [
-
-          ]
-        }
-      },
-      {
-        "$id": 104,
-        "Name": "Attack_Normal_2",
-        "Tag": "",
-        "Speed": 1F,
-        "IsLooping": false,
-        "WriteDefaults": true,
-        "Mirror": false,
-        "CycleOffset": 0F,
-        "IKOnFeet": false,
-        "SpeedMultiplierParameter": "",
-        "MirrorParameter": "",
-        "CycleOffsetParameter": "",
-        "TimeParameter": "",
-        "Motion": {
-          "AssetID": "48cbb994-abfd-a270-0e2c-5a71cdbfcdcd"
-        },
-        "Motions": {
-          "$id": 105,
-          "$values": [
-
-          ]
-        },
-        "BlendTree": NULL,
-        "TransitionNames": {
-          "$id": 106,
-          "$values": [
-
-          ]
-        },
-        "PosX": -420F,
-     "PosY": -80F,
-        "Behaviours": {
-          "$id": 107,
           "$values": [
 
           ]
@@ -989,24 +989,24 @@
     ]
   },
   "Transitions": {
-    "$id": 108,
+    "$id": 104,
     "$values": [
 
     ]
   },
   "AnyStateTransitions": {
-    "$id": 109,
+    "$id": 105,
     "$values": [
 
     ]
   },
   "Layers": {
-    "$id": 110,
+    "$id": 106,
     "$values": [
 
     ]
   },
-  "AssetPath": "",
-  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "AssetPath": "ZZZ/Arts/PlayerModel/Corlin/Corin.controller",
+  "AssetID": "58c28ec0-40bc-4ce5-82a7-132f6165880a",
   "Name": "Corin"
 }

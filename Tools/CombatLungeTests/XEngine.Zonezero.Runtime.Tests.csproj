@@ -22,6 +22,9 @@
     <Reference Include="XEngine.Runtime">
       <HintPath>..\..\Library\ScriptAssemblies\XEngine.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="XEngine.XGUI.Runtime">
+      <HintPath>..\..\Library\ScriptAssemblies\XEngine.XGUI.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Vector">
       <HintPath>..\..\Library\ScriptAssemblies\Vector.dll</HintPath>
     </Reference>

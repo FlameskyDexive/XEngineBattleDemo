@@ -8,30 +8,327 @@ Packages:
         $id: 4
         $values:
           - GroupName: "Combat VFX"
-            GroupDescription: "rpgvfx effect prefabs dynamically spawned in battle (RpgVfxSpawner)"
+            GroupDescription: "Explicit battle VFX prefabs referenced by HeroSkillConfig (not the package-wide prefab catalog)."
             Tags:
-              $id: 6
+              $id: 5
               $values: []
             Collectors:
-              $id: 7
+              $id: 6
               $values:
-                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs"
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Flower_slash.prefab"
                   AssetTypeFilter: ""
                   PackRule: 1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
-                    $id: 9
+                    $id: 8
                     $values: []
-                  $id: 8
-            $id: 5
-          - GroupName: "Hero Configs"
-            GroupDescription: "Zonezero hero skill configs + library under Resources (GUID-addressed)"
+                  $id: 9
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knife_hit.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 10
+                    $values: []
+                  $id: 11
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_12.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 12
+                    $values: []
+                  $id: 13
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_1_loop.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 14
+                    $values: []
+                  $id: 15
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_2.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 16
+                    $values: []
+                  $id: 17
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_5.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 18
+                    $values: []
+                  $id: 19
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Front_spikes_attack.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 20
+                    $values: []
+                  $id: 21
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Punch_Hit.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 22
+                    $values: []
+                  $id: 23
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knives.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 24
+                    $values: []
+                  $id: 25
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_shield_1_loop.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 26
+                    $values: []
+                  $id: 27
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_hit.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 28
+                    $values: []
+                  $id: 29
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_14.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 30
+                    $values: []
+                  $id: 31
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 32
+                    $values: []
+                  $id: 33
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Lightning_strike.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 34
+                    $values: []
+                  $id: 35
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Energy_explosion.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 36
+                    $values: []
+                  $id: 37
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_10_loop.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 38
+                    $values: []
+                  $id: 39
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 40
+                    $values: []
+                  $id: 41
+                - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_27.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 42
+                    $values: []
+                  $id: 43
+            $id: 7
+          - GroupName: "Hero Animations"
+            GroupDescription: "Hero animator controllers plus extracted clips; animation directories are staged for the extraction pass."
             Tags:
-              $id: 11
+              $id: 44
               $values: []
             Collectors:
-              $id: 12
+              $id: 45
+              $values:
+                - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Anbi/Animations"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 47
+                    $values: []
+                  $id: 48
+                - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Corlin/Animations"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 49
+                    $values: []
+                  $id: 50
+                - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Nicole/Animations"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 51
+                    $values: []
+                  $id: 52
+                - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Anbi/Anbi.controller"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 53
+                    $values: []
+                  $id: 54
+                - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Corlin/Corin.controller"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 55
+                    $values: []
+                  $id: 56
+                - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Nicole/Nike.controller"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 57
+                    $values: []
+                  $id: 58
+            $id: 46
+          - GroupName: "Battle HUD"
+            GroupDescription: "BattleHUD prefab and its Sprite-bearing runtime textures."
+            Tags:
+              $id: 59
+              $values: []
+            Collectors:
+              $id: 60
+              $values:
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/joystick_base.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 62
+                    $values: []
+                  $id: 63
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/joystick_thumb.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 64
+                    $values: []
+                  $id: 65
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_attack.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 66
+                    $values: []
+                  $id: 67
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_k.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 68
+                    $values: []
+                  $id: 69
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_l.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 70
+                    $values: []
+                  $id: 71
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_i.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 72
+                    $values: []
+                  $id: 73
+                - CollectPath: "Assets/ZZZ/Arts/UI/HUD/cd_mask.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 74
+                    $values: []
+                  $id: 75
+                - CollectPath: "Assets/ZZZ/Prefab/BattleHUD.prefab"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 76
+                    $values: []
+                  $id: 77
+            $id: 61
+          - GroupName: "Hero Configs"
+            GroupDescription: "Zonezero hero skill configs and library under Resources (GUID-addressed)."
+            Tags:
+              $id: 78
+              $values: []
+            Collectors:
+              $id: 79
               $values:
                 - CollectPath: "Assets/Resources/Zonezero"
                   AssetTypeFilter: ""
@@ -39,10 +336,55 @@ Packages:
                   AddressRule: 2
                   FilterRule: 0
                   Tags:
-                    $id: 14
+                    $id: 81
                     $values: []
-                  $id: 13
-            $id: 10
+                  $id: 82
+            $id: 80
+          - GroupName: "Startup Scene"
+            GroupDescription: "Desktop profile startup scene; required as an explicit AssetBundle root."
+            Tags:
+              $id: 83
+              $values: []
+            Collectors:
+              $id: 84
+              $values:
+                - CollectPath: "Assets/Scenes/ZonezeroBattle2.scene"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 86
+                    $values: []
+                  $id: 87
+            $id: 85
+          - GroupName: "Player Rendering Settings"
+            GroupDescription: "Explicit pipeline and global-settings roots; referenced renderer dependencies follow automatically."
+            Tags:
+              $id: 88
+              $values: []
+            Collectors:
+              $id: 89
+              $values:
+                - CollectPath: "Assets/Settings/Pipeline/New Universal Render Pipeline Asset.pipeline"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 90
+                    $values: []
+                  $id: 91
+                - CollectPath: "Assets/UniversalRenderPipelineGlobalSettings.asset"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 0
+                  Tags:
+                    $id: 92
+                    $values: []
+                  $id: 93
+            $id: 94
       $id: 3
 $id: 1
 $type: "XEngine.Editor.AssetBundles.Collector.AssetBundleCollectorSetting, XEngine.Editor"

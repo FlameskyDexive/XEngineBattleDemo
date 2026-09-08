@@ -1,8 +1,8 @@
 {
   "lockfileVersion": 1,
   "resolverVersion": "xengine-package-resolver/1",
-  "manifestHash": "614681e62e170723ea683cae1986c1d56fe211048ebce222445ea960e3ac2f7a",
-  "generatedAtUtc": "2026-09-08T11:14:31.8336275Z",
+  "manifestHash": "b4852b040e87e05de338e0393f1df4434b91806b9e6a2ad42b08f0ea6850bb04",
+  "generatedAtUtc": "2026-09-08T21:22:12.0657285Z",
   "packages": [
     {
       "name": "com.xengine.2d.common",
@@ -72,14 +72,30 @@
     },
     {
       "name": "com.xengine.rpgvfx",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "source": "builtin",
-      "sourceSpecifier": "0.1.0",
+      "sourceSpecifier": "0.1.1",
       "logicalRoot": "Packages/com.xengine.rpgvfx",
-      "resolvedPath": "Library/PackageCache/com.xengine.rpgvfx@0.1.0",
-      "contentHash": "43af43f9f5308c4b5090efb2e6b07e074223fdd274b9121e2cae745a3f0c5cb6",
+      "resolvedPath": "Library/PackageCache/com.xengine.rpgvfx@0.1.1",
+      "contentHash": "aa54b9380d0030a63ee2c6375ff0a22bf8c5e37c2391032a60953f44d2983d80",
       "dependencies": {},
       "dependencyClosure": []
+    },
+    {
+      "name": "com.xengine.spine",
+      "version": "0.1.1",
+      "source": "registry",
+      "sourceSpecifier": "0.1.1",
+      "logicalRoot": "Packages/com.xengine.spine",
+      "resolvedPath": "Library/PackageCache/com.xengine.spine@0.1.1",
+      "contentHash": "b3ae44a945f12a55efe480a47705a7abd889074dbc2bc0e886905dc1fa0995c9",
+      "registryUrl": "https://registry.npmjs.org/",
+      "dependencies": {
+        "com.xengine.xgui": "0.1.0"
+      },
+      "dependencyClosure": [
+        "com.xengine.xgui"
+      ]
     },
     {
       "name": "com.xengine.timeline",
@@ -108,7 +124,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.xgui",
       "resolvedPath": "",
-      "contentHash": "9951da7aae21c17c4c2a5af157ff0905f253b35434628a6f5427e2f5e6633ee9",
+      "contentHash": "7cb57bdd0ee1bc83907366503ae2836eed9bcbf002d0295f047499c2bb2de29f",
       "dependencies": {},
       "dependencyClosure": []
     },
@@ -119,7 +135,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.zonezero",
       "resolvedPath": "Packages/com.xengine.zonezero",
-      "contentHash": "66936d073d418fd345fdbaedc23667272d0501a35e32e457e9dd76d6449757a1",
+      "contentHash": "826e77b883cdb913fbe2586bb84c7042f17bfb34e172fb6f32d1221e3dcc7782",
       "dependencies": {
         "com.xengine.cinemachine": "0.1.0",
         "com.xengine.inputsystem": "0.1.0",

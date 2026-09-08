@@ -1,6 +1,7 @@
 using XEngine.Runtime;
 using XEngine.Runtime.UI;
 using XEngine.Zonezero.UI;
+using XEngine.Vector;
 
 using Xunit;
 
@@ -8,6 +9,26 @@ namespace XEngine.Zonezero.Runtime.Tests;
 
 public sealed class BattleHudBindingTests
 {
+    [Fact]
+    public void Joystick_TopLeftAnchoredVisualsStayAtPointerAndFollowUpwardDrag()
+    {
+        using var zone = new GameObject("JoystickZone");
+        zone.EnsureRectTransform().ComputedRect = new Rect(0, 0, 960, 1080);
+        var stick = zone.AddComponent<Joystick>();
+        stick.BaseRect = AddImage(zone, "Base").GameObject.EnsureRectTransform();
+        stick.ThumbRect = AddImage(zone, "Thumb").GameObject.EnsureRectTransform();
+        var pointer = new PointerEventData { DesignPosition = new Float2(260, 250) };
+        stick.OnPointerDown(pointer);
+        Assert.Equal(new Float2(260, -830), stick.BaseRect.AnchoredPosition);
+        pointer.DesignPosition = new Float2(310, 280);
+        stick.OnDrag(pointer);
+        Assert.Equal(new Float2(310, -800), stick.ThumbRect.AnchoredPosition);
+        Assert.True(stick.Value.X > 0 && stick.Value.Y > 0);
+        stick.Release();
+        Assert.False(stick.BaseRect.GameObject.Enabled);
+        Assert.False(stick.ThumbRect.GameObject.Enabled);
+    }
+
     [Theory]
     [InlineData("btn_attack.png")]
     [InlineData("joystick_base.png")]

@@ -4,7 +4,10 @@
 using System;
 using System.IO;
 
+using XEngine.Data.Provenance;
+using XEngine.Echo;
 using XEngine.Editor;
+using XEngine.Editor.Core;
 using XEngine.Editor.GUI.SceneView;
 using XEngine.Editor.Projects;
 using XEngine.Runtime;
@@ -16,11 +19,9 @@ using XEngine.Zonezero.UI;
 namespace XEngine.Zonezero.Editor;
 
 /// <summary>
-/// Builds the battle HUD prefab (virtual joystick + skill cluster) with LOCAL sprite
-/// references. Run this menu item once per machine after pulling: the generated prefab
-/// serializes this machine's texture GUIDs, so every Image resolves its art at load time —
-/// no runtime GUID guessing, no white squares. Art source: Assets/ZZZ/Arts/UI/HUD (copied
-/// from the MagicCreator Unity project).
+/// Builds the battle HUD prefab (virtual joystick + skill cluster) with Sprite references
+/// resolved from the project's imported HUD textures. Art source:
+/// Assets/ZZZ/Arts/UI/HUD (copied from the MagicCreator Unity project).
 /// </summary>
 public static class BattleHudPrefabBuilder
 {
@@ -31,9 +32,10 @@ public static class BattleHudPrefabBuilder
     public static void Build()
     {
         var backend = EditorAssetBackend.Instance;
-        if (backend == null)
+        var project = Project.Current;
+        if (backend == null || project == null)
         {
-            Runtime.Debug.LogError("[BattleHUD] no editor asset backend — open a project first.");
+            Runtime.Debug.LogError("[BattleHUD] no active editor project — open a project first.");
             return;
         }
 
@@ -61,11 +63,85 @@ public static class BattleHudPrefabBuilder
         SkillButton(root, "SkillL", 92f, new Float2(-150f, 195f), Hud("btn_skill_l.png"), "L");
         SkillButton(root, "SkillI", 105f, new Float2(-285f, 230f), Hud("btn_skill_i.png"), "I");
 
-        // Serialize as a native prefab (local GUIDs land in the file via the sprite instances).
-        string abs = Path.GetFullPath(Path.Combine(Project.Current!.AssetsPath, "..", DestPath));
-        ZonezeroNativeAssets.WriteGameObjectAsPrefab(root, abs, Guid.NewGuid());
-        root.Dispose();
-        Runtime.Debug.Log($"[BattleHUD] prefab written: {DestPath} (local sprite GUIDs — machine-correct).");
+        string absolutePath = Path.Combine(
+            project.AssetsPath,
+            DestPath.Replace('/', Path.DirectorySeparatorChar));
+
+        try
+        {
+            EchoObject before = ReadExistingSource(absolutePath);
+            EchoObject after = SerializePrefabSource(root);
+
+            WritePrefabSource(absolutePath, after);
+
+            // Import only the rebuilt source asset. This refreshes the asset database without
+            // stamping the temporary root or refreshing any scene instance.
+            Guid prefabGuid = backend.ImportFile(DestPath);
+            if (prefabGuid == Guid.Empty)
+            {
+                Runtime.Debug.LogError($"[BattleHUD] prefab was written but could not be imported: {DestPath}.");
+                return;
+            }
+
+            RecordSourceChange(project, before, after);
+            Runtime.Debug.Log($"[BattleHUD] prefab rebuilt: {DestPath}.");
+        }
+        catch (Exception ex)
+        {
+            Runtime.Debug.LogError($"[BattleHUD] failed to rebuild prefab '{DestPath}': {ex.Message}");
+        }
+        finally
+        {
+            root.Dispose();
+        }
+    }
+
+    private static EchoObject ReadExistingSource(string absolutePath)
+        => File.Exists(absolutePath)
+            ? EchoObject.ReadFromString(File.ReadAllText(absolutePath))
+            : EchoObject.NewCompound();
+
+    /// <summary>Serializes a standalone prefab source without mutating scene state.</summary>
+    private static EchoObject SerializePrefabSource(GameObject source)
+    {
+        source.ClearPrefabDataRecursive();
+        Guid savedId = source.AssetID;
+        source.AssetID = Guid.Empty;
+        try
+        {
+            return Serializer.Serialize(typeof(object), source)
+                ?? throw new InvalidOperationException($"failed to serialize prefab '{source.Name}'.");
+        }
+        finally
+        {
+            source.AssetID = savedId;
+        }
+    }
+
+    private static void WritePrefabSource(string absolutePath, EchoObject source)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!);
+        File.WriteAllText(absolutePath, source.WriteToString());
+
+        // Never rewrite an existing meta: this keeps the complete importer settings and GUID intact
+        // across a rebuild. EnsureMeta is only called when the sidecar is absent.
+        if (!File.Exists(MetaFile.GetMetaPath(absolutePath)))
+            MetaFile.EnsureMeta(absolutePath, "PrefabImporter");
+    }
+
+    private static void RecordSourceChange(Project project, EchoObject before, EchoObject after)
+    {
+        ChangeProvenance provenance = ChangeProvenance.ForEditor(
+            intent: "Rebuild Battle HUD prefab",
+            reason: "Zonezero/Rebuild Battle HUD Prefab");
+        string beforeHash = ProvenancedDelta.ContentHash(before);
+        string afterHash = ProvenancedDelta.ContentHash(after);
+
+        // Use the editor's existing journal implementation for the source delta. The short-lived
+        // service does not touch the scene; it only exposes the project's journal for this asset op.
+        using var journal = new ChangeJournalService(project.RootPath, project.Name);
+        journal.Journal.AppendAsync(DestPath, ProvenancedDelta.Create(before, after, provenance),
+            provenance, beforeHash, afterHash).GetAwaiter().GetResult();
     }
 
     /// <summary>Resolves a HUD texture's Sprite sub-asset via the LOCAL asset database.</summary>
@@ -82,9 +158,9 @@ public static class BattleHudPrefabBuilder
         {
             if (!sub.TypeName.Contains("Sprite", StringComparison.Ordinal)) continue;
 
-            // Keep the machine-local sub-asset GUID even when Get() returns a transiently
-            // unloaded instance.  Serializing a Sprite instance with AssetID == Empty produces
-            // an empty AssetRef in the prefab, which then falls back to a white Image quad.
+            // Keep the imported sub-asset GUID even when Get() returns a transiently unloaded
+            // instance. Serializing a Sprite instance with AssetID == Empty produces an empty
+            // AssetRef in the prefab, which then falls back to a white Image quad.
             var reference = new AssetRef<Sprite>(sub.Guid);
             reference.EnsureLoaded();
             Sprite? sprite = reference.ResWeak;
