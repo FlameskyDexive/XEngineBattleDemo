@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "resolverVersion": "xengine-package-resolver/1",
   "manifestHash": "b4852b040e87e05de338e0393f1df4434b91806b9e6a2ad42b08f0ea6850bb04",
-  "generatedAtUtc": "2026-09-08T21:22:12.0657285Z",
+  "generatedAtUtc": "2026-09-08T21:43:36.6343986Z",
   "packages": [
     {
       "name": "com.xengine.2d.common",
@@ -135,7 +135,7 @@
       "sourceSpecifier": "0.1.0",
       "logicalRoot": "Packages/com.xengine.zonezero",
       "resolvedPath": "Packages/com.xengine.zonezero",
-      "contentHash": "826e77b883cdb913fbe2586bb84c7042f17bfb34e172fb6f32d1221e3dcc7782",
+      "contentHash": "879a042e408a0a0a4302883e9e10e803dbd9e662e65fd2f42ad27455a148135b",
       "dependencies": {
         "com.xengine.cinemachine": "0.1.0",
         "com.xengine.inputsystem": "0.1.0",
