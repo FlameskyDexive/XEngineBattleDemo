@@ -1,0 +1,11 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Rendering.UniversalRenderData, XEngine.Runtime",
+  "DepthPriming": false,
+  "RenderingPath": 0L,
+  "Kind": 0L,
+  "LodCrossFade": 0L,
+  "AssetPath": "Settings/Pipeline/New Universal Render Pipeline Asset_Renderer.renderer",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "New Universal Render Pipeline Asset_Renderer"
+}

@@ -1,0 +1,13 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Rendering.UniversalRenderPipelineGlobalSettings, XEngine.Runtime",
+  "ExportShaderVariants": true,
+  "StripUnusedVariants": true,
+  "StripDebugVariants": true,
+  "StripUnusedPostProcessingVariants": false,
+  "Strip2DUnusedVariants": false,
+  "ShaderVariantLogLevel": 0,
+  "AssetPath": "UniversalRenderPipelineGlobalSettings.asset",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "UniversalRenderPipelineGlobalSettings"
+}

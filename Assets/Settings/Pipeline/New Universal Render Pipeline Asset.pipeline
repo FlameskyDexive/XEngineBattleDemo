@@ -1,0 +1,20 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Rendering.UniversalRenderPipelineAsset, XEngine.Runtime",
+  "Hdr": true,
+  "RenderScale": 1F,
+  "ShadowAtlasSize": 4096,
+  "ShadowDistance": 100F,
+  "ShadowsEnabled": true,
+  "SoftShadowQuality": 1L,
+  "Antialiasing": 0L,
+  "MsaaSamples": 4,
+  "UpscalingFilter": 0L,
+  "AllowPostProcessAlphaOutput": false,
+  "Renderer": {
+    "AssetID": "a7c40001-09e0-4d2f-9f7f-5a5c5e5a0001"
+  },
+  "AssetPath": "Settings/Pipeline/New Universal Render Pipeline Asset.pipeline",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "New Universal Render Pipeline Asset"
+}

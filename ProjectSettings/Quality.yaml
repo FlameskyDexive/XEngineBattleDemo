@@ -1,0 +1,6 @@
+PreviewPipeline:
+  AssetID: "00000000-0000-0000-0000-000000000000"
+FullPipeline:
+  AssetID: "a7c40002-09e0-4d2f-9f7f-5a5c5e5a0002"
+$id: 1
+$type: "XEngine.Editor.Projects.Settings.QualitySettingsPanel, XEngine.Editor"
