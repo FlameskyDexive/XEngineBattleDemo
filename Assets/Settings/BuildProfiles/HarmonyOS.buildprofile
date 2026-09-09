@@ -43,7 +43,7 @@
   "OutputDirectory": "Builds",
   "OverrideConfiguration": false,
   "Configuration": 1L,
-  "OverridePackaging": false,
+  "OverridePackaging": true,
   "PackagingMode": 1L,
   "AssetMode": 1L,
   "MaxPakSizeMB": 2048,
