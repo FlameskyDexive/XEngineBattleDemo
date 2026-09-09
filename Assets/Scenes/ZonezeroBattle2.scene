@@ -516,8 +516,8 @@
             "AssetPath": "",
             "Identifier": "5312a3fe-821d-4894-b1dd-81d96bd6a2f2",
             "Static": 0B,
-            "Enabled": 1B,
-            "EnabledInHierarchy": 1B,
+            "Enabled": 0B,
+            "EnabledInHierarchy": 0B,
             "TagIndex": 0,
             "LayerIndex": 0,
             "HideFlags": 0,
@@ -583,7 +583,7 @@
                 },
                 "_identifier": "a253bbbe-3e9b-49d0-992d-f8d0ce3e08cb",
                 "_enabled": true,
-                "_enabledInHierarchy": true,
+                "_enabledInHierarchy": false,
                 "HideFlags": 0L,
                 "AssetPath": "",
                 "AssetID": "00000000-0000-0000-0000-000000000000",
@@ -613,7 +613,7 @@
                 "sweepVelocityThreshold": 0F,
                 "_identifier": "4ea4a7d8-10e4-4d32-934b-d14961bea3e5",
                 "_enabled": true,
-                "_enabledInHierarchy": true,
+                "_enabledInHierarchy": false,
                 "HideFlags": 0L,
                 "AssetPath": "",
                 "AssetID": "00000000-0000-0000-0000-000000000000",
@@ -805,6 +805,25 @@
             "AssetPath": "",
             "AssetID": "00000000-0000-0000-0000-000000000000",
             "Name": "NewAnimator"
+          },
+          {
+            "$id": 1641,
+            "$type": "XEngine.Zonezero.Combat.HeroCombatController, XEngine.Zonezero.Runtime",
+            "RunSpeed": 4.6F,
+            "TurnSpeedDeg": 540F,
+            "AttackRange": 2F,
+            "AttackHalfAngle": 65F,
+            "NormalAttackCooldown": 0.18F,
+            "SkillKCooldown": 1.25F,
+            "SkillLCooldown": 2.25F,
+            "SkillICooldown": 7F,
+            "_identifier": "51fee7af-2fae-4598-b542-4a6264be4dc1",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
           }
         ],
         "Children": [
@@ -7780,6 +7799,35 @@
             "AssetPath": "",
             "AssetID": "00000000-0000-0000-0000-000000000000",
             "Name": "NewAnimator"
+          },
+          {
+            "$id": 1642,
+            "$type": "XEngine.Zonezero.Combat.AllyCombatAI, XEngine.Zonezero.Runtime",
+            "PatrolPointA": {
+              "X": -4F,
+              "Y": 0F,
+              "Z": -3.5F
+            },
+            "PatrolPointB": {
+              "X": -0.5F,
+              "Y": 0F,
+              "Z": -8.5F
+            },
+            "WalkSpeed": 1.6F,
+            "RunSpeed": 4.2F,
+            "TurnSpeedDeg": 480F,
+            "AttackRange": 1.9F,
+            "AttackHalfAngle": 65F,
+            "IdleDurationMin": 0.55F,
+            "IdleDurationMax": 1.1F,
+            "RecoverDuration": 0.5F,
+            "_identifier": "1feb5d5e-0063-454e-8ea8-f2cbe6610b79",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
           }
         ],
         "Children": [
@@ -17423,6 +17471,35 @@
             "AssetPath": "",
             "AssetID": "00000000-0000-0000-0000-000000000000",
             "Name": "NewAnimator"
+          },
+          {
+            "$id": 1643,
+            "$type": "XEngine.Zonezero.Combat.AllyCombatAI, XEngine.Zonezero.Runtime",
+            "PatrolPointA": {
+              "X": 4.2F,
+              "Y": 0F,
+              "Z": -6F
+            },
+            "PatrolPointB": {
+              "X": 0.8F,
+              "Y": 0F,
+              "Z": -9F
+            },
+            "WalkSpeed": 1.6F,
+            "RunSpeed": 4.2F,
+            "TurnSpeedDeg": 480F,
+            "AttackRange": 1.9F,
+            "AttackHalfAngle": 65F,
+            "IdleDurationMin": 0.55F,
+            "IdleDurationMax": 1.1F,
+            "RecoverDuration": 0.5F,
+            "_identifier": "7c6a39e6-62f6-4464-b234-6a8bcf94034b",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
           }
         ],
         "Children": [
@@ -27570,7 +27647,17 @@
           }
         },
         "Components": [
-
+          {
+            "$id": 1644,
+            "$type": "XEngine.Zonezero.EnemyController, XEngine.Zonezero.Runtime",
+            "_identifier": "28038610-2ac4-4998-8704-94165da0fec4",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
+          }
         ],
         "Children": [
           {
@@ -30102,7 +30189,17 @@
           }
         },
         "Components": [
-
+          {
+            "$id": 1645,
+            "$type": "XEngine.Zonezero.EnemyController, XEngine.Zonezero.Runtime",
+            "_identifier": "3d4f2693-5822-42d2-9ffa-b8de006357c9",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
+          }
         ],
         "Children": [
           {
@@ -32634,7 +32731,17 @@
           }
         },
         "Components": [
-
+          {
+            "$id": 1646,
+            "$type": "XEngine.Zonezero.EnemyController, XEngine.Zonezero.Runtime",
+            "_identifier": "bdc19cf9-e991-46ac-856c-9c6e3bf971b7",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
+          }
         ],
         "Children": [
           {
@@ -35246,6 +35353,24 @@
             "AssetPath": "",
             "AssetID": "00000000-0000-0000-0000-000000000000",
             "Name": ""
+          },
+          {
+            "$id": 1647,
+            "$type": "XEngine.Zonezero.Combat.BattleFollowCamera, XEngine.Zonezero.Runtime",
+            "Target": NULL,
+            "Distance": 8.5F,
+            "PitchDeg": 40F,
+            "YawDeg": 0F,
+            "FollowSpeed": 8F,
+            "TargetHeight": 1.15F,
+            "LookAhead": 0.75F,
+            "_identifier": "db2f4732-afd6-4669-899e-22f19b7571c2",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
           }
         ],
         "Children": [
@@ -35284,7 +35409,21 @@
           }
         },
         "Components": [
-
+          {
+            "$id": 1648,
+            "$type": "XEngine.InputSystem.PlayerInput, XEngine.InputSystem.Runtime",
+            "_asset": {
+              "AssetID": "1f57f6b5-bfad-4bc6-94f7-eaace3868732"
+            },
+            "_defaultActionMap": "Player",
+            "_identifier": "44a273e4-ce61-4c44-875d-bfb5a9d2e5e8",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": ""
+          }
         ],
         "Children": [
 

@@ -55,8 +55,8 @@ public sealed class HeroSkillConfigTests
         anbi.HeroId = "Anbi";
         var corin = ScriptableObject.CreateInstance<HeroSkillConfig>();
         corin.HeroId = "Corin";
-        library.Heroes.Add(anbi);
-        library.Heroes.Add(corin);
+        library.Heroes.Add(new AssetRef<HeroSkillConfig>(anbi));
+        library.Heroes.Add(new AssetRef<HeroSkillConfig>(corin));
 
         Assert.Same(anbi, library.Find("anbi"));
         Assert.Same(corin, library.Find("CORIN"));
@@ -74,6 +74,42 @@ public sealed class HeroSkillConfigTests
         // Repeat call stays cached-null without re-lookup noise (still null).
         Assert.Null(HeroSkillLibrary.LoadDefault());
         HeroSkillLibrary.ResetCache();
+    }
+
+    [Fact]
+    public void ResolveHeroId_InfersFromObjectName()
+    {
+        var go = new GameObject("Battle_Ally_Corin");
+        try
+        {
+            Assert.Equal("Corin", XEngine.Zonezero.Combat.CombatMotor.ResolveHeroId(go));
+            go.Name = "Battle_Ally_Nike";
+            Assert.Equal("Nostradamus", XEngine.Zonezero.Combat.CombatMotor.ResolveHeroId(go));
+            go.Name = "Battle_Hero";
+            Assert.Equal("Anbi", XEngine.Zonezero.Combat.CombatMotor.ResolveHeroId(go));
+        }
+        finally
+        {
+            go.Dispose();
+        }
+    }
+
+    [Fact]
+    public void ConfigFor_WithoutLibrary_ReturnsNullAndCaches()
+    {
+        XEngine.Zonezero.Combat.CombatMotor.InvalidateConfigCache();
+        HeroSkillLibrary.ResetCache();
+        var go = new GameObject("Battle_Hero");
+        try
+        {
+            Assert.Null(XEngine.Zonezero.Combat.CombatMotor.ConfigFor(go));
+            Assert.Null(XEngine.Zonezero.Combat.CombatMotor.ConfigFor(go)); // cached path
+        }
+        finally
+        {
+            go.Dispose();
+            XEngine.Zonezero.Combat.CombatMotor.InvalidateConfigCache();
+        }
     }
 
     [Fact]
