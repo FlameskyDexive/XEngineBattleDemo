@@ -80,7 +80,14 @@ public sealed class BattleHUD : MonoBehaviour
     private static AssetRef<Sprite>? SpriteRef(string fileName)
     {
         string path = ResolveHudAssetPath(fileName);
-        if (s_spriteByPath.TryGetValue(path, out AssetRef<Sprite>? cached)) return cached;
+        if (s_spriteByPath.TryGetValue(path, out AssetRef<Sprite>? cached) &&
+            cached is { } cachedRef && cachedRef.Res is { } cachedSprite)
+        {
+            cachedSprite.Texture.EnsureLoaded();
+            if (Runtime.Resources.Scene.Current is { } scene)
+                cachedSprite.Texture.LockToScene(scene);
+            return cachedRef;
+        }
 
         AssetRef<Sprite>? resolved = null;
         if (XEngine.Zonezero.Config.BattleAssetCatalog.Load()?.LoadHudSprite(fileName) is { } packagedSprite)
@@ -142,11 +149,6 @@ public sealed class BattleHUD : MonoBehaviour
     public static BattleHUD EnsureCreated()
     {
         if (_instance is { IsDisposed: false } existing) return existing;
-
-        // Lock the window to portrait until engine-side swapchain pre-rotation lands: with
-        // sensor rotation active the OHOS surface transform flips the Vulkan present (the
-        // scene renders upside down after rotating the device). No-op on desktop.
-        Screen.Orientation = ScreenOrientation.Portrait;
 
         var hud = new BattleHUD();
         try

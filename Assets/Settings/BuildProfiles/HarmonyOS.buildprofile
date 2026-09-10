@@ -41,16 +41,17 @@
   },
   "OverrideOutputDirectory": false,
   "OutputDirectory": "Builds",
-  "OverrideConfiguration": false,
-  "Configuration": 1L,
+  "OverrideConfiguration": true,
+  "Configuration": 0L,
   "OverridePackaging": true,
-  "PackagingMode": 1L,
+  "PackagingMode": 2L,
   "AssetMode": 1L,
   "MaxPakSizeMB": 2048,
   "SettingOverrides": {
     "$id": 6,
     "$values": [
-
+      {"SettingsName": "Graphics", "FieldPath": "DefaultPipeline", "Value": "fbd8eefd-df6b-465d-814e-e7d8bb73f6b9", "Enabled": true},
+      {"SettingsName": "Quality", "FieldPath": "FullPipeline", "Value": "fbd8eefd-df6b-465d-814e-e7d8bb73f6b9", "Enabled": true}
     ]
   },
   "AssetImportOverrides": {

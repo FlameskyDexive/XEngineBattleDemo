@@ -126,14 +126,14 @@ public sealed class HeroSkillLibrary : ScriptableObject
     }
 
     /// <summary>
-    /// Loads the project's library from Resources ("Zonezero/HeroSkillLibrary"). The result is
+    /// Loads the collector-owned library from Bundles/Config/Heroes by its stable GUID. The result is
     /// cached; returns null (and keeps returning null only until a successful load) when the
     /// asset is absent so unconfigured projects pay one lookup and keep the procedural fallback.
     /// </summary>
     public static HeroSkillLibrary? LoadDefault()
     {
-        if (_defaultResolved) return _default;
-        _default = GameResources.Load<HeroSkillLibrary>("Zonezero/HeroSkillLibrary");
+        if (_defaultResolved && _default is { IsDisposed: false }) return _default;
+        _default = AssetDatabase.Get(new System.Guid("5e52ed1a-842d-5a36-9250-6d5213860b24")) as HeroSkillLibrary;
         _defaultResolved = _default is not null;
         return _default;
     }

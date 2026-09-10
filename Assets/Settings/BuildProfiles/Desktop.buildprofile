@@ -33,7 +33,7 @@
   "OverrideConfiguration": false,
   "Configuration": 1L,
   "OverridePackaging": true,
-  "PackagingMode": 1L,
+  "PackagingMode": 2L,
   "AssetMode": 1L,
   "MaxPakSizeMB": 2048,
   "SettingOverrides": {

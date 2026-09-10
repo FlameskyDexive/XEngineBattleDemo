@@ -322,15 +322,15 @@ Packages:
                     $values: []
                   $id: 76
             $id: 59
-          - GroupName: "Hero Configs"
-            GroupDescription: "Zonezero hero skill configs and library under Resources (GUID-addressed)."
+          - GroupName: "Battle Configs"
+            GroupDescription: "Battle configs grouped under Bundles/Config; GUID references preserve dependency closure."
             Tags:
               $id: 79
               $values: []
             Collectors:
               $id: 80
               $values:
-                - CollectPath: "Assets/Resources/Zonezero"
+                - CollectPath: "Assets/Bundles/Config"
                   AssetTypeFilter: ""
                   PackRule: 0
                   AddressRule: 2
@@ -385,6 +385,51 @@ Packages:
                     $values: []
                   $id: 93
             $id: 88
+          - GroupName: "Runtime Input and UI"
+            GroupDescription: "Runtime-selected action maps and default UI sprite subassets."
+            Tags:
+              $id: 96
+              $values: []
+            Collectors:
+              $id: 97
+              $values:
+                - CollectPath: "Assets/ZZZ/Settings/InputSystem.inputactions"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 99
+                    $values: []
+                  $id: 98
+                - CollectPath: "Packages/com.xengine.xgui/Runtime/Resources/DefaultSprite.png"
+                  AssetTypeFilter: ""
+                  PackRule: 0
+                  AddressRule: 0
+                  FilterRule: 1
+                  Tags:
+                    $id: 101
+                    $values: []
+                  $id: 100
+            $id: 95
+          - GroupName: "Mobile Rendering Configuration"
+            GroupDescription: "HarmonyOS build-profile pipeline override."
+            Tags:
+              $id: 104
+              $values: []
+            Collectors:
+              $id: 105
+              $values:
+                - CollectPath: "Assets/Bundles/Config/Rendering"
+                  AssetTypeFilter: ""
+                  PackRule: 1
+                  AddressRule: 1
+                  FilterRule: 0
+                  Tags:
+                    $id: 107
+                    $values: []
+                  $id: 106
+            $id: 103
       $id: 3
 $id: 1
 $type: "XEngine.Editor.AssetBundles.Collector.AssetBundleCollectorSetting, XEngine.Editor"
