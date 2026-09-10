@@ -5,7 +5,7 @@
   "settings": {
     "generateMipmaps": true,
     "sRGB": true,
-    "sRGBSampling": false,
+    "sRGBSampling": true,
     "minFilter": 5,
     "magFilter": 1,
     "wrapMode": 0,

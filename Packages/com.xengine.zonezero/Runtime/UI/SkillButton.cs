@@ -18,6 +18,7 @@ namespace XEngine.Zonezero.UI;
 /// </summary>
 public sealed class SkillButton : UIBehaviour, IPointerDownHandler
 {
+    internal static readonly Color BackgroundTint = new(0.035f, 0.045f, 0.065f, 0.82f);
     public event Action? Pressed;
 
     /// <summary>Visuals are child Image/Text nodes; the zone itself draws nothing.</summary>
@@ -80,7 +81,7 @@ public sealed class SkillButton : UIBehaviour, IPointerDownHandler
         var bgImage = bgRect.GameObject!.AddComponent<Image>();
         _background = bgImage;
         if (backgroundSprite is { } bg) bgImage.Sprite = bg;
-        bgImage.Color = new Color(1f, 1f, 1f, 0.9f);
+        bgImage.Color = BackgroundTint;
 
         var iconRect = CreateChild("Icon", size * 0.72f);
         _icon = iconRect.GameObject!.AddComponent<Image>();

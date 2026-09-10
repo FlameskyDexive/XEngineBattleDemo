@@ -426,6 +426,7 @@ public sealed class BattleHUD : MonoBehaviour
         if (button == null) return;
         RepairImage(button.Icon, iconFile);
         RepairImage(button.Background, CdMaskFile);
+        if (button.Background is { } background) background.Color = SkillButton.BackgroundTint;
         RepairImage(button.CdMask, CdMaskFile);
     }
 
