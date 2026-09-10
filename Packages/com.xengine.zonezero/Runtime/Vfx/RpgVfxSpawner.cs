@@ -79,24 +79,21 @@ public static class RpgVfxSpawner
             try { instance = prefab.Instantiate(); }
             catch { return null; } // corrupt prefab data → procedural fallback
             if (instance is null) return null;
+            runtime.RememberAuthoredTransform(guid, instance);
             Scene.Current?.Add(instance);
             PoolMisses++;
         }
 
         // Reset BEFORE enabling: particle Play() snapshots the emitter transform on restart.
-        instance.Transform.Position = position;
+        Quaternion heading = Quaternion.Identity;
         if (Float3.LengthSquared(forward) > 1e-6f)
         {
             Float3 dir = Float3.Normalize(forward);
             // Hovl effects face +Z; yaw the instance so +Z aligns with the requested forward.
             float yaw = MathF.Atan2(dir.X, dir.Z);
-            instance.Transform.LocalRotation = Quaternion.AxisAngle(Float3.UnitY, yaw);
+            heading = Quaternion.AxisAngle(Float3.UnitY, yaw);
         }
-        else
-        {
-            instance.Transform.LocalRotation = Quaternion.Identity;
-        }
-        instance.Transform.LocalScale = new Float3(scale, scale, scale);
+        runtime.Place(instance, guid, position, heading, scale);
 
         instance.Enabled = true;
         RestartParticles(instance);
@@ -167,6 +164,8 @@ public static class RpgVfxSpawner
     /// <summary>Path → asset GUID through the current backend (reflection: editor-only API).</summary>
     private static Guid ResolvePathGuid(string path)
     {
+        Guid packaged = XEngine.Zonezero.Config.BattleAssetCatalog.Load()?.FindEffect(path) ?? Guid.Empty;
+        if (packaged != Guid.Empty) return packaged;
         try
         {
             var backend = AssetDatabase.Current;
@@ -189,6 +188,21 @@ public static class RpgVfxSpawner
     private sealed class VfxPoolRuntime : MonoBehaviour
     {
         private readonly Dictionary<Guid, Stack<GameObject>> _pools = new();
+        private readonly Dictionary<Guid, (Quaternion Rotation, Float3 Scale)> _authoredTransforms = new();
+
+        internal void RememberAuthoredTransform(Guid guid, GameObject instance)
+        {
+            if (!_authoredTransforms.ContainsKey(guid))
+                _authoredTransforms.Add(guid, (instance.Transform.LocalRotation, instance.Transform.LocalScale));
+        }
+
+        internal void Place(GameObject instance, Guid guid, Float3 position, Quaternion heading, float scale)
+        {
+            var authored = _authoredTransforms[guid];
+            instance.Transform.Position = position;
+            instance.Transform.LocalRotation = heading * authored.Rotation;
+            instance.Transform.LocalScale = authored.Scale * scale;
+        }
         private readonly List<GameObject> _active = new();
         private readonly List<Guid> _activeGuids = new();
         private readonly List<float> _deadlines = new();
@@ -340,6 +354,7 @@ public static class RpgVfxSpawner
                 try { instance = prefab.Instantiate(); }
                 catch { continue; } // corrupt prefab data; skip its prewarm entries
                 if (instance is null) continue;
+                RememberAuthoredTransform(guid, instance);
 
                 instance.Enabled = false; // pooled idle until first Take
                 GameObject?.Scene?.Add(instance);
@@ -359,6 +374,7 @@ public static class RpgVfxSpawner
         public override void OnDisable()
         {
             _pools.Clear();
+            _authoredTransforms.Clear();
             _active.Clear();
             _activeGuids.Clear();
             _deadlines.Clear();

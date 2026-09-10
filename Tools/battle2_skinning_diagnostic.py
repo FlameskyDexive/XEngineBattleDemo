@@ -653,9 +653,10 @@ def wait_until_ready(client: EditorMcp, timeout: float) -> dict[str, Any]:
     while time.monotonic() < deadline:
         try:
             state = client.tool("runtime_state", timeout=20)
-            if state.structured:
+            if state.structured and not any(state.structured.get(key, False) for key in
+                                            ("isOpeningProject", "isCompiling", "isImporting")):
                 return state.structured
-            if state.text:
+            if state.text and not state.structured:
                 return {"text": state.text}
         except Exception as exc:  # editor may still be importing/compiling
             last_error = str(exc)

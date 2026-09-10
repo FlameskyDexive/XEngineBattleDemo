@@ -349,9 +349,9 @@ public static class CombatMotor
     /// <summary>Normal-chain VFX once per swing.</summary>
     public static void SpawnNormalSwingVfx(GameObject attacker, int stage)
     {
-        Float3 origin = attacker.Transform.Position + new Float3(0f, 1.05f, 0f)
-                        + attacker.Transform.Forward * 0.55f;
         var config = ConfigFor(attacker);
+        Float3 origin = attacker.Transform.Position + new Float3(0f, config?.NormalVfxHeight ?? 1.05f, 0f)
+                        + attacker.Transform.Forward * 0.55f;
         string path = config?.NormalAttackVfxPath(stage - 1) ?? "";
         if (path.Length > 0
             && RpgVfxSpawner.Spawn(path, origin, attacker.Transform.Forward, config!.VfxScale, config.VfxLifetime) != null)
@@ -362,8 +362,8 @@ public static class CombatMotor
     /// <summary>K skill: crossed energy cuts and a contact ring.</summary>
     public static void SpawnSkillKVfx(GameObject attacker)
     {
-        Float3 origin = attacker.Transform.Position + new Float3(0f, 1.05f, 0f);
         var config = ConfigFor(attacker);
+        Float3 origin = attacker.Transform.Position + new Float3(0f, config?.SkillKVfxHeight ?? 1.05f, 0f);
         if (config?.SkillKVfxPath.Length > 0
             && RpgVfxSpawner.Spawn(config.SkillKVfxPath, origin, attacker.Transform.Forward, config.VfxScale, config.VfxLifetime) != null)
             return;
@@ -373,8 +373,8 @@ public static class CombatMotor
     /// <summary>L skill: dash streak and oversized finishing cut.</summary>
     public static void SpawnSkillLVfx(GameObject attacker)
     {
-        Float3 origin = attacker.Transform.Position + new Float3(0f, 0.18f, 0f);
         var config = ConfigFor(attacker);
+        Float3 origin = attacker.Transform.Position + new Float3(0f, config?.SkillLVfxHeight ?? 0.18f, 0f);
         if (config?.SkillLVfxPath.Length > 0
             && RpgVfxSpawner.Spawn(config.SkillLVfxPath, origin, attacker.Transform.Forward, config.VfxScale, config.VfxLifetime) != null)
             return;
@@ -386,7 +386,7 @@ public static class CombatMotor
     {
         var config = ConfigFor(caster);
         if (config?.SkillIChargeVfxPath.Length > 0
-            && RpgVfxSpawner.Spawn(config.SkillIChargeVfxPath, caster.Transform.Position,
+            && RpgVfxSpawner.Spawn(config.SkillIChargeVfxPath, caster.Transform.Position + new Float3(0f, config.ChargeVfxHeight, 0f),
                 caster.Transform.Forward, config.VfxScale, config.VfxLifetime) != null)
             return;
         ZonezeroVfx.UltimateCharge(caster.Transform.Position);
@@ -396,7 +396,8 @@ public static class CombatMotor
     public static void SpawnBigSkillBurstVfx(GameObject caster)
     {
         var config = ConfigFor(caster);
-        Float3 origin = caster.Transform.Position + new Float3(0f, 0.9f, 0f);
+        Float3 origin = caster.Transform.Position + new Float3(0f, config?.BurstVfxHeight ?? 0.9f, 0f)
+            + caster.Transform.Forward * (config?.BurstVfxForward ?? 0f);
         if (config?.SkillIBurstVfxPath.Length > 0
             && RpgVfxSpawner.Spawn(config.SkillIBurstVfxPath, origin, caster.Transform.Forward,
                 config.VfxScale, config.VfxLifetime) != null)

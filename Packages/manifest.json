@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.xengine.zonezero": "0.1.0",
-    "com.xengine.inputsystem": "0.1.0",
+    "com.xengine.inputsystem": "0.1.1",
     "com.xengine.magicacloth2": "0.1.0",
     "com.xengine.spine": "0.2.0",
     "com.xengine.xgui": "0.1.0",

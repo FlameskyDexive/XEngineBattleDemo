@@ -1,0 +1,127 @@
+{
+  "$type": "XEngine.Zonezero.Config.BattleAssetCatalog, XEngine.Zonezero.Runtime",
+  "EffectPaths": {
+    "$values": [
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_12.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_14.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_27.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_5.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Energy_explosion.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Flower_slash.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Front_spikes_attack.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knife_hit.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knives.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Lightning_strike.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_2.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_hit.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_10_loop.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_1_loop.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_shield_1_loop.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks.prefab",
+      "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Punch_Hit.prefab"
+    ]
+  },
+  "Effects": {
+    "$values": [
+      {
+        "AssetID": "29efcf3d-33ed-7b0a-e960-8e011358b141"
+      },
+      {
+        "AssetID": "6012a9b1-3244-aa77-6532-85cd83f41643"
+      },
+      {
+        "AssetID": "95a31993-92ac-2dba-aaa7-8602d4e2c3fc"
+      },
+      {
+        "AssetID": "018a34a1-65d5-cfad-8363-3e776dcc2811"
+      },
+      {
+        "AssetID": "00cafc12-e8a3-5371-accc-ce187321f824"
+      },
+      {
+        "AssetID": "ea81e216-a286-2ffa-17e3-0a0da401f786"
+      },
+      {
+        "AssetID": "cdf51c78-73d3-c1e5-0521-21a374d7feb1"
+      },
+      {
+        "AssetID": "8043d7d7-e328-e941-25b9-7b45ad32bbb2"
+      },
+      {
+        "AssetID": "25a017dd-f957-1d5b-a7d9-bb0db76ea6aa"
+      },
+      {
+        "AssetID": "b15a472c-6771-f492-df8f-d842465e18e0"
+      },
+      {
+        "AssetID": "7860bf2a-fa46-1976-5a86-2ff034e3431d"
+      },
+      {
+        "AssetID": "cc01ed51-fec9-b07f-491e-96186d160360"
+      },
+      {
+        "AssetID": "a83018e7-070f-b9de-36b0-7acba8c1b5b5"
+      },
+      {
+        "AssetID": "f96ba2db-d8b5-7242-96a4-ec9ade866130"
+      },
+      {
+        "AssetID": "69ed76a6-80c8-66bc-7fe0-82a5979c0361"
+      },
+      {
+        "AssetID": "ef2538db-15bb-8d5c-1458-986106419c9f"
+      },
+      {
+        "AssetID": "a69b66b6-6066-0f68-4afd-af42b0ddc9e5"
+      },
+      {
+        "AssetID": "2f7c8370-b8f5-4b0a-a056-2280008bc4ce"
+      }
+    ]
+  },
+  "HudNames": {
+    "$values": [
+      "btn_attack.png",
+      "btn_roll.png",
+      "btn_skill_i.png",
+      "btn_skill_k.png",
+      "btn_skill_l.png",
+      "cd_mask.png",
+      "joystick_base.png",
+      "joystick_thumb.png"
+    ]
+  },
+  "HudTextures": {
+    "$values": [
+      {
+        "AssetID": "43c8d3c4-b443-45d8-ab0a-2fa2344a0ee7"
+      },
+      {
+        "AssetID": "91f2f374-7559-46f9-8533-4d551d5860bc"
+      },
+      {
+        "AssetID": "0fa51ece-b98f-4d49-9f46-ecae3b11998f"
+      },
+      {
+        "AssetID": "13d63023-cf32-4061-a2a1-d3275197436c"
+      },
+      {
+        "AssetID": "85f259f4-0f50-40b6-a865-a53dce61f0e9"
+      },
+      {
+        "AssetID": "6973055a-2f89-4541-bcb3-bff7ba42817f"
+      },
+      {
+        "AssetID": "8e1b6990-e50a-4f1d-94c8-3f0acffb2bc4"
+      },
+      {
+        "AssetID": "6e09e608-3d25-4d60-b5f7-fd708e2a68ce"
+      }
+    ]
+  },
+  "HudPrefab": {
+    "AssetID": "bf8b2cf9-4d45-4c7c-aa3d-ae8c173a706d"
+  },
+  "Name": "BattleAssetCatalog"
+}

@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "com.xengine.unityimporter": "0.1.0",
-    "com.xengine.inputsystem": "0.1.0",
+    "com.xengine.inputsystem": "0.1.1",
     "com.xengine.probuilder": "0.1.0",
     "com.xengine.cinemachine": "0.1.0",
     "com.xengine.magicacloth2": "0.1.0"

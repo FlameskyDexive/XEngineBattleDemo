@@ -1,7 +1,6 @@
 // This file is part of the XEngine Game Engine
 // Licensed under the MIT License. See the LICENSE file in the project root for details.
 
-using XEngine.InputSystem;
 using XEngine.Runtime;
 using XEngine.Vector;
 
@@ -28,8 +27,8 @@ public static class BattleTouchInputBridge
     public static void SetMove(Float2 v)
     {
         SetAxis(0, v.Y, enterAbove: EnterThreshold); // W
-        SetAxis(1, -v.Y, enterAbove: EnterThreshold); // S
-        SetAxis(2, -v.X, enterAbove: EnterThreshold); // A
+        SetAxis(1, -v.X, enterAbove: EnterThreshold); // A
+        SetAxis(2, -v.Y, enterAbove: EnterThreshold); // S
         SetAxis(3, v.X, enterAbove: EnterThreshold); // D
     }
 
@@ -48,8 +47,7 @@ public static class BattleTouchInputBridge
     public static void TapSkill(int skillIndex)
     {
         if (skillIndex < 0 || skillIndex >= _skillKeys.Length) return;
-        InputInjector.Press(_skillKeys[skillIndex]);
-        InputInjector.Release(_skillKeys[skillIndex]);
+        InputInjector.Tap(_skillKeys[skillIndex]);
     }
 
     /// <summary>Holds a virtual skill key (for buttons that fire while held).</summary>
@@ -71,7 +69,7 @@ public static class BattleTouchInputBridge
     private static void SetAxis(int wasdIndex, float value, float enterAbove)
     {
         bool shouldHold = _wasdHeld[wasdIndex]
-            ? value > ExitThreshold || value < -ExitThreshold
+            ? value > ExitThreshold
             : value > enterAbove;
         if (_wasdHeld[wasdIndex] == shouldHold) return;
         _wasdHeld[wasdIndex] = shouldHold;

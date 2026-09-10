@@ -24,6 +24,32 @@ namespace XEngine.Zonezero.UI;
 public sealed class BattleHUD : MonoBehaviour
 {
     private static BattleHUD? _instance;
+    private readonly bool _diagnostics = Environment.GetEnvironmentVariable("XENGINE_BATTLE_DIAGNOSTICS") == "1";
+    private long _diagnosticFrame;
+    private bool _frameCaptureRequested, _frameCaptureSaved;
+
+    private void CaptureRenderDiagnostics()
+    {
+        if (_frameCaptureSaved || Environment.GetEnvironmentVariable("XENGINE_BATTLE_FRAME_CAPTURE") != "1") return;
+        if (!_frameCaptureRequested && Time.FrameCount > 300)
+        {
+            XEngine.Runtime.Rendering.FrameDebugger.CaptureScope = XEngine.Runtime.Rendering.FrameDebuggerCaptureScope.FullFrame;
+            XEngine.Runtime.Rendering.FrameDebugger.Enable();
+            Runtime.Application.IsPaused = false;
+            _frameCaptureRequested = true;
+        }
+        else if (_frameCaptureRequested && XEngine.Runtime.Rendering.FrameDebugger.LastCapture is { } capture)
+        {
+            var rows = new List<object>();
+            foreach (var op in capture.Ops)
+                rows.Add(new { op.Label, op.CommandBufferName, target = op.RenderTarget?.Name,
+                    clear = op.ClearFlags.ToString(), op.ShaderLabel, op.UniformName, op.UniformFloat, op.TextureLabel });
+            System.IO.File.WriteAllText(System.IO.Path.Combine(Runtime.Application.DataPath, "battle-frame.json"),
+                System.Text.Json.JsonSerializer.Serialize(rows));
+            XEngine.Runtime.Rendering.FrameDebugger.Disable();
+            _frameCaptureSaved = true;
+        }
+    }
 
     // HUD texture files under Assets/ZZZ/Arts/UI/HUD. Resolved by the project-relative ASSET
     // PATH at runtime (via
@@ -57,6 +83,12 @@ public sealed class BattleHUD : MonoBehaviour
         if (s_spriteByPath.TryGetValue(path, out AssetRef<Sprite>? cached)) return cached;
 
         AssetRef<Sprite>? resolved = null;
+        if (XEngine.Zonezero.Config.BattleAssetCatalog.Load()?.LoadHudSprite(fileName) is { } packagedSprite)
+        {
+            resolved = new AssetRef<Sprite>(packagedSprite);
+            s_spriteByPath[path] = resolved;
+            return resolved;
+        }
         try
         {
             var backend = AssetDatabase.Current;
@@ -163,6 +195,16 @@ public sealed class BattleHUD : MonoBehaviour
     {
         try
         {
+            if (XEngine.Zonezero.Config.BattleAssetCatalog.Load() is { } catalog)
+            {
+                var reference = catalog.HudPrefab;
+                reference.EnsureLoaded();
+                if (reference.Res is { } packagedPrefab && packagedPrefab.Instantiate() is { } packagedInstance)
+                {
+                    Runtime.Resources.Scene.Current?.Add(packagedInstance);
+                    return packagedInstance;
+                }
+            }
             var backend = AssetDatabase.Current;
             var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
             var entry = getEntry?.Invoke(backend, new object[] { "ZZZ/Prefab/BattleHUD.prefab" });
@@ -284,6 +326,19 @@ public sealed class BattleHUD : MonoBehaviour
 
     public override void Update()
     {
+        if (_diagnostics) CaptureRenderDiagnostics();
+        if (_diagnostics && Time.FrameCount >= _diagnosticFrame)
+        {
+            _diagnosticFrame = Time.FrameCount + 30;
+            var hero = FindCombat();
+            var stats = XEngine.Runtime.Rendering.RenderStats.Last;
+            string cameras = "";
+            if (Runtime.Resources.Scene.Current is { } scene)
+                foreach (var root in scene.RootObjects)
+                    foreach (var camera in root.GetComponentsInChildren<Camera>(true, true))
+                        cameras += $" {camera.GameObject.Name}:{camera.EnabledInHierarchy}:{camera.Target != null}:{camera.Transform.Position}";
+            Runtime.Debug.Log($"[BattleDiagnostics] frame={Time.FrameCount} hero={hero?.Transform.Position} action={hero?.ActiveAction} draw={stats.DrawCalls} triangles={stats.Triangles} rtBytes={stats.TransientRenderTargetBytes} managed={GC.GetTotalMemory(false)} cameras={cameras}");
+        }
         if (_buildFailed) return;
 
         // First tick: wire up. Prefab instances (built by BattleHudPrefabBuilder) already carry

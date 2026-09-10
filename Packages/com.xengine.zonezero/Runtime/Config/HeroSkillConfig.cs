@@ -58,6 +58,12 @@ public sealed class HeroSkillConfig : ScriptableObject
 
     [Tooltip("Uniform scale applied to every spawned effect for this hero.")]
     public float VfxScale = 1f;
+    public float NormalVfxHeight = 1.05f;
+    public float SkillKVfxHeight = 1.05f;
+    public float SkillLVfxHeight = 0.18f;
+    public float ChargeVfxHeight = 0f;
+    public float BurstVfxHeight = 0.9f;
+    public float BurstVfxForward = 0f;
     [Tooltip("Seconds before a spawned effect instance is recycled (looping prefabs need this).")]
     public float VfxLifetime = 4f;
 
