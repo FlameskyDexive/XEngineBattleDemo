@@ -9,6 +9,31 @@ namespace XEngine.Zonezero.Runtime.Tests;
 
 public sealed class BattleHudBindingTests
 {
+    [Theory]
+    [InlineData(ImageType.Simple)]
+    [InlineData(ImageType.Sliced)]
+    [InlineData(ImageType.Filled)]
+    public void AtlasImage_PreservesNonZeroSubregionUv(ImageType type)
+    {
+        using var root = new GameObject("AtlasImage");
+        root.EnsureRectTransform().ComputedRect = new Rect(0, 0, 80, 40);
+        using var texture = new XEngine.Runtime.Resources.Texture2D(512, 512);
+        var sprite = XEngine.Runtime.Resources.Sprite.Create(texture,
+            new XEngine.Runtime.Resources.SpriteRect(32, 64, 128, 96), new Float2(.5f, .5f));
+        var image = root.AddComponent<Image>();
+        image.Sprite = sprite;
+        image.Type = type;
+        var builder = new UIMeshBuilder();
+        image.GenerateMesh(builder, UIContext.Default);
+        using var mesh = new XEngine.Runtime.Resources.Mesh();
+        typeof(UIMeshBuilder).GetMethod("Bake", System.Reflection.BindingFlags.Instance |
+            System.Reflection.BindingFlags.NonPublic)!.Invoke(builder, new object[] { mesh });
+        Assert.Equal(32f / 512, mesh.UV.Min(uv => uv.X));
+        Assert.Equal(160f / 512, mesh.UV.Max(uv => uv.X));
+        Assert.Equal(64f / 512, mesh.UV.Min(uv => uv.Y));
+        Assert.Equal(160f / 512, mesh.UV.Max(uv => uv.Y));
+    }
+
     [Fact]
     public void Joystick_TopLeftAnchoredVisualsStayAtPointerAndFollowUpwardDrag()
     {

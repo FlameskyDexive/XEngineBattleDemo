@@ -12,6 +12,8 @@ public sealed class BattleAssetCatalog : ScriptableObject
     public List<AssetRef<PrefabAsset>> Effects = new();
     public List<string> HudNames = new();
     public List<AssetRef<Texture2D>> HudTextures = new();
+    public AssetRef<Texture2D> HudAtlas;
+    public List<SpriteRect> HudAtlasRects = new();
     public AssetRef<PrefabAsset> HudPrefab;
     public string HudPrefabAddress = "BattleHUD";
     public List<string> EffectAddresses = new();
@@ -36,6 +38,13 @@ public sealed class BattleAssetCatalog : ScriptableObject
         for (int i = 0; i < HudNames.Count && i < HudAddresses.Count; i++)
         {
             if (!string.Equals(HudNames[i], name, StringComparison.OrdinalIgnoreCase)) continue;
+            if (HudAtlas.AssetID != Guid.Empty && i < HudAtlasRects.Count)
+            {
+                HudAtlas.EnsureLoaded();
+                if (Scene.Current is { } atlasScene) HudAtlas.LockToScene(atlasScene);
+                if (HudAtlas.Res is { } atlas)
+                    return Sprite.Create(atlas, HudAtlasRects[i], new XEngine.Vector.Float2(.5f, .5f), name: name);
+            }
             var reference = new AssetRef<Texture2D>(BattleAddressables.Load<Texture2D>(HudAddresses[i]));
             reference.EnsureLoaded();
             // Joystick visuals stay hidden until touched, so an idle sweep must not evict

@@ -90,6 +90,7 @@ public sealed class SkillButton : UIBehaviour, IPointerDownHandler
 
         var cdRect = CreateChild("CdMask", size);
         _cdMask = cdRect.GameObject!.AddComponent<Image>();
+        _cdMask.Type = ImageType.Filled;
         if (cdMaskSprite is { } mask) _cdMask.Sprite = mask;
         _cdMask.FillMethod = FillMethod.Radial360;
         _cdMask.FillOrigin = 0;

@@ -73,6 +73,11 @@ public sealed class BattleHUD : MonoBehaviour
 
     private static AssetRef<Sprite>? SpriteRef(string fileName)
     {
+        if (!ReferenceEquals(s_spriteBackend, AssetDatabase.Current))
+        {
+            s_spriteByPath.Clear();
+            s_spriteBackend = AssetDatabase.Current;
+        }
         string path = ResolveHudAssetPath(fileName);
         if (s_spriteByPath.TryGetValue(path, out AssetRef<Sprite>? cached) &&
             cached is { } cachedRef && cachedRef.Res is { } cachedSprite)
@@ -96,6 +101,8 @@ public sealed class BattleHUD : MonoBehaviour
             s_spriteByPath[path] = ready;
         return resolved;
     }
+
+    private static AssetBackendBase? s_spriteBackend;
 
     /// <summary>
     /// Creates the HUD (EventSystem + GameCanvas + joystick + skill cluster) in the current scene.
@@ -335,11 +342,49 @@ public sealed class BattleHUD : MonoBehaviour
             RepairButtonVisuals(_skillKButton, SkillKFile);
             RepairButtonVisuals(_skillLButton, SkillLFile);
             RepairButtonVisuals(_skillIButton, SkillIFile);
+            GroupButtonLabels();
             return;
         }
 
         // Procedural fallback (no prefab on this machine): plain visuals, runtime sprite resolve.
         BuildChildren();
+        GroupButtonLabels();
+    }
+
+    // All button pictures share the HUD atlas. Keep the separate font layer after them,
+    // instead of interrupting the picture batch once per button. These labels do not overlap
+    // other buttons; positions remain in the same bottom-right canvas design coordinates.
+    private void GroupButtonLabels()
+    {
+        var overlay = new GameObject("HudTextOverlay");
+        overlay.SetParent(GameObject, worldPositionStays: false);
+        var overlayRect = overlay.EnsureRectTransform();
+        overlayRect.AnchorMin = Float2.Zero;
+        overlayRect.AnchorMax = Float2.One;
+        overlayRect.SizeDelta = Float2.Zero;
+        MoveLabels(_attackButton, overlay);
+        MoveLabels(_skillKButton, overlay);
+        MoveLabels(_skillLButton, overlay);
+        MoveLabels(_skillIButton, overlay);
+    }
+
+    private static void MoveLabels(SkillButton? button, GameObject overlay)
+    {
+        if (button == null) return;
+        var buttonRect = button.GameObject!.EnsureRectTransform();
+        MoveLabel(button.KeyLabel, buttonRect, overlay);
+        MoveLabel(button.CdLabel, buttonRect, overlay);
+    }
+
+    private static void MoveLabel(Text? label, RectTransform buttonRect, GameObject overlay)
+    {
+        if (label == null) return;
+        var rect = label.GameObject!.EnsureRectTransform();
+        Float2 position = buttonRect.AnchoredPosition + rect.AnchoredPosition;
+        label.GameObject.SetParent(overlay, worldPositionStays: false);
+        rect.AnchorMin = buttonRect.AnchorMin;
+        rect.AnchorMax = buttonRect.AnchorMax;
+        rect.AnchoredPosition = position;
     }
 
     private SkillButton? FindButton(string name, int slot)
@@ -371,6 +416,7 @@ public sealed class BattleHUD : MonoBehaviour
         RepairImage(button.Background, CdMaskFile);
         if (button.Background is { } background) background.Color = SkillButton.BackgroundTint;
         RepairImage(button.CdMask, CdMaskFile);
+        if (button.CdMask is { } cooldown) cooldown.Type = ImageType.Filled;
     }
 
     private static void RepairImage(Image? image, string fileName)
