@@ -168,7 +168,10 @@ public sealed class BattleHUD : MonoBehaviour
 
             // Fallback: procedural build (plain tinted quads when sprite resolution fails).
             var go = new GameObject("BattleHUD");
-            go.AddComponent<GameCanvas>();
+            var canvas = go.AddComponent<GameCanvas>();
+            canvas.UIScaleMode = ScaleMode.ScaleWithScreenSize;
+            canvas.ReferenceResolution = new Float2(1280f, 720f);
+            canvas.MatchWidthOrHeight = 1f;
             go.AddComponent<BattleHUD>();
             Runtime.Resources.Scene.Current?.Add(go);
             hud = go.GetComponent<BattleHUD>()!;

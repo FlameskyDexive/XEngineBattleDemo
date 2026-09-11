@@ -40,12 +40,12 @@
       "_renderCamera": NULL,
       "_targetRotationDegrees": 0,
       "_sortOrder": 0,
-      "_uiScaleMode": 0L,
+      "_uiScaleMode": 1L,
       "_referenceResolution": {
         "X": 1280F,
         "Y": 720F
       },
-      "_matchWidthOrHeight": 0.5F,
+      "_matchWidthOrHeight": 1F,
       "_screenMatchMode": 0L,
       "_identifier": "4130f5b3-1b99-4527-9a4a-d8ef57785edd",
       "_enabled": true,

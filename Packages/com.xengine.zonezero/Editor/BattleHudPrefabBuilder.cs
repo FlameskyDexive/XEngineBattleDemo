@@ -41,7 +41,10 @@ public static class BattleHudPrefabBuilder
 
         // Root: canvas host + HUD driver.
         var root = new GameObject("BattleHUD");
-        root.AddComponent<GameCanvas>();
+        var canvas = root.AddComponent<GameCanvas>();
+        canvas.UIScaleMode = ScaleMode.ScaleWithScreenSize;
+        canvas.ReferenceResolution = new Float2(1280f, 720f);
+        canvas.MatchWidthOrHeight = 1f;
         root.AddComponent<BattleHUD>(); // BindOrBuild() wires events to these children at play
 
         // ── Left half: joystick touch zone + hidden-at-rest visuals ──
