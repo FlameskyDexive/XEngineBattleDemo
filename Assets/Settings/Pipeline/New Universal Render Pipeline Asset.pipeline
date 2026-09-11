@@ -5,6 +5,7 @@
   "RenderScale": 1F,
   "ShadowAtlasSize": 4096,
   "ShadowDistance": 100F,
+  "MaxShadowCascades": 2,
   "ShadowsEnabled": true,
   "SoftShadowQuality": 1L,
   "Antialiasing": 0L,
