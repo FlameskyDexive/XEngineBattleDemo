@@ -58,7 +58,8 @@
     "$id": 7,
     "Enabled": true,
     "MaxTextureSize": 1024,
-    "ForceUncompressed": false
+    "ForceUncompressed": false,
+    "CompressMeshVertexData": true
   },
   "AssetPath": "Settings/BuildProfiles/HarmonyOS.buildprofile",
   "AssetID": "23c91622-bb18-44bb-93c2-e5c884d48b78",
