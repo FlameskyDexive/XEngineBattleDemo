@@ -126,14 +126,14 @@ public sealed class HeroSkillLibrary : ScriptableObject
     }
 
     /// <summary>
-    /// Loads the collector-owned library from Bundles/Config/Heroes by its stable GUID. The result is
+    /// Loads the collector-owned library from Bundles/Config/Heroes by its address. The result is
     /// cached; returns null (and keeps returning null only until a successful load) when the
     /// asset is absent so unconfigured projects pay one lookup and keep the procedural fallback.
     /// </summary>
     public static HeroSkillLibrary? LoadDefault()
     {
-        if (_defaultResolved && _default is { IsDisposed: false }) return _default;
-        _default = AssetDatabase.Get(new System.Guid("5e52ed1a-842d-5a36-9250-6d5213860b24")) as HeroSkillLibrary;
+        // The address loader scopes its cache to the active package, including Simulate reentry.
+        _default = BattleAddressables.Load<HeroSkillLibrary>("Heroes/HeroSkillLibrary");
         _defaultResolved = _default is not null;
         return _default;
     }

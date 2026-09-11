@@ -51,13 +51,7 @@ public sealed class BattleHUD : MonoBehaviour
         }
     }
 
-    // HUD texture files under Assets/ZZZ/Arts/UI/HUD. Resolved by the project-relative ASSET
-    // PATH at runtime (via
-    // the backend's GetEntry(path) reflection hook) — never by hardcoded GUIDs: each machine
-    // that imports the textures fresh assigns its own GUIDs, so baked-in values white-out.
-    // EditorAssetBackend paths are relative to the project's Assets root.  Keeping the
-    // leading `Assets/` here makes GetEntry miss every texture (the backend does not
-    // normalize that prefix), so the procedural fallback silently builds white quads.
+    // Logical HUD names are mapped to collector addresses by BattleAssetCatalog.
     private const string HudAssetsRoot = "ZZZ/Arts/UI/HUD/";
     private const string JoystickBaseFile = "joystick_base.png";
     private const string JoystickThumbFile = "joystick_thumb.png";
@@ -96,44 +90,6 @@ public sealed class BattleHUD : MonoBehaviour
             s_spriteByPath[path] = resolved;
             return resolved;
         }
-        try
-        {
-            var backend = AssetDatabase.Current;
-            var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
-            if (getEntry?.Invoke(backend, new object[] { path }) is { } entry)
-            {
-                var subAssets = entry.GetType().GetField("SubAssets")?.GetValue(entry) as System.Array;
-                if (subAssets != null)
-                {
-                    foreach (object? sub in subAssets)
-                    {
-                        if (sub == null) continue;
-                        var typeName = sub.GetType().GetField("TypeName")?.GetValue(sub) as string;
-                        if (typeName == null || !typeName.Contains("Sprite")) continue;
-                        if (sub.GetType().GetField("Guid")?.GetValue(sub) is Guid spriteGuid)
-                        {
-                            // Blocking one-time load: Image bakes its mesh when the Sprite property
-                            // is assigned; the async `.Res` path returns null until streaming
-                            // completes and the bake would stick white (white-square bug).
-                            var reference = new AssetRef<Sprite>(spriteGuid);
-                            reference.EnsureLoaded();
-
-                            // Image bakes its mesh and material independently.  Loading the
-                            // Sprite alone is not enough when async asset loading is enabled:
-                            // Sprite.Texture.Res can still be null on the first bake, leaving a
-                            // permanent white quad until another dirty pass happens.  Resolve the
-                            // source texture before assigning the reference so both UVs and the
-                            // material texture are valid on the first canvas rebuild.
-                            Sprite? sprite = reference.ResWeak;
-                            sprite?.Texture.EnsureLoaded();
-                            resolved = reference;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        catch { /* best-effort: unresolved paths fall back to plain-colored UI */ }
         // A failed lookup is commonly a transient import race.  Do not memoize null and make a
         // later first-frame repair impossible; successful references are stable for the session.
         if (resolved is { } ready)
@@ -200,32 +156,16 @@ public sealed class BattleHUD : MonoBehaviour
     {
         try
         {
-            if (XEngine.Zonezero.Config.BattleAssetCatalog.Load() is { } catalog)
-            {
-                var reference = catalog.HudPrefab;
-                reference.EnsureLoaded();
-                if (reference.Res is { } packagedPrefab && packagedPrefab.Instantiate() is { } packagedInstance)
-                {
-                    Runtime.Resources.Scene.Current?.Add(packagedInstance);
-                    return packagedInstance;
-                }
-            }
-            var backend = AssetDatabase.Current;
-            var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
-            var entry = getEntry?.Invoke(backend, new object[] { "ZZZ/Prefab/BattleHUD.prefab" });
-            if (entry == null) return null; // prefab not built on this machine — procedural fallback
-            var guid = (Guid?)entry.GetType().GetField("Guid")?.GetValue(entry);
-            if (guid is not { } prefabGuid || prefabGuid == Guid.Empty) return null;
-            if (AssetDatabase.Get(prefabGuid) is not PrefabAsset prefab) return null;
-            var instance = prefab.Instantiate();
-            if (instance == null) return null;
-            instance.Name = "BattleHUD";
-            Runtime.Resources.Scene.Current?.Add(instance);
+            var catalog = XEngine.Zonezero.Config.BattleAssetCatalog.Load();
+            var prefab = XEngine.Zonezero.Config.BattleAddressables.Load<PrefabAsset>(catalog!.HudPrefabAddress);
+            var instance = prefab?.Instantiate();
+            if (instance != null) Runtime.Resources.Scene.Current?.Add(instance);
             return instance;
         }
-        catch
+        catch (Exception ex)
         {
-            return null; // any backend mismatch → procedural fallback
+            Runtime.Debug.LogError(ex.Message);
+            return null; // a failed address must be visible in runtime diagnostics
         }
     }
 

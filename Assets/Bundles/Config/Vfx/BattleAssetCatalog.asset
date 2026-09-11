@@ -123,5 +123,40 @@
   "HudPrefab": {
     "AssetID": "bf8b2cf9-4d45-4c7c-aa3d-ae8c173a706d"
   },
-  "Name": "BattleAssetCatalog"
+  "Name": "BattleAssetCatalog",
+  "EffectAddresses": {
+    "$values": [
+      "AAA_Projectiles_Vol_1_Prefabs_Hit_12",
+      "AAA_Projectiles_Vol_1_Prefabs_Hit_14",
+      "AAA_Projectiles_Vol_1_Prefabs_Hit_27",
+      "AAA_Projectiles_Vol_1_Prefabs_Hit_5",
+      "AOE_Magic_spells_Vol.1_Prefabs_Energy_explosion",
+      "AOE_Magic_spells_Vol.1_Prefabs_Flower_slash",
+      "AOE_Magic_spells_Vol.1_Prefabs_Front_spikes_attack",
+      "AOE_Magic_spells_Vol.1_Prefabs_Knife_hit",
+      "AOE_Magic_spells_Vol.1_Prefabs_Knives",
+      "AOE_Magic_spells_Vol.1_Prefabs_Lightning_strike",
+      "AOE_Magic_spells_Vol.1_Prefabs_Meteor",
+      "AOE_Magic_spells_Vol.1_Prefabs_Meteor_2",
+      "AOE_Magic_spells_Vol.1_Prefabs_Meteor_hit",
+      "Magic_circles_Prefabs_Loop_version_Magic_circle_10_loop",
+      "Magic_circles_Prefabs_Loop_version_Magic_circle_1_loop",
+      "Magic_circles_Prefabs_Loop_version_Magic_shield_1_loop",
+      "RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks",
+      "RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Punch_Hit"
+    ]
+  },
+  "HudAddresses": {
+    "$values": [
+      "btn_attack",
+      "btn_roll",
+      "btn_skill_i",
+      "btn_skill_k",
+      "btn_skill_l",
+      "cd_mask",
+      "joystick_base",
+      "joystick_thumb"
+    ]
+  },
+  "HudPrefabAddress": "BattleHUD"
 }

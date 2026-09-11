@@ -73,8 +73,7 @@ public static class RpgVfxSpawner
         }
         else
         {
-            PrefabAsset? prefab = AssetDatabase.GetCached(guid) as PrefabAsset
-                                  ?? AssetDatabase.Get(guid) as PrefabAsset; // cold path only
+            PrefabAsset? prefab = XEngine.Zonezero.Config.BattleAssetCatalog.Load()?.LoadEffect(path);
             if (prefab is null) return null;
             try { instance = prefab.Instantiate(); }
             catch { return null; } // corrupt prefab data → procedural fallback
@@ -164,20 +163,7 @@ public static class RpgVfxSpawner
     /// <summary>Path → asset GUID through the current backend (reflection: editor-only API).</summary>
     private static Guid ResolvePathGuid(string path)
     {
-        Guid packaged = XEngine.Zonezero.Config.BattleAssetCatalog.Load()?.FindEffect(path) ?? Guid.Empty;
-        if (packaged != Guid.Empty) return packaged;
-        try
-        {
-            var backend = AssetDatabase.Current;
-            var getEntry = backend?.GetType().GetMethod("GetEntry", new[] { typeof(string) });
-            var entry = getEntry?.Invoke(backend, new object[] { path });
-            if (entry is null) return Guid.Empty;
-            return (Guid?)entry.GetType().GetField("Guid")?.GetValue(entry) ?? Guid.Empty;
-        }
-        catch
-        {
-            return Guid.Empty;
-        }
+        return XEngine.Zonezero.Config.BattleAssetCatalog.Load()?.FindEffect(path) ?? Guid.Empty;
     }
 
     /// <summary>

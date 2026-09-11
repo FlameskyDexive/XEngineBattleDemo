@@ -17,7 +17,7 @@ Packages:
               $values:
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Flower_slash.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -26,7 +26,7 @@ Packages:
                   $id: 8
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knife_hit.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -35,7 +35,7 @@ Packages:
                   $id: 10
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_12.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -44,7 +44,7 @@ Packages:
                   $id: 12
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_1_loop.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -53,7 +53,7 @@ Packages:
                   $id: 14
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_2.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -62,7 +62,7 @@ Packages:
                   $id: 16
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_5.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -71,7 +71,7 @@ Packages:
                   $id: 18
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Front_spikes_attack.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -80,7 +80,7 @@ Packages:
                   $id: 20
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Punch_Hit.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -89,7 +89,7 @@ Packages:
                   $id: 22
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knives.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -98,7 +98,7 @@ Packages:
                   $id: 24
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_shield_1_loop.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -107,7 +107,7 @@ Packages:
                   $id: 26
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_hit.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -116,7 +116,7 @@ Packages:
                   $id: 28
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_14.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -125,7 +125,7 @@ Packages:
                   $id: 30
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -134,7 +134,7 @@ Packages:
                   $id: 32
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Lightning_strike.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -143,7 +143,7 @@ Packages:
                   $id: 34
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Energy_explosion.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -152,7 +152,7 @@ Packages:
                   $id: 36
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_10_loop.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -161,7 +161,7 @@ Packages:
                   $id: 38
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -170,7 +170,7 @@ Packages:
                   $id: 40
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_27.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
@@ -188,8 +188,8 @@ Packages:
               $values:
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Anbi/Animations"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 0
+                  PackRule: -1
+                  AddressRule: 4
                   FilterRule: 0
                   Tags:
                     $id: 48
@@ -197,8 +197,8 @@ Packages:
                   $id: 47
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Corlin/Animations"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 0
+                  PackRule: -1
+                  AddressRule: 4
                   FilterRule: 0
                   Tags:
                     $id: 50
@@ -206,8 +206,8 @@ Packages:
                   $id: 49
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Nicole/Animations"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 0
+                  PackRule: -1
+                  AddressRule: 4
                   FilterRule: 0
                   Tags:
                     $id: 52
@@ -215,8 +215,8 @@ Packages:
                   $id: 51
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Anbi/Anbi.controller"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 0
+                  PackRule: -1
+                  AddressRule: 4
                   FilterRule: 0
                   Tags:
                     $id: 54
@@ -224,8 +224,8 @@ Packages:
                   $id: 53
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Corlin/Corin.controller"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 0
+                  PackRule: -1
+                  AddressRule: 4
                   FilterRule: 0
                   Tags:
                     $id: 56
@@ -233,8 +233,8 @@ Packages:
                   $id: 55
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Nicole/Nike.controller"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 0
+                  PackRule: -1
+                  AddressRule: 4
                   FilterRule: 0
                   Tags:
                     $id: 58
@@ -251,7 +251,7 @@ Packages:
               $values:
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/joystick_base.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -260,7 +260,7 @@ Packages:
                   $id: 62
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/joystick_thumb.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -269,7 +269,7 @@ Packages:
                   $id: 64
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_attack.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -278,7 +278,7 @@ Packages:
                   $id: 66
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_k.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -287,7 +287,7 @@ Packages:
                   $id: 68
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_l.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -296,7 +296,7 @@ Packages:
                   $id: 70
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_i.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -305,7 +305,7 @@ Packages:
                   $id: 72
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/cd_mask.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -314,7 +314,7 @@ Packages:
                   $id: 74
                 - CollectPath: "Assets/ZZZ/Prefab/BattleHUD.prefab"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 0
                   Tags:
@@ -332,8 +332,8 @@ Packages:
               $values:
                 - CollectPath: "Assets/Bundles/Config"
                   AssetTypeFilter: ""
-                  PackRule: 0
-                  AddressRule: 2
+                  PackRule: -1
+                  AddressRule: 0
                   FilterRule: 0
                   Tags:
                     $id: 82
@@ -350,7 +350,7 @@ Packages:
               $values:
                 - CollectPath: "Assets/Scenes/ZonezeroBattle2.scene"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 0
                   Tags:
@@ -368,7 +368,7 @@ Packages:
               $values:
                 - CollectPath: "Assets/Settings/Pipeline/New Universal Render Pipeline Asset.pipeline"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 0
                   Tags:
@@ -377,7 +377,7 @@ Packages:
                   $id: 91
                 - CollectPath: "Assets/UniversalRenderPipelineGlobalSettings.asset"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 0
                   Tags:
@@ -395,7 +395,7 @@ Packages:
               $values:
                 - CollectPath: "Assets/ZZZ/Settings/InputSystem.inputactions"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -404,7 +404,7 @@ Packages:
                   $id: 98
                 - CollectPath: "Packages/com.xengine.xgui/Runtime/Resources/DefaultSprite.png"
                   AssetTypeFilter: ""
-                  PackRule: 0
+                  PackRule: -1
                   AddressRule: 0
                   FilterRule: 1
                   Tags:
@@ -422,7 +422,7 @@ Packages:
               $values:
                 - CollectPath: "Assets/Bundles/Config/Rendering"
                   AssetTypeFilter: ""
-                  PackRule: 1
+                  PackRule: -1
                   AddressRule: 1
                   FilterRule: 0
                   Tags:

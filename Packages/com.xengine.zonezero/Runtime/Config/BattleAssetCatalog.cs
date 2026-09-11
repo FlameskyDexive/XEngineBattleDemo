@@ -13,24 +13,30 @@ public sealed class BattleAssetCatalog : ScriptableObject
     public List<string> HudNames = new();
     public List<AssetRef<Texture2D>> HudTextures = new();
     public AssetRef<PrefabAsset> HudPrefab;
+    public string HudPrefabAddress = "BattleHUD";
+    public List<string> EffectAddresses = new();
+    public List<string> HudAddresses = new();
 
     public static BattleAssetCatalog? Load()
-        => AssetDatabase.Get(new Guid("8c5039c9-1990-4355-a51d-d3984a8978ca")) as BattleAssetCatalog;
+        => BattleAddressables.Load<BattleAssetCatalog>("Vfx/BattleAssetCatalog");
 
     public Guid FindEffect(string path)
+        => LoadEffect(path)?.AssetID ?? Guid.Empty;
+
+    public PrefabAsset? LoadEffect(string path)
     {
-        for (int i = 0; i < EffectPaths.Count && i < Effects.Count; i++)
+        for (int i = 0; i < EffectPaths.Count && i < EffectAddresses.Count; i++)
             if (string.Equals(EffectPaths[i], path, StringComparison.OrdinalIgnoreCase))
-                return Effects[i].AssetID;
-        return Guid.Empty;
+                return BattleAddressables.Load<PrefabAsset>(EffectAddresses[i]);
+        return null;
     }
 
     public Sprite? LoadHudSprite(string name)
     {
-        for (int i = 0; i < HudNames.Count && i < HudTextures.Count; i++)
+        for (int i = 0; i < HudNames.Count && i < HudAddresses.Count; i++)
         {
             if (!string.Equals(HudNames[i], name, StringComparison.OrdinalIgnoreCase)) continue;
-            var reference = HudTextures[i];
+            var reference = new AssetRef<Texture2D>(BattleAddressables.Load<Texture2D>(HudAddresses[i]));
             reference.EnsureLoaded();
             // Joystick visuals stay hidden until touched, so an idle sweep must not evict
             // their source texture while this HUD's scene is still alive.
