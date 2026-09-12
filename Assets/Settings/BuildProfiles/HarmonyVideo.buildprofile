@@ -1,0 +1,67 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Editor.Build.Profiles.BuildProfile, XEngine.Editor",
+  "PipelineId": "xengine.harmonyos",
+  "PlatformSettings": {
+    "$id": 2,
+    "$type": "XEngine.Editor.Projects.Build.HarmonyOSBuildProfile, XEngine.Editor",
+    "TargetAbis": {
+      "$id": 3,
+      "$values": [
+        "arm64-v8a"
+      ]
+    },
+    "TargetApi": 13,
+    "OutputMode": 1L,
+    "ApplicationId": "com.example.myapplication",
+    "VersionCode": 1,
+    "SigningReference": "None",
+    "RunDeviceId": "26KUT24812008134",
+    "AbilityName": "EntryAbility",
+    "InstallMode": 0L,
+    "CaptureRunScreenshot": true,
+    "CleanupNewInstallationOnFailure": false,
+    "ScriptingDefineSymbols": {
+      "$id": 4,
+      "$values": [
+
+      ]
+    }
+  },
+  "OverrideScenes": true,
+  "Scenes": {
+    "$id": 5,
+    "$values": [
+      {
+        "Path": "Assets/Scenes/VideoHarmonyAcceptance.scene",
+        "SceneGuid": "7d9798f2-33a2-48d7-9ce5-db894d941737",
+        "Enabled": true
+      }
+    ]
+  },
+  "OverrideOutputDirectory": false,
+  "OutputDirectory": "Builds",
+  "OverrideConfiguration": true,
+  "Configuration": 0L,
+  "OverridePackaging": true,
+  "PackagingMode": 0L,
+  "AssetMode": 1L,
+  "MaxPakSizeMB": 2048,
+  "SettingOverrides": {
+    "$id": 6,
+    "$values": [
+      {"SettingsName": "Graphics", "FieldPath": "DefaultPipeline", "Value": "fbd8eefd-df6b-465d-814e-e7d8bb73f6b9", "Enabled": true},
+      {"SettingsName": "Quality", "FieldPath": "FullPipeline", "Value": "fbd8eefd-df6b-465d-814e-e7d8bb73f6b9", "Enabled": true}
+    ]
+  },
+  "AssetImportOverrides": {
+    "$id": 7,
+    "Enabled": true,
+    "MaxTextureSize": 1024,
+    "ForceUncompressed": false,
+    "CompressMeshVertexData": true
+  },
+  "AssetPath": "Settings/BuildProfiles/HarmonyVideo.buildprofile",
+  "AssetID": "216ca161-19c1-4659-a022-2bff063d3157",
+  "Name": "HarmonyVideo"
+}

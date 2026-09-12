@@ -1,0 +1,161 @@
+{
+  "$id": 1,
+  "$type": "XEngine.Runtime.Resources.Scene, XEngine.Runtime",
+  "serializeObj": {
+    "$id": 2,
+    "array": [
+      {
+        "$id": 3,
+        "Name": "Main Camera",
+        "AssetPath": "",
+        "Identifier": "d1a55b83-3eff-4365-bcea-a0864031b07e",
+        "Static": 0B,
+        "Enabled": 1B,
+        "EnabledInHierarchy": 1B,
+        "TagIndex": 1,
+        "LayerIndex": 0,
+        "HideFlags": 0,
+        "Transform": {
+          "$id": 4,
+          "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+          "_localPosition": {
+            "X": 0F,
+            "Y": 1F,
+            "Z": -10F
+          },
+          "_localScale": {
+            "X": 1F,
+            "Y": 1F,
+            "Z": 1F
+          },
+          "_localRotation": {
+            "X": 0F,
+            "Y": 0F,
+            "Z": 0F,
+            "W": 1F
+          }
+        },
+        "Components": [
+          {
+            "$id": 5,
+            "$type": "XEngine.Runtime.Camera, XEngine.Runtime",
+            "Effects": {
+              "$id": 6,
+              "$values": [
+
+              ]
+            },
+            "ClearFlags": 3L,
+            "ClearColor": {
+              "R": 0.03F,
+              "G": 0.03F,
+              "B": 0.05F,
+              "A": 1F
+            },
+            "CullingMask": {
+              "mask": 4294967295U
+            },
+            "ProjectionMode": 0L,
+            "FieldOfView": 60F,
+            "OrthographicSize": 0.5F,
+            "NearClipPlane": 0.1F,
+            "FarClipPlane": 100F,
+            "Viewrect": {
+              "Min": {
+                "X": 0F,
+                "Y": 0F
+              },
+              "Max": {
+                "X": 1F,
+                "Y": 1F
+              }
+            },
+            "Depth": -1,
+            "TargetDisplay": 0,
+            "RenderType": 0L,
+            "CameraStack": {
+              "$id": 7,
+              "$values": [
+
+              ]
+            },
+            "Pipeline": NULL,
+            "Target": NULL,
+            "HDR": true,
+            "RenderScale": 1F,
+            "_identifier": "a2702ccd-9ec8-4ab2-b362-28557507021e",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": "MainCamera"
+          }
+        ]
+      },
+      {
+        "$id": 8,
+        "Name": "VideoDriver",
+        "AssetPath": "",
+        "Identifier": "d7626cfd-cb0c-4f80-a3bb-6c1212bed20a",
+        "Static": 0B,
+        "Enabled": 1B,
+        "EnabledInHierarchy": 1B,
+        "TagIndex": 0,
+        "LayerIndex": 0,
+        "HideFlags": 0,
+        "Transform": {
+          "$id": 9,
+          "$type": "XEngine.Vector.Transform, XEngine.Runtime",
+          "_localPosition": {
+            "X": 0F,
+            "Y": 0F,
+            "Z": 0F
+          },
+          "_localScale": {
+            "X": 1F,
+            "Y": 1F,
+            "Z": 1F
+          },
+          "_localRotation": {
+            "X": 0F,
+            "Y": 0F,
+            "Z": 0F,
+            "W": 1F
+          }
+        },
+        "Components": [
+          {
+            "$id": 10,
+            "$type": "XEngine.Zonezero.Video.VideoHarmonyAcceptanceDriver, XEngine.Zonezero.Runtime",
+            "_identifier": "2ba8a8aa-b63b-4b53-8d89-c894009e42c2",
+            "_enabled": true,
+            "_enabledInHierarchy": true,
+            "HideFlags": 0L,
+            "AssetPath": "",
+            "AssetID": "00000000-0000-0000-0000-000000000000",
+            "Name": "VideoHarmonyAcceptanceDriver"
+          }
+        ]
+      }
+    ]
+  },
+  "LightmapBake": {
+    "$id": 11,
+    "AtlasSize": 1024,
+    "TexelsPerUnit": 20F,
+    "DilatePixels": 2,
+    "Bounces": 2,
+    "Samples": 64,
+    "ProbeSamples": 256,
+    "DoBackfaceCull": false,
+    "RussianRoulette": 0F,
+    "Denoise": false,
+    "DenoiseRadius": 5,
+    "BakeSkyLighting": false,
+    "IgnoreAlbedo": false
+  },
+  "AssetPath": "",
+  "AssetID": "00000000-0000-0000-0000-000000000000",
+  "Name": "VideoHarmonyAcceptance"
+}
