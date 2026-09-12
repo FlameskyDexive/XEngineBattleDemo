@@ -8,6 +8,20 @@ Variants
     Variant("HAS_BONEWEIGHTS")
     Variant("SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS")
     Variant("SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS", "HAS_TANGENTS")
+    // Shadow-pass lattice: the shadow pass injects GPU_INSTANCING while the material can carry
+    // DIRECTIONAL_ONLY from the light state; both keywords union onto the shadow pass variant.
+    Variant("GPU_INSTANCING")
+    Variant("GPU_INSTANCING", "HAS_TANGENTS")
+    Variant("GPU_INSTANCING", "SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS")
+    Variant("GPU_INSTANCING", "SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS", "HAS_TANGENTS")
+    Variant("DIRECTIONAL_ONLY")
+    Variant("DIRECTIONAL_ONLY", "HAS_TANGENTS")
+    Variant("DIRECTIONAL_ONLY", "SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS")
+    Variant("DIRECTIONAL_ONLY", "SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS", "HAS_TANGENTS")
+    Variant("DIRECTIONAL_ONLY", "GPU_INSTANCING")
+    Variant("DIRECTIONAL_ONLY", "GPU_INSTANCING", "HAS_TANGENTS")
+    Variant("DIRECTIONAL_ONLY", "GPU_INSTANCING", "SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS")
+    Variant("DIRECTIONAL_ONLY", "GPU_INSTANCING", "SKINNED", "HAS_BONEINDICES", "HAS_BONEWEIGHTS", "HAS_TANGENTS")
 }
 
 // Cel/toon shading ported from the ZZZ reference project's "YSA Toon/Lit" Unity shader graph
