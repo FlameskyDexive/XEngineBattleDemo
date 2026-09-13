@@ -30,7 +30,7 @@ namespace XEngine.Zonezero.Video;
 /// </summary>
 public class VideoHarmonyAcceptanceDriver : MonoBehaviour
 {
-    private static readonly string[] Sources = ["Video/n0-h264-aac", "Video/n0-vp9-opus"];
+    private static readonly string[] Sources = ["Video/videotest", "Video/n0-h264-aac", "Video/n0-vp9-opus"];
     private const float SwipeSeekSeconds = 1.5f;
     private const float TapMaxSeconds = 0.35f;
     private const float SwipeMinPixels = 60f;
