@@ -10,6 +10,7 @@
 // every metric to Debug.Log (visible via hilog).
 //
 
+using System.Collections.Generic;
 using System.Text;
 
 using XEngine.Runtime;
