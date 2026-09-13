@@ -33,10 +33,15 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
 
     private static readonly Stage[] Stages =
     {
-        new("floor",  1.5),
-        new("tone",   2.5),
-        new("fader",  2.5),
-        new("duck",   6.0),
+        new("floor",    1.5),
+        new("tone",     2.5),
+        new("fader",    2.5),
+        new("snapshot", 6.0),
+        new("mute",     1.5),
+        new("unmute",   2.0),
+        new("duck",     6.0),
+        new("idle",     1.5),
+        new("zeroalloc",3.0),
     };
 
     private readonly AudioCaptureBuffer _capture = new();
@@ -60,6 +65,8 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
     private string _outDir = "";
     private float[] _lastCaptured = Array.Empty<float>();
     private float _toneRms;
+    private bool _transitionStarted;
+    private int _gen0AtStageStart;
 
     public override void Update()
     {
@@ -82,6 +89,14 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
             return;
 
         _stageTime += Time.DeltaTime;
+
+        // Snapshot stage: start a 2 s linear transition 0.5 s in (clean pre-transition slice first).
+        if (Stages[_stageIndex].Name == "snapshot" && !_transitionStarted && _stageTime >= 0.5)
+        {
+            _transitionStarted = true;
+            _mixerInstance.Automation.TransitionToSnapshot("Quiet", 2f, AudioFadeCurve.Linear);
+            Debug.Log("[AUDIO] snapshot transition started (2 s linear to -20 dB)");
+        }
 
         // Duck envelope: acquire 0.5 s in (0.4 attack), release after 3 s (0.6 release).
         if (Stages[_stageIndex].Name == "duck")
@@ -129,6 +144,11 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
         _mixerInstance = AudioMixerInstance.Get(_mixer);
         _mixer.Groups.Add(new AudioMixerGroupData { Name = "Music", Parent = AudioMixer.MasterGroupName, VolumeDB = 0f });
         _mixer.Groups.Add(new AudioMixerGroupData { Name = "SFX", Parent = AudioMixer.MasterGroupName, VolumeDB = 0f });
+        _mixer.Snapshots.Add(new AudioMixerSnapshotData
+        {
+            Name = "Quiet",
+            Volumes = { new AudioMixerSnapshotVolume { Group = "Music", VolumeDB = -20f } }
+        });
         _mixerInstance.ForceRecompile();
 
         AudioContext.DataProcess += OnDeviceCallback;
@@ -199,10 +219,29 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
             case "fader":
                 _mixerInstance.SetGroupVolumeDB(_mixerInstance.GetIndex("Music"), -20f);
                 break;
-            case "duck":
-                // Fader left Music at -20 dB: restore the full level so the duck envelope
-                // measures one 20 dB reduction against the tone-stage reference.
+            case "snapshot":
+                // Fader left Music at -20 dB: back to full level, then a 2 s linear tween
+                // to the Quiet snapshot's -20 dB override verifies the fade (not a jump).
                 _mixerInstance.SetGroupVolumeDB(_mixerInstance.GetIndex("Music"), 0f);
+                _transitionStarted = false;
+                break;
+            case "mute":
+                _mixerInstance.ClearSnapshot();
+                _mixerInstance.SetMute(_mixerInstance.GetIndex("Music"), true);
+                break;
+            case "unmute":
+                _mixerInstance.SetMute(_mixerInstance.GetIndex("Music"), false);
+                break;
+            case "duck":
+                // Volume is already back at the 0 dB default (snapshot cleared at mute).
+                break;
+            case "idle":
+                _tone?.Stop();
+                break;
+            case "zeroalloc":
+                _gen0AtStageStart = GC.CollectionCount(0);
+                _tonePhase = 0;
+                _tone?.PlayProcedural();
                 break;
         }
 
@@ -243,6 +282,10 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
                 Check("tone.frequency", result.FrequencyHz is > 420 and < 460, $"freq={result.FrequencyHz:0.0} (expect 420..460)");
                 Check("tone.level", result.Peak is > 0.3f and < 0.95f && result.Rms > 0.15f, $"peak={result.Peak:0.000} rms={result.Rms:0.000}");
                 Check("tone.native-bus", _mixerInstance.UsesNativeBus, $"nativeBus={_mixerInstance.UsesNativeBus}");
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float musicPeak, out float musicRms);
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("SFX"), out float sfxPeak, out _);
+                Check("tone.meters-hot", musicPeak > 0.2f && sfxPeak < 0.02f,
+                    $"meters music={musicPeak:0.000}/{musicRms:0.000} sfx={sfxPeak:0.000} (post-fader bus metering)");
                 _toneRms = result.Rms; // measured full-level reference for the later stages
                 break; // the tone keeps playing through fader and duck
             case "fader":
@@ -250,6 +293,27 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
                 float ratio = _toneRms > 0 ? result.Rms / _toneRms : 0f;
                 Check("fader.attenuation", ratio is > 0.085f and < 0.115f,
                     $"rms={result.Rms:0.000} ratio={ratio:0.000} vs full {_toneRms:0.000} (expect ~0.1 = -20 dB)");
+                break;
+            }
+            case "snapshot":
+            {
+                var early = Slice(captured, 0.05, 0.40); // pre-transition full level
+                var tail = Slice(captured, 3.2, 5.6);    // tween done, override settled
+                float snapRatio = early.Rms > 0 ? tail.Rms / early.Rms : 0f;
+                Check("snapshot.ramp", early.Rms > tail.Rms,
+                    $"early rms={early.Rms:0.000} > tail rms={tail.Rms:0.000} (2 s linear fade)");
+                Check("snapshot.settled", snapRatio is > 0.07f and < 0.20f,
+                    $"tail/early={snapRatio:0.000} (expect ~0.1 = -20 dB override)");
+                break;
+            }
+            case "mute":
+                Check("mute.silent", result.Peak < 0.01f, $"peak={result.Peak:0.0000} (expect < 0.01)");
+                break;
+            case "unmute":
+            {
+                float backRatio = _toneRms > 0 ? result.Rms / _toneRms : 0f;
+                Check("unmute.recovered", backRatio is > 0.8f and < 1.2f,
+                    $"recovered/full={backRatio:0.000} (defaults restored)");
                 break;
             }
             case "duck":
@@ -262,6 +326,25 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
                     $"ducked/full={duckRatio:0.000} (20 dB duck)");
                 Check("duck.recovered", backRatio is > 0.85f and < 1.15f,
                     $"recovered/full={backRatio:0.000} (release 0.6 s)");
+                break;
+            }
+            case "idle":
+            {
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float musicPeak, out _);
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Master"), out float masterPeak, out _);
+                Check("idle.silence", result.Peak < 0.02f, $"peak={result.Peak:0.0000}");
+                Check("idle.meters-cold", musicPeak < 0.02f && masterPeak < 0.02f,
+                    $"meters music={musicPeak:0.000} master={masterPeak:0.000} after stop");
+                break;
+            }
+            case "zeroalloc":
+            {
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float musicPeak, out _);
+                Check("zeroalloc.audible", result.Rms > 0.1f && musicPeak > 0.2f,
+                    $"rms={result.Rms:0.000} meter={musicPeak:0.000}");
+                int gen0Delta = GC.CollectionCount(0) - _gen0AtStageStart;
+                Check("zeroalloc.steady-state", gen0Delta <= 1,
+                    $"gen0 collections during 3 s = {gen0Delta} (<=1)");
                 _tone?.Stop();
                 break;
             }
