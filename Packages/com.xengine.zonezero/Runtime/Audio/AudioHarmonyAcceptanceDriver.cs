@@ -10,8 +10,14 @@
 // every metric to Debug.Log (visible via hilog).
 //
 
+using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.IO;
 using System.Text;
+using System.Threading;
 
 using XEngine.Runtime;
 using XEngine.Runtime.Audio;
@@ -118,7 +124,7 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
 
         var cameraGo = new GameObject("AcceptanceCamera");
         _ = cameraGo.AddComponent<Camera>();
-        Scene.Current?.Add(cameraGo);
+        XEngine.Runtime.Resources.XEngine.Runtime.Resources.Scene.Current?.Add(cameraGo);
 
         _tone = CreateSource("Tone", "Music", 0.8f);
         _tone.Read += OnToneRead;
@@ -134,7 +140,7 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
         source.Volume = volume;
         source.Mixer = _mixer;
         source.MixerGroup = group;
-        Scene.Current?.Add(go);
+        XEngine.Runtime.Resources.XEngine.Runtime.Resources.Scene.Current?.Add(go);
         return source;
     }
 
