@@ -59,6 +59,7 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
     private double _holdTime;
     private string _outDir = "";
     private float[] _lastCaptured = Array.Empty<float>();
+    private float _toneRms;
 
     public override void Update()
     {
@@ -237,22 +238,21 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
                 Check("tone.frequency", result.FrequencyHz is > 420 and < 460, $"freq={result.FrequencyHz:0.0} (expect 420..460)");
                 Check("tone.level", result.Peak is > 0.3f and < 0.95f && result.Rms > 0.15f, $"peak={result.Peak:0.000} rms={result.Rms:0.000}");
                 Check("tone.native-bus", _mixerInstance.UsesNativeBus, $"nativeBus={_mixerInstance.UsesNativeBus}");
-                _tone?.Stop();
-                break;
+                _toneRms = result.Rms; // measured full-level reference for the later stages
+                break; // the tone keeps playing through fader and duck
             case "fader":
             {
-                float fullRms = 0.283f; // 0.8 amplitude sine theoretical rms
-                float ratio = fullRms > 0 ? result.Rms / fullRms : 0f;
+                float ratio = _toneRms > 0 ? result.Rms / _toneRms : 0f;
                 Check("fader.attenuation", ratio is > 0.085f and < 0.115f,
-                    $"rms={result.Rms:0.000} ratio={ratio:0.000} vs full 0.283 (expect ~0.1 = -20 dB)");
+                    $"rms={result.Rms:0.000} ratio={ratio:0.000} vs full {_toneRms:0.000} (expect ~0.1 = -20 dB)");
                 break;
             }
             case "duck":
             {
                 var ducked = Slice(captured, 1.4, 3.3);   // attack done, release pending
                 var recovered = Slice(captured, 4.6, 5.8);// release envelope done
-                float duckRatio = 0.283f > 0 ? ducked.Rms / 0.283f : 0f;
-                float backRatio = 0.283f > 0 ? recovered.Rms / 0.283f : 0f;
+                float duckRatio = _toneRms > 0 ? ducked.Rms / _toneRms : 0f;
+                float backRatio = _toneRms > 0 ? recovered.Rms / _toneRms : 0f;
                 Check("duck.reduction", duckRatio is > 0.08f and < 0.13f,
                     $"ducked/full={duckRatio:0.000} (20 dB duck)");
                 Check("duck.recovered", backRatio is > 0.85f and < 1.15f,
