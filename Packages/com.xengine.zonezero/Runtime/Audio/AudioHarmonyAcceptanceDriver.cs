@@ -330,18 +330,18 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
             }
             case "idle":
             {
-                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float musicPeak, out _);
-                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Master"), out float masterPeak, out _);
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float idleMusicPeak, out _);
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Master"), out float idleMasterPeak, out _);
                 Check("idle.silence", result.Peak < 0.02f, $"peak={result.Peak:0.0000}");
-                Check("idle.meters-cold", musicPeak < 0.02f && masterPeak < 0.02f,
-                    $"meters music={musicPeak:0.000} master={masterPeak:0.000} after stop");
+                Check("idle.meters-cold", idleMusicPeak < 0.02f && idleMasterPeak < 0.02f,
+                    $"meters music={idleMusicPeak:0.000} master={idleMasterPeak:0.000} after stop");
                 break;
             }
             case "zeroalloc":
             {
-                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float musicPeak, out _);
-                Check("zeroalloc.audible", result.Rms > 0.1f && musicPeak > 0.2f,
-                    $"rms={result.Rms:0.000} meter={musicPeak:0.000}");
+                _mixerInstance.GetMetering(_mixerInstance.GetIndex("Music"), out float zaMusicPeak, out _);
+                Check("zeroalloc.audible", result.Rms > 0.1f && zaMusicPeak > 0.2f,
+                    $"rms={result.Rms:0.000} meter={zaMusicPeak:0.000}");
                 int gen0Delta = GC.CollectionCount(0) - _gen0AtStageStart;
                 Check("zeroalloc.steady-state", gen0Delta <= 1,
                     $"gen0 collections during 3 s = {gen0Delta} (<=1)");
