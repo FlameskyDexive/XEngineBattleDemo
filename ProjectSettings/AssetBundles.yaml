@@ -4,11 +4,15 @@ Packages:
     - PackageName: "default"
       PackageDescription: ""
       EnableAddressable: true
+      LocationToLower: false
+      IgnoreExtensions: ""
       Groups:
         $id: 4
         $values:
           - GroupName: "Combat VFX"
             GroupDescription: "Explicit battle VFX prefabs referenced by HeroSkillConfig (not the package-wide prefab catalog)."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 6
               $values: []
@@ -23,6 +27,7 @@ Packages:
                   Tags:
                     $id: 9
                     $values: []
+                  UserData: ""
                   $id: 8
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knife_hit.prefab"
                   AssetTypeFilter: ""
@@ -32,6 +37,7 @@ Packages:
                   Tags:
                     $id: 11
                     $values: []
+                  UserData: ""
                   $id: 10
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_12.prefab"
                   AssetTypeFilter: ""
@@ -41,6 +47,7 @@ Packages:
                   Tags:
                     $id: 13
                     $values: []
+                  UserData: ""
                   $id: 12
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_1_loop.prefab"
                   AssetTypeFilter: ""
@@ -50,6 +57,7 @@ Packages:
                   Tags:
                     $id: 15
                     $values: []
+                  UserData: ""
                   $id: 14
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_2.prefab"
                   AssetTypeFilter: ""
@@ -59,6 +67,7 @@ Packages:
                   Tags:
                     $id: 17
                     $values: []
+                  UserData: ""
                   $id: 16
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_5.prefab"
                   AssetTypeFilter: ""
@@ -68,6 +77,7 @@ Packages:
                   Tags:
                     $id: 19
                     $values: []
+                  UserData: ""
                   $id: 18
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Front_spikes_attack.prefab"
                   AssetTypeFilter: ""
@@ -77,6 +87,7 @@ Packages:
                   Tags:
                     $id: 21
                     $values: []
+                  UserData: ""
                   $id: 20
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Punch_Hit.prefab"
                   AssetTypeFilter: ""
@@ -86,6 +97,7 @@ Packages:
                   Tags:
                     $id: 23
                     $values: []
+                  UserData: ""
                   $id: 22
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Knives.prefab"
                   AssetTypeFilter: ""
@@ -95,6 +107,7 @@ Packages:
                   Tags:
                     $id: 25
                     $values: []
+                  UserData: ""
                   $id: 24
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_shield_1_loop.prefab"
                   AssetTypeFilter: ""
@@ -104,6 +117,7 @@ Packages:
                   Tags:
                     $id: 27
                     $values: []
+                  UserData: ""
                   $id: 26
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor_hit.prefab"
                   AssetTypeFilter: ""
@@ -113,6 +127,7 @@ Packages:
                   Tags:
                     $id: 29
                     $values: []
+                  UserData: ""
                   $id: 28
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_14.prefab"
                   AssetTypeFilter: ""
@@ -122,6 +137,7 @@ Packages:
                   Tags:
                     $id: 31
                     $values: []
+                  UserData: ""
                   $id: 30
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/RPG_VFX_Bundle_Prefabs_Magic_buffs_and_hits_Magic_Sparks.prefab"
                   AssetTypeFilter: ""
@@ -131,6 +147,7 @@ Packages:
                   Tags:
                     $id: 33
                     $values: []
+                  UserData: ""
                   $id: 32
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Lightning_strike.prefab"
                   AssetTypeFilter: ""
@@ -140,6 +157,7 @@ Packages:
                   Tags:
                     $id: 35
                     $values: []
+                  UserData: ""
                   $id: 34
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Energy_explosion.prefab"
                   AssetTypeFilter: ""
@@ -149,6 +167,7 @@ Packages:
                   Tags:
                     $id: 37
                     $values: []
+                  UserData: ""
                   $id: 36
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/Magic_circles_Prefabs_Loop_version_Magic_circle_10_loop.prefab"
                   AssetTypeFilter: ""
@@ -158,6 +177,7 @@ Packages:
                   Tags:
                     $id: 39
                     $values: []
+                  UserData: ""
                   $id: 38
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AOE_Magic_spells_Vol.1_Prefabs_Meteor.prefab"
                   AssetTypeFilter: ""
@@ -167,6 +187,7 @@ Packages:
                   Tags:
                     $id: 41
                     $values: []
+                  UserData: ""
                   $id: 40
                 - CollectPath: "Packages/com.xengine.rpgvfx/Assets/Prefabs/AAA_Projectiles_Vol_1_Prefabs_Hit_27.prefab"
                   AssetTypeFilter: ""
@@ -176,10 +197,13 @@ Packages:
                   Tags:
                     $id: 43
                     $values: []
+                  UserData: ""
                   $id: 42
             $id: 5
           - GroupName: "Hero Animations"
             GroupDescription: "Hero animator controllers plus extracted clips; animation directories are staged for the extraction pass."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 45
               $values: []
@@ -194,6 +218,7 @@ Packages:
                   Tags:
                     $id: 48
                     $values: []
+                  UserData: ""
                   $id: 47
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Corlin/Animations"
                   AssetTypeFilter: ""
@@ -203,6 +228,7 @@ Packages:
                   Tags:
                     $id: 50
                     $values: []
+                  UserData: ""
                   $id: 49
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Nicole/Animations"
                   AssetTypeFilter: ""
@@ -212,6 +238,7 @@ Packages:
                   Tags:
                     $id: 52
                     $values: []
+                  UserData: ""
                   $id: 51
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Anbi/Anbi.controller"
                   AssetTypeFilter: ""
@@ -221,6 +248,7 @@ Packages:
                   Tags:
                     $id: 54
                     $values: []
+                  UserData: ""
                   $id: 53
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Corlin/Corin.controller"
                   AssetTypeFilter: ""
@@ -230,6 +258,7 @@ Packages:
                   Tags:
                     $id: 56
                     $values: []
+                  UserData: ""
                   $id: 55
                 - CollectPath: "Assets/ZZZ/Arts/PlayerModel/Nicole/Nike.controller"
                   AssetTypeFilter: ""
@@ -239,10 +268,13 @@ Packages:
                   Tags:
                     $id: 58
                     $values: []
+                  UserData: ""
                   $id: 57
             $id: 44
           - GroupName: "Battle HUD"
             GroupDescription: "BattleHUD prefab and its Sprite-bearing runtime textures."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 60
               $values: []
@@ -257,6 +289,7 @@ Packages:
                   Tags:
                     $id: 63
                     $values: []
+                  UserData: ""
                   $id: 62
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/joystick_thumb.png"
                   AssetTypeFilter: ""
@@ -266,6 +299,7 @@ Packages:
                   Tags:
                     $id: 65
                     $values: []
+                  UserData: ""
                   $id: 64
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_attack.png"
                   AssetTypeFilter: ""
@@ -275,6 +309,7 @@ Packages:
                   Tags:
                     $id: 67
                     $values: []
+                  UserData: ""
                   $id: 66
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_k.png"
                   AssetTypeFilter: ""
@@ -284,6 +319,7 @@ Packages:
                   Tags:
                     $id: 69
                     $values: []
+                  UserData: ""
                   $id: 68
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_l.png"
                   AssetTypeFilter: ""
@@ -293,6 +329,7 @@ Packages:
                   Tags:
                     $id: 71
                     $values: []
+                  UserData: ""
                   $id: 70
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/btn_skill_i.png"
                   AssetTypeFilter: ""
@@ -302,6 +339,7 @@ Packages:
                   Tags:
                     $id: 73
                     $values: []
+                  UserData: ""
                   $id: 72
                 - CollectPath: "Assets/ZZZ/Arts/UI/HUD/cd_mask.png"
                   AssetTypeFilter: ""
@@ -311,6 +349,7 @@ Packages:
                   Tags:
                     $id: 75
                     $values: []
+                  UserData: ""
                   $id: 74
                 - CollectPath: "Assets/ZZZ/Prefab/BattleHUD.prefab"
                   AssetTypeFilter: ""
@@ -320,10 +359,13 @@ Packages:
                   Tags:
                     $id: 77
                     $values: []
+                  UserData: ""
                   $id: 76
             $id: 59
           - GroupName: "Battle Configs"
             GroupDescription: "Battle configs grouped under Bundles/Config; GUID references preserve dependency closure."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 79
               $values: []
@@ -338,10 +380,13 @@ Packages:
                   Tags:
                     $id: 82
                     $values: []
+                  UserData: ""
                   $id: 81
             $id: 78
           - GroupName: "Startup Scene"
             GroupDescription: "Desktop profile startup scene; required as an explicit AssetBundle root."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 84
               $values: []
@@ -356,10 +401,13 @@ Packages:
                   Tags:
                     $id: 87
                     $values: []
+                  UserData: ""
                   $id: 86
             $id: 83
           - GroupName: "Player Rendering Settings"
             GroupDescription: "Explicit pipeline and global-settings roots; referenced renderer dependencies follow automatically."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 89
               $values: []
@@ -374,6 +422,7 @@ Packages:
                   Tags:
                     $id: 92
                     $values: []
+                  UserData: ""
                   $id: 91
                 - CollectPath: "Assets/UniversalRenderPipelineGlobalSettings.asset"
                   AssetTypeFilter: ""
@@ -383,10 +432,13 @@ Packages:
                   Tags:
                     $id: 94
                     $values: []
+                  UserData: ""
                   $id: 93
             $id: 88
           - GroupName: "Runtime Input and UI"
             GroupDescription: "Runtime-selected action maps and default UI sprite subassets."
+            Enabled: true
+            PackRule: 1
             Tags:
               $id: 96
               $values: []
@@ -401,6 +453,7 @@ Packages:
                   Tags:
                     $id: 99
                     $values: []
+                  UserData: ""
                   $id: 98
                 - CollectPath: "Packages/com.xengine.xgui/Runtime/Resources/DefaultSprite.png"
                   AssetTypeFilter: ""
@@ -410,15 +463,18 @@ Packages:
                   Tags:
                     $id: 101
                     $values: []
+                  UserData: ""
                   $id: 100
             $id: 95
           - GroupName: "Mobile Rendering Configuration"
             GroupDescription: "HarmonyOS build-profile pipeline override."
+            Enabled: true
+            PackRule: 1
             Tags:
-              $id: 104
+              $id: 103
               $values: []
             Collectors:
-              $id: 105
+              $id: 104
               $values:
                 - CollectPath: "Assets/Bundles/Config/Rendering"
                   AssetTypeFilter: ""
@@ -426,10 +482,14 @@ Packages:
                   AddressRule: 1
                   FilterRule: 0
                   Tags:
-                    $id: 107
+                    $id: 106
                     $values: []
-                  $id: 106
-            $id: 103
+                  UserData: ""
+                  $id: 105
+            $id: 102
       $id: 3
+ShowPackagesView: false
+ShowRuleAlias: true
+CollectorSplitWidth: 378
 $id: 1
 $type: "XEngine.Editor.AssetBundles.Collector.AssetBundleCollectorSetting, XEngine.Editor"

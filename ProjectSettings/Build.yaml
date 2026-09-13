@@ -6,8 +6,8 @@ OutputDirectory: "Builds"
 PackagingMode: 2
 AssetMode: 1
 MaxPakSizeMB: 2048
-ActiveProfileGuid: "c3ff63ee-0a0b-4408-a8ee-d4e6cd1aa3e4"
-ActivePipelineId: "xengine.desktop"
+ActiveProfileGuid: "216ca161-19c1-4659-a022-2bff063d3157"
+ActivePipelineId: "xengine.harmonyos"
 PlatformProfiles:
   $id: 3
   $values:

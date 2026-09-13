@@ -1,1 +1,1 @@
-m_EditorVersion: V1.0.0a1
+m_EditorVersion: 1.0.0-a1
