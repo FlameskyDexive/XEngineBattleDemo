@@ -106,7 +106,9 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
 
     private void Boot()
     {
-        _outDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        _outDir = Application.PersistentDataPath;
+        if (string.IsNullOrWhiteSpace(_outDir))
+            _outDir = AppContext.BaseDirectory; // player fallback
         Directory.CreateDirectory(_outDir);
 
         Debug.Log($"[AUDIO] outDir={_outDir}");
