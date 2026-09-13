@@ -106,6 +106,14 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
 
     private void Boot()
     {
+        // The HarmonyOS player host boots with initializeAudio:false (the backend used to be a
+        // no-op), so the driver brings the device audio up itself before the stages run.
+        if (!AudioContext.IsInitialized)
+        {
+            bool ok = AudioContext.TryInitialize(44100, 2, 2048);
+            Debug.Log($"[AUDIO] try-init ok={ok} initialized={AudioContext.IsInitialized}");
+        }
+
         _outDir = Application.PersistentDataPath;
         if (string.IsNullOrWhiteSpace(_outDir))
             _outDir = AppContext.BaseDirectory; // player fallback
