@@ -199,6 +199,11 @@ public sealed class AudioHarmonyAcceptanceDriver : MonoBehaviour
             case "fader":
                 _mixerInstance.SetGroupVolumeDB(_mixerInstance.GetIndex("Music"), -20f);
                 break;
+            case "duck":
+                // Fader left Music at -20 dB: restore the full level so the duck envelope
+                // measures one 20 dB reduction against the tone-stage reference.
+                _mixerInstance.SetGroupVolumeDB(_mixerInstance.GetIndex("Music"), 0f);
+                break;
         }
 
         Debug.Log($"[AUDIO] stage {_stageIndex}/{Stages.Length - 1} '{Stages[_stageIndex].Name}' begin");
